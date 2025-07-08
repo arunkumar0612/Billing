@@ -6,14 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:glassmorphism/glassmorphism.dart';
-import 'package:intl/intl.dart';
+// import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/VendorList_actions.dart';
 // import 'package:ssipl_billing/5_VENDOR/controllers/Vendor_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/models/entities/VendorList_entities.dart';
 import 'package:ssipl_billing/5_VENDOR/services/VendorList_service.dart';
 import 'package:ssipl_billing/5_VENDOR/services/manual_onboard_service.dart';
-import 'package:ssipl_billing/5_VENDOR/views/Manual_onboard/show_Manual_onboard.dart';
+// import 'package:ssipl_billing/5_VENDOR/views/Manual_onboard/show_Manual_onboard.dart';
 // import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 
@@ -591,7 +591,7 @@ class _VendorCardState extends State<VendorCard> {
               ),
               builder: (context) {
                 return SizedBox(
-                  height: 500,
+                  height: 720,
                   child: VendorEditor(
                     screenWidth: widget.screenWidth,
                     data: widget.selecteddata,
@@ -713,73 +713,212 @@ class VendorEditor extends StatefulWidget {
 }
 
 class _VendorEditorState extends State<VendorEditor> {
-  // ... (keep existing autofill and initState methods)
+  final _formKey = GlobalKey<FormState>();
+  File? _logoFile;
 
-  Widget buildTextField({
+  Future<void> _pickLogo() async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.image,
+      allowMultiple: false,
+    );
+    if (result != null) {
+      setState(() {
+        _logoFile = File(result.files.single.path!);
+      });
+    }
+  }
+
+  Widget _buildHeader() {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: Primary_colors.Light,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+        // boxShadow: [
+        //   BoxShadow(
+        //     // ignore: deprecated_member_use
+        //     color: Colors.grey.withOpacity(0.2),
+        //     blurRadius: 8,
+        //     offset: const Offset(0, 4),
+        //   ),
+        // ],
+      ),
+      child: Row(
+        children: [
+          IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.blue),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          const SizedBox(width: 16),
+          const Text(
+            "Vendor Management",
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.blue,
+            ),
+          ),
+          const Spacer(),
+          ElevatedButton.icon(
+            icon: const Icon(Icons.save, size: 18),
+            label: const Text("Save Changes"),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.blue,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            ),
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                // Save logic
+              }
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLogoSection() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Primary_colors.Dark,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            // ignore: deprecated_member_use
+            color: Colors.grey.withOpacity(0.1),
+            blurRadius: 6,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // const Text(
+          //   "Vendor Logo",
+          //   style: TextStyle(
+          //     fontSize: 16,
+          //     fontWeight: FontWeight.bold,
+          //     color: Colors.blueGrey,
+          //   ),
+          // ),
+          // const SizedBox(height: 5),
+          Center(
+            child: GestureDetector(
+              onTap: _pickLogo,
+              child: Container(
+                width: 100,
+                height: 100,
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 40, 44, 54),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: const Color.fromARGB(255, 17, 17, 17),
+                    width: 1,
+                  ),
+                ),
+                child: _logoFile != null
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.file(_logoFile!, fit: BoxFit.cover),
+                      )
+                    : Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(Icons.add_a_photo, color: Colors.grey, size: 32),
+                          const SizedBox(height: 8),
+                          Text(
+                            "Upload Logo",
+                            style: TextStyle(
+                              color: Colors.grey[600],
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTextField({
     required String label,
+    required String hintText,
     required TextEditingController controller,
-    bool readOnly = false,
-    int? maxLines,
+    bool isRequired = false,
     TextInputType? keyboardType,
-    double? width,
+    int? maxLines = 1,
+    bool readOnly = false,
   }) {
-    return SizedBox(
-      width: width ?? 280, // Medium width default
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
           children: [
             Text(
               label,
-              style: TextStyle(
-                color: Colors.grey[800],
-                fontSize: 14,
+              style: const TextStyle(
+                fontSize: Primary_font_size.Text8,
                 fontWeight: FontWeight.w500,
+                color: Colors.blueGrey,
               ),
             ),
-            const SizedBox(height: 6),
-            Container(
-              decoration: BoxDecoration(
-                color: readOnly ? Colors.grey[100] : Colors.white,
-                borderRadius: BorderRadius.circular(8),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 6,
-                    offset: const Offset(0, 3),
-                  )
-                ],
-                border: Border.all(
-                  color: Colors.grey[300]!,
-                  width: 1,
-                ),
-              ),
-              child: TextFormField(
-                controller: controller,
-                readOnly: readOnly,
-                maxLines: maxLines ?? 1,
-                keyboardType: keyboardType,
+            if (isRequired)
+              const Text(
+                " *",
                 style: TextStyle(
-                  color: readOnly ? Colors.grey[600] : Colors.black87,
+                  color: Colors.red,
                   fontSize: 14,
                 ),
-                decoration: InputDecoration(
-                  isDense: true,
-                  contentPadding: const EdgeInsets.symmetric(
-                    vertical: 14,
-                    horizontal: 14,
-                  ),
-                  border: InputBorder.none,
-                  enabledBorder: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                  filled: false,
-                ),
               ),
-            ),
           ],
         ),
-      ),
+        const SizedBox(height: 6),
+        Container(
+          height: 40, // ⬅️ set a fixed height
+          decoration: BoxDecoration(
+            color: readOnly ? const Color.fromARGB(255, 61, 66, 80) : const Color.fromARGB(255, 40, 44, 54),
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+              color: const Color.fromARGB(255, 34, 34, 34),
+              width: 1,
+            ),
+          ),
+          alignment: Alignment.center, // ensures vertical alignment
+          child: TextFormField(
+            controller: controller,
+            keyboardType: keyboardType,
+            maxLines: 1, // ⬅️ ensure single-line for correct height alignment
+            readOnly: readOnly,
+            style: const TextStyle(fontSize: 12, color: Primary_colors.Color1), // optional: adjust font size
+            decoration: InputDecoration(
+              hintText: hintText,
+              hintStyle: TextStyle(color: Colors.grey[500], fontSize: 12),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0), // ⬅️ minimize vertical padding
+              isCollapsed: true, // ⬅️ important to reduce internal height
+              border: InputBorder.none,
+            ),
+            validator: (value) {
+              if (isRequired && (value == null || value.isEmpty)) {
+                return 'This field is required';
+              }
+              return null;
+            },
+          ),
+        ),
+        const SizedBox(height: 8),
+      ],
     );
   }
 
@@ -787,557 +926,500 @@ class _VendorEditorState extends State<VendorEditor> {
     required String label,
     required String? currentFile,
     required Function(File?) onFileChanged,
-    double? width,
   }) {
-    return SizedBox(
-      width: width ?? 280, // Medium width default
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              label,
-              style: TextStyle(
-                color: Colors.grey[800],
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-              ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            color: Colors.blueGrey,
+          ),
+        ),
+        const SizedBox(height: 6),
+        Container(
+          decoration: BoxDecoration(
+            color: const Color.fromARGB(255, 40, 44, 54),
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+              color: const Color.fromARGB(255, 31, 30, 30),
+              width: 1,
             ),
-            const SizedBox(height: 6),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(8),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 6,
-                    offset: const Offset(0, 3),
-                  )
-                ],
-                border: Border.all(
-                  color: Colors.grey[300]!,
-                  width: 1,
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Column(
-                  children: [
-                    if (currentFile != null && currentFile.isNotEmpty)
-                      Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: Colors.blue[50],
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        child: Row(
-                          children: [
-                            const Icon(Icons.attach_file, size: 18, color: Colors.blue),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: Text(
-                                currentFile.split('/').last,
-                                style: const TextStyle(
-                                  fontSize: 13,
-                                  color: Colors.blue,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            IconButton(
-                              icon: const Icon(Icons.download, size: 18, color: Colors.blue),
-                              onPressed: () {
-                                // Implement download
-                              },
-                            ),
-                          ],
-                        ),
-                      )
-                    else
-                      Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[100],
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        child: const Center(
-                          child: Text(
-                            'No file uploaded',
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: Colors.grey,
-                            ),
+          ),
+          padding: const EdgeInsets.all(8),
+          child: Column(
+            children: [
+              if (currentFile != null && currentFile.isNotEmpty)
+                Container(
+                  padding: const EdgeInsets.only(left: 3),
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(17, 227, 242, 253),
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.insert_drive_file, size: 18, color: Colors.blue),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          currentFile.split('/').last,
+                          style: const TextStyle(
+                            fontSize: 13,
+                            color: Colors.blue,
                           ),
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                    const SizedBox(height: 10),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: ElevatedButton.icon(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blue[50],
-                              foregroundColor: Colors.blue,
-                              elevation: 0,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              padding: const EdgeInsets.symmetric(vertical: 10),
-                            ),
-                            icon: const Icon(Icons.upload, size: 16),
-                            label: const Text('Upload', style: TextStyle(fontSize: 13)),
-                            onPressed: () async {
-                              final result = await FilePicker.platform.pickFiles(
-                                type: FileType.custom,
-                                allowedExtensions: ['pdf', 'jpg', 'jpeg', 'png'],
-                              );
-                              if (result != null) {
-                                onFileChanged(File(result.files.single.path!));
-                              }
-                            },
-                          ),
-                        ),
-                        if (currentFile != null && currentFile.isNotEmpty)
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: IconButton(
-                              icon: const Icon(Icons.delete, size: 18, color: Colors.red),
-                              onPressed: () => onFileChanged(null),
-                            ),
-                          ),
-                      ],
+                      IconButton(
+                        icon: const Icon(Icons.download, size: 18, color: Colors.blue),
+                        onPressed: () {
+                          // Implement download
+                        },
+                      ),
+                    ],
+                  ),
+                )
+              else
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[100],
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: const Center(
+                    child: Text(
+                      'No file uploaded',
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Colors.grey,
+                      ),
                     ),
-                  ],
+                  ),
                 ),
+              const SizedBox(height: 10),
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      icon: const Icon(Icons.upload, size: 18),
+                      label: const Text(
+                        "Upload File",
+                        style: TextStyle(fontSize: 10),
+                      ),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: Colors.blue,
+                        side: const BorderSide(color: Colors.blue),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                      ),
+                      onPressed: () async {
+                        final result = await FilePicker.platform.pickFiles(
+                          type: FileType.custom,
+                          allowedExtensions: ['pdf', 'jpg', 'jpeg', 'png'],
+                        );
+                        if (result != null) {
+                          onFileChanged(
+                            File(result.files.single.path!),
+                          );
+                        }
+                      },
+                    ),
+                  ),
+                  if (currentFile != null && currentFile.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: IconButton(
+                        icon: const Icon(
+                          Icons.delete,
+                          color: Colors.red,
+                          size: 20,
+                        ),
+                        onPressed: () => onFileChanged(null),
+                      ),
+                    ),
+                ],
               ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget buildSectionTitle(String title) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 16.0, left: 12.0, bottom: 8.0),
-      child: Text(
-        title,
-        style: const TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w600,
-          color: Colors.blue,
-          letterSpacing: 0.5,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSectionContainer(List<Widget> children) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-      padding: const EdgeInsets.all(12.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
+            ],
           ),
-        ],
+        ),
+        const SizedBox(height: 12),
+      ],
+    );
+  }
+
+  Widget _buildSection({
+    required String title,
+    required List<Widget> children,
+  }) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(10),
+      margin: const EdgeInsets.only(bottom: 10),
+      decoration: BoxDecoration(
+        color: Primary_colors.Dark,
+        borderRadius: BorderRadius.circular(12),
+        // boxShadow: [
+        //   BoxShadow(
+        //     color: Colors.grey.withOpacity(0.1),
+        //     blurRadius: 6,
+        //     offset: const Offset(0, 3),
+        //   ),
+        // ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: children,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: Colors.blue,
+            ),
+          ),
+          const SizedBox(height: 8),
+          ...children,
+        ],
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
-            ),
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Colors.blueGrey[800]!,
-                Colors.blueGrey[900]!,
-              ],
-            ),
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
           ),
+          color: Primary_colors.Light,
         ),
-        SafeArea(
-          child: SizedBox(
-            width: double.infinity,
-            height: MediaQuery.of(context).size.height * 0.85,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: DefaultTabController(
-                length: 3,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Header
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          "Vendor Details Editor",
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            letterSpacing: 0.5,
-                          ),
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.close, color: Colors.white70),
-                          onPressed: () => Navigator.of(context).pop(),
-                        ),
-                      ],
-                    ),
-                    const Divider(height: 20, color: Colors.white24),
-
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: const TabBar(
-                        indicator: BoxDecoration(
-                          color: Colors.blue,
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(8),
-                            topRight: Radius.circular(8),
-                          ),
-                        ),
-                        labelColor: Colors.white,
-                        unselectedLabelColor: Colors.blue,
-                        labelStyle: TextStyle(fontWeight: FontWeight.w500),
-                        tabs: [
-                          Tab(text: "KYC Information"),
-                          Tab(text: "Business Info"),
-                          Tab(text: "Bank & Documents"),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-
-                    // Tab content
-                    Expanded(
-                      child: TabBarView(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              _buildHeader(),
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // KYC Tab
-                          SingleChildScrollView(
+                          Expanded(
+                            flex: 1,
                             child: Column(
                               children: [
-                                _buildSectionContainer([
-                                  buildSectionTitle("Basic Information"),
-                                  Wrap(
-                                    spacing: 8,
-                                    runSpacing: 8,
-                                    children: [
-                                      buildTextField(
-                                        label: "Vendor ID",
-                                        controller: widget.controller.vendorListModel.vendor_IdController.value,
-                                        readOnly: true,
-                                        width: 180,
-                                      ),
-                                      buildTextField(
-                                        label: "Vendor Name",
-                                        controller: widget.controller.vendorListModel.vendor_NameController.value,
-                                        width: 280,
-                                      ),
-                                      buildTextField(
-                                        label: "Vendor Email",
-                                        controller: widget.controller.vendorListModel.vendor_emailController.value,
-                                        width: 280,
-                                      ),
-                                    ],
-                                  ),
-                                ]),
-                                _buildSectionContainer([
-                                  buildSectionTitle("Address Information"),
-                                  Wrap(
-                                    spacing: 8,
-                                    runSpacing: 8,
-                                    children: [
-                                      buildTextField(
-                                        label: "Address",
-                                        controller: widget.controller.vendorListModel.vendor_addressController.value,
-                                        width: 380,
-                                        maxLines: 2,
-                                      ),
-                                      buildTextField(
-                                        label: "State",
-                                        controller: widget.controller.vendorListModel.vendor_stateController.value,
-                                        width: 180,
-                                      ),
-                                      buildTextField(
-                                        label: "Pincode",
-                                        controller: widget.controller.vendorListModel.vendor_pincodeController.value,
-                                        width: 120,
-                                        keyboardType: TextInputType.number,
-                                      ),
-                                    ],
-                                  ),
-                                ]),
-                                _buildSectionContainer([
-                                  buildSectionTitle("Contact Person"),
-                                  Wrap(
-                                    spacing: 8,
-                                    runSpacing: 8,
-                                    children: [
-                                      buildTextField(
-                                        label: "Contact Person Name",
-                                        controller: widget.controller.vendorListModel.vendor_contactPersonNameController.value,
-                                        width: 240,
-                                      ),
-                                      buildTextField(
-                                        label: "Designation",
-                                        controller: widget.controller.vendorListModel.vendor_contactPersonDesignationController.value,
-                                        width: 200,
-                                      ),
-                                      buildTextField(
-                                        label: "Phone Number",
-                                        controller: widget.controller.vendorListModel.vendor_contactPersonPhoneController.value,
-                                        width: 180,
-                                        keyboardType: TextInputType.phone,
-                                      ),
-                                    ],
-                                  ),
-                                ]),
+                                _buildLogoSection(),
+                                SizedBox(height: 15),
+                                _buildSection(
+                                  title: "Basic Information",
+                                  children: [
+                                    _buildTextField(
+                                      label: "Vendor ID",
+                                      hintText: "Enter vendor ID",
+                                      controller: widget.controller.vendorListModel.vendor_IdController.value,
+                                      readOnly: true,
+                                    ),
+                                    _buildTextField(
+                                      label: "Vendor Name",
+                                      hintText: "Enter vendor name",
+                                      controller: widget.controller.vendorListModel.vendor_NameController.value,
+                                      isRequired: true,
+                                    ),
+                                    _buildTextField(
+                                      label: "Vendor Email",
+                                      hintText: "Enter vendor email",
+                                      controller: widget.controller.vendorListModel.vendor_emailController.value,
+                                      isRequired: true,
+                                      keyboardType: TextInputType.emailAddress,
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 5),
+                                _buildSection(
+                                  title: "Documents",
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: _buildFileUploadField(
+                                            label: "Registration Certificate",
+                                            currentFile: '${widget.data.value.registrationCertificate}',
+                                            onFileChanged: (file) {
+                                              widget.controller.vendorListModel.vendor_registrationCertificate.value = file != null ? Uint8List.fromList(file.readAsBytesSync()) : null;
+                                            },
+                                          ),
+                                        ),
+                                        const SizedBox(width: 16),
+                                        Expanded(
+                                          child: _buildFileUploadField(
+                                            label: "PAN Document",
+                                            currentFile: '${widget.data.value.panUpload}',
+                                            onFileChanged: (file) {
+                                              widget.controller.vendorListModel.vendor_panUpload.value = file != null ? Uint8List.fromList(file.readAsBytesSync()) : null;
+                                            },
+                                          ),
+                                        ),
+                                        const SizedBox(width: 16),
+                                        Expanded(
+                                          child: _buildFileUploadField(
+                                            label: "Cancelled Cheque",
+                                            currentFile: '${widget.data.value.cancelledCheque}',
+                                            onFileChanged: (file) {
+                                              widget.controller.vendorListModel.vendor_cancelledCheque.value = file != null ? Uint8List.fromList(file.readAsBytesSync()) : null;
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ],
                             ),
                           ),
-
-                          // Business Information Tab
-                          SingleChildScrollView(
+                          const SizedBox(width: 16),
+                          Expanded(
+                            flex: 2,
                             child: Column(
                               children: [
-                                _buildSectionContainer([
-                                  buildSectionTitle("Business Details"),
-                                  Wrap(
-                                    spacing: 8,
-                                    runSpacing: 8,
-                                    children: [
-                                      buildTextField(
-                                        label: "Business Type",
-                                        controller: widget.controller.vendorListModel.vendor_businessTypeController.value,
-                                        width: 220,
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: _buildSection(
+                                        title: "Contact Information",
+                                        children: [
+                                          _buildTextField(
+                                            label: "Contact Person",
+                                            hintText: "Enter contact person name",
+                                            controller: widget.controller.vendorListModel.vendor_contactPersonNameController.value,
+                                            isRequired: true,
+                                          ),
+                                          _buildTextField(
+                                            label: "Designation",
+                                            hintText: "Enter designation",
+                                            controller: widget.controller.vendorListModel.vendor_contactPersonDesignationController.value,
+                                          ),
+                                          _buildTextField(
+                                            label: "Phone Number",
+                                            hintText: "Enter phone number",
+                                            controller: widget.controller.vendorListModel.vendor_contactPersonPhoneController.value,
+                                            keyboardType: TextInputType.phone,
+                                          ),
+                                          _buildTextField(
+                                            label: "Address",
+                                            hintText: "Enter full address",
+                                            controller: widget.controller.vendorListModel.vendor_addressController.value,
+                                            maxLines: 2,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: _buildTextField(
+                                                  label: "State",
+                                                  hintText: "Enter state",
+                                                  controller: widget.controller.vendorListModel.vendor_stateController.value,
+                                                ),
+                                              ),
+                                              const SizedBox(width: 16),
+                                              Expanded(
+                                                child: _buildTextField(
+                                                  label: "Pincode",
+                                                  hintText: "Enter pincode",
+                                                  controller: widget.controller.vendorListModel.vendor_pincodeController.value,
+                                                  keyboardType: TextInputType.number,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
                                       ),
-                                      buildTextField(
-                                        label: "Year Established",
-                                        controller: widget.controller.vendorListModel.vendor_yearOfEstablishmentController.value,
-                                        width: 160,
+                                    ),
+                                    SizedBox(
+                                      width: 15,
+                                    ),
+                                    Expanded(
+                                      child: _buildSection(
+                                        title: "Business Information",
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: _buildTextField(
+                                                  label: "Business Type",
+                                                  hintText: "Enter business type",
+                                                  controller: widget.controller.vendorListModel.vendor_businessTypeController.value,
+                                                ),
+                                              ),
+                                              const SizedBox(width: 16),
+                                              Expanded(
+                                                child: _buildTextField(
+                                                  label: "Year Established",
+                                                  hintText: "Enter year",
+                                                  controller: widget.controller.vendorListModel.vendor_yearOfEstablishmentController.value,
+                                                  keyboardType: TextInputType.number,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: _buildTextField(
+                                                  label: "GST Number",
+                                                  hintText: "Enter GST number",
+                                                  controller: widget.controller.vendorListModel.vendor_gstNumberController.value,
+                                                ),
+                                              ),
+                                              const SizedBox(width: 16),
+                                              Expanded(
+                                                child: _buildTextField(
+                                                  label: "PAN Number",
+                                                  hintText: "Enter PAN number",
+                                                  controller: widget.controller.vendorListModel.vendor_panNumberController.value,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          _buildTextField(
+                                            label: "Annual Turnover",
+                                            hintText: "Enter annual turnover",
+                                            controller: widget.controller.vendorListModel.vendor_annualTurnoverController.value,
+                                            keyboardType: TextInputType.number,
+                                          ),
+                                          _buildTextField(
+                                            label: "Products/Services",
+                                            hintText: "List products or services",
+                                            controller: widget.controller.vendorListModel.vendor_productOrServiceListController.value,
+                                            maxLines: 2,
+                                          ),
+                                          _buildTextField(
+                                            label: "Description",
+                                            hintText: "Enter detailed description",
+                                            controller: widget.controller.vendorListModel.vendor_productOrServiceDescriptionController.value,
+                                            maxLines: 3,
+                                          ),
+                                        ],
                                       ),
-                                      buildTextField(
-                                        label: "GST Number",
-                                        controller: widget.controller.vendorListModel.vendor_gstNumberController.value,
-                                        width: 200,
-                                      ),
-                                      buildTextField(
-                                        label: "PAN Number",
-                                        controller: widget.controller.vendorListModel.vendor_panNumberController.value,
-                                        width: 200,
-                                      ),
-                                      buildTextField(
-                                        label: "Annual Turnover (₹)",
-                                        controller: widget.controller.vendorListModel.vendor_annualTurnoverController.value,
-                                        width: 180,
-                                        keyboardType: TextInputType.number,
-                                      ),
-                                    ],
-                                  ),
-                                ]),
-                                _buildSectionContainer([
-                                  buildSectionTitle("Products/Services"),
-                                  Wrap(
-                                    spacing: 8,
-                                    runSpacing: 8,
-                                    children: [
-                                      buildTextField(
-                                        label: "Product/Service List",
-                                        controller: widget.controller.vendorListModel.vendor_productOrServiceListController.value,
-                                        width: 300,
-                                        maxLines: 2,
-                                      ),
-                                      buildTextField(
-                                        label: "HSN/SAC Code",
-                                        controller: widget.controller.vendorListModel.vendor_hsnOrSacCodeController.value,
-                                        width: 160,
-                                        keyboardType: TextInputType.number,
-                                      ),
-                                      buildTextField(
-                                        label: "Description",
-                                        controller: widget.controller.vendorListModel.vendor_productOrServiceDescriptionController.value,
-                                        width: 380,
-                                        maxLines: 3,
-                                      ),
-                                    ],
-                                  ),
-                                ]),
-                                _buildSectionContainer([
-                                  buildSectionTitle("Certifications"),
-                                  Wrap(
-                                    spacing: 8,
-                                    runSpacing: 8,
-                                    children: [
-                                      buildTextField(
-                                        label: "ISO Certification",
-                                        controller: widget.controller.vendorListModel.vendor_isoCertificationController.value,
-                                        width: 240,
-                                      ),
-                                      buildTextField(
-                                        label: "Other Certifications",
-                                        controller: widget.controller.vendorListModel.vendor_otherCertificationsController.value,
-                                        width: 300,
-                                        maxLines: 2,
-                                      ),
-                                    ],
-                                  ),
-                                ]),
-                              ],
-                            ),
-                          ),
-
-                          // Bank & Documents Tab
-                          SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                _buildSectionContainer([
-                                  buildSectionTitle("Bank Details"),
-                                  Wrap(
-                                    spacing: 8,
-                                    runSpacing: 8,
-                                    children: [
-                                      buildTextField(
-                                        label: "Bank Name",
-                                        controller: widget.controller.vendorListModel.vendor_bankNameController.value,
-                                        width: 280,
-                                      ),
-                                      buildTextField(
-                                        label: "Branch",
-                                        controller: widget.controller.vendorListModel.vendor_branchController.value,
-                                        width: 220,
-                                      ),
-                                      buildTextField(
-                                        label: "Account Number",
-                                        controller: widget.controller.vendorListModel.vendor_accountNumberController.value,
-                                        width: 220,
-                                        keyboardType: TextInputType.number,
-                                      ),
-                                      buildTextField(
-                                        label: "IFSC Code",
-                                        controller: widget.controller.vendorListModel.vendor_ifscCodeController.value,
-                                        width: 160,
-                                      ),
-                                    ],
-                                  ),
-                                ]),
-                                _buildSectionContainer([
-                                  buildSectionTitle("Document Uploads"),
-                                  Wrap(
-                                    spacing: 8,
-                                    runSpacing: 8,
-                                    children: [
-                                      _buildFileUploadField(
-                                        label: "Registration Certificate",
-                                        currentFile: '${widget.data.value.registrationCertificate}',
-                                        onFileChanged: (file) {
-                                          widget.controller.vendorListModel.vendor_registrationCertificate.value = file != null ? Uint8List.fromList(file.readAsBytesSync()) : null;
-                                        },
-                                        width: 280,
-                                      ),
-                                      _buildFileUploadField(
-                                        label: "PAN Document",
-                                        currentFile: '${widget.data.value.panUpload}',
-                                        onFileChanged: (file) {
-                                          widget.controller.vendorListModel.vendor_panUpload.value = file != null ? Uint8List.fromList(file.readAsBytesSync()) : null;
-                                        },
-                                        width: 280,
-                                      ),
-                                      _buildFileUploadField(
-                                        label: "Cancelled Cheque",
-                                        currentFile: '${widget.data.value.cancelledCheque}',
-                                        onFileChanged: (file) {
-                                          widget.controller.vendorListModel.vendor_cancelledCheque.value = file != null ? Uint8List.fromList(file.readAsBytesSync()) : null;
-                                        },
-                                        width: 280,
-                                      ),
-                                    ],
-                                  ),
-                                ]),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 5),
+                                _buildSection(
+                                  title: "Bank Details",
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: _buildTextField(
+                                            label: "Bank Name",
+                                            hintText: "Enter bank name",
+                                            controller: widget.controller.vendorListModel.vendor_bankNameController.value,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 16),
+                                        Expanded(
+                                          child: _buildTextField(
+                                            label: "Account Number",
+                                            hintText: "Enter account number",
+                                            controller: widget.controller.vendorListModel.vendor_accountNumberController.value,
+                                            keyboardType: TextInputType.number,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: _buildTextField(
+                                            label: "IFSC Code",
+                                            hintText: "Enter IFSC code",
+                                            controller: widget.controller.vendorListModel.vendor_ifscCodeController.value,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 16),
+                                        Expanded(
+                                          child: _buildTextField(
+                                            label: "Branch",
+                                            hintText: "Enter branch details",
+                                            controller: widget.controller.vendorListModel.vendor_branchController.value,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ],
                             ),
                           ),
                         ],
                       ),
-                    ),
-
-                    // Footer buttons
-                    Container(
-                      padding: const EdgeInsets.only(top: 12.0),
-                      decoration: BoxDecoration(
-                        color: Colors.blueGrey[900],
-                        borderRadius: const BorderRadius.only(
-                          bottomLeft: Radius.circular(20),
-                          bottomRight: Radius.circular(20),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                              side: const BorderSide(color: Colors.white70),
-                              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                            onPressed: () => Navigator.of(context).pop(),
-                            child: const Text(
-                              "Cancel",
-                              style: TextStyle(color: Colors.white70),
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blueAccent,
-                              foregroundColor: Colors.white,
-                              elevation: 2,
-                              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                            onPressed: () async {
-                              // Submit action
-                            },
-                            child: const Text("Save Vendor Details"),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                      // const SizedBox(height: 16),
+                      // Container(
+                      //   padding: const EdgeInsets.all(16),
+                      //   decoration: BoxDecoration(
+                      //     color: Colors.white,
+                      //     borderRadius: BorderRadius.circular(12),
+                      //     boxShadow: [
+                      //       BoxShadow(
+                      //         color: Colors.grey.withOpacity(0.1),
+                      //         blurRadius: 6,
+                      //         offset: const Offset(0, 3),
+                      //       ),
+                      //     ],
+                      //   ),
+                      //   child: Row(
+                      //     mainAxisAlignment: MainAxisAlignment.end,
+                      //     children: [
+                      //       OutlinedButton(
+                      //         style: OutlinedButton.styleFrom(
+                      //           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                      //           side: const BorderSide(color: Colors.blue),
+                      //           shape: RoundedRectangleBorder(
+                      //             borderRadius: BorderRadius.circular(8),
+                      //           ),
+                      //         ),
+                      //         onPressed: () => Navigator.of(context).pop(),
+                      //         child: const Text(
+                      //           "Cancel",
+                      //           style: TextStyle(color: Colors.blue),
+                      //         ),
+                      //       ),
+                      //       const SizedBox(width: 16),
+                      //       ElevatedButton(
+                      //         style: ElevatedButton.styleFrom(
+                      //           backgroundColor: Colors.blue,
+                      //           foregroundColor: Colors.white,
+                      //           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                      //           shape: RoundedRectangleBorder(
+                      //             borderRadius: BorderRadius.circular(8),
+                      //           ),
+                      //         ),
+                      //         onPressed: () {
+                      //           if (_formKey.currentState!.validate()) {
+                      //             // Save logic
+                      //           }
+                      //         },
+                      //         child: const Text("Save Vendor Details"),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
+                    ],
+                  ),
                 ),
               ),
-            ),
+            ],
           ),
         ),
-      ],
+      ),
     );
   }
 }

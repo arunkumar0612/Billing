@@ -54,7 +54,7 @@ class VendorBusinessInfoState extends State<VendorBusinessInfo> {
                               width: 400,
                               readonly: false,
                               text: 'Type of Business/ Service',
-                              controller: manualOnboardController.manualOnboardModel.vendorNameController.value,
+                              controller: manualOnboardController.manualOnboardModel.typeOfBusiness.value,
                               icon: Icons.business,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
@@ -78,7 +78,7 @@ class VendorBusinessInfoState extends State<VendorBusinessInfo> {
                           width: 400,
                           readonly: false,
                           text: 'Year of Establishment',
-                          controller: manualOnboardController.manualOnboardModel.vendorAddressController.value,
+                          controller: manualOnboardController.manualOnboardModel.yearOfEstablishment.value,
                           icon: Icons.date_range_sharp,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -92,7 +92,7 @@ class VendorBusinessInfoState extends State<VendorBusinessInfo> {
                           width: 400,
                           readonly: false,
                           text: 'GST Number',
-                          controller: manualOnboardController.manualOnboardModel.vendorAddressStateController.value,
+                          controller: manualOnboardController.manualOnboardModel.vendorGstNo.value,
                           icon: Icons.receipt,
                           validator: (value) {
                             return Validators.GST_validator(value);
@@ -103,7 +103,7 @@ class VendorBusinessInfoState extends State<VendorBusinessInfo> {
                           width: 400,
                           readonly: false,
                           text: 'PAN Number',
-                          controller: manualOnboardController.manualOnboardModel.vendorAddressPincodeController.value,
+                          controller: manualOnboardController.manualOnboardModel.vendorPanNo.value,
                           icon: Icons.recent_actors_sharp,
                           validator: (value) {
                             return Validators.PAN_validator(value);

@@ -48,7 +48,10 @@ mixin ClientreqDetailsService {
     }
   }
 
-  void uploadMor(context, File file) async {
+  void uploadMor(
+    context,
+    File file,
+  ) async {
     try {
       List<int> fileBytes = await file.readAsBytes();
       if (kDebugMode) {

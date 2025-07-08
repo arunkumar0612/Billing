@@ -12,6 +12,7 @@ class VendorController extends GetxController {
   final Invoker apiController = Get.find<Invoker>();
   // final VendorController vendorController = Get.find<VendorController>();
   var vendorfilteredModel = VendorModel();
+
   void addToVendorList(CMDlResponse value) {
     for (int i = 0; i < value.data.length; i++) {
       vendorModel.vendorList.add(Vendor.fromJson(value, i));
@@ -98,15 +99,9 @@ class VendorController extends GetxController {
       vendorModel.processList.assignAll(vendorfilteredModel.processList);
       vendorModel.processvendorList.assignAll(vendorfilteredModel.processvendorList);
     } else {
-      var filteredProcesses = vendorfilteredModel.processList.where((process) =>
-          process.title.toLowerCase().contains(query.toLowerCase()) ||
-          process.vendor_name.toLowerCase().contains(query.toLowerCase()) ||
-          process.Process_date.toLowerCase().contains(query.toLowerCase()));
+      var filteredProcesses = vendorfilteredModel.processList.where((process) => process.title.toLowerCase().contains(query.toLowerCase()) || process.vendor_name.toLowerCase().contains(query.toLowerCase()) || process.Process_date.toLowerCase().contains(query.toLowerCase()));
 
-      var filteredVendors = vendorfilteredModel.processvendorList.where((vendor) =>
-          vendor.vendorName.toLowerCase().contains(query.toLowerCase()) ||
-          vendor.vendor_phoneno.toLowerCase().contains(query.toLowerCase()) ||
-          vendor.vendor_gstno.toLowerCase().contains(query.toLowerCase()));
+      var filteredVendors = vendorfilteredModel.processvendorList.where((vendor) => vendor.vendorName.toLowerCase().contains(query.toLowerCase()) || vendor.vendor_phoneno.toLowerCase().contains(query.toLowerCase()) || vendor.vendor_gstno.toLowerCase().contains(query.toLowerCase()));
 
       vendorModel.processList.assignAll(filteredProcesses);
       vendorModel.processvendorList.assignAll(filteredVendors);

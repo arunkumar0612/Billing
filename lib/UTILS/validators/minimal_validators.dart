@@ -30,6 +30,19 @@ class Validators {
     return null;
   }
 
+  static dynamic PAN_validator(value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter PAN number';
+    }
+
+    // PAN format: 5 letters + 4 digits + 1 letter (e.g., ABCDE1234F)
+    if (!RegExp(r'^[A-Z]{5}[0-9]{4}[A-Z]$').hasMatch(value)) {
+      return 'Please enter a valid 10-character PAN number (e.g., ABCDE1234F)';
+    }
+
+    return null;
+  }
+
   static String? fileValidator(value) {
     if (value == null) {
       return "File is required!";

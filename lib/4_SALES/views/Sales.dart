@@ -464,8 +464,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                             // '210 invoices',
 
                                                             "${salesController.salesModel.salesdata.value?.totalinvoices.toString() ?? "0"} ${((salesController.salesModel.salesdata.value?.totalinvoices ?? 0) < 2) ? 'invoice' : 'invoices'}",
-                                                            style: const TextStyle(
-                                                                fontSize: Primary_font_size.Text5, color: Color.fromARGB(255, 1, 53, 92), letterSpacing: 1, fontWeight: FontWeight.bold),
+                                                            style: const TextStyle(fontSize: Primary_font_size.Text5, color: Color.fromARGB(255, 1, 53, 92), letterSpacing: 1, fontWeight: FontWeight.bold),
                                                           ),
                                                         ),
                                                       ),
@@ -508,8 +507,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                         () => Text(
                                                           // '210 invoices',
                                                           "${salesController.salesModel.salesdata.value?.paidinvoices.toString() ?? "0"} ${((salesController.salesModel.salesdata.value?.paidinvoices ?? 0) < 2) ? 'invoice' : 'invoices'}",
-                                                          style:
-                                                              const TextStyle(fontSize: Primary_font_size.Text5, color: Color.fromARGB(255, 2, 87, 4), letterSpacing: 1, fontWeight: FontWeight.bold),
+                                                          style: const TextStyle(fontSize: Primary_font_size.Text5, color: Color.fromARGB(255, 2, 87, 4), letterSpacing: 1, fontWeight: FontWeight.bold),
                                                         ),
                                                       ),
                                                     ),
@@ -553,8 +551,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                           () => Text(
                                                             // '110 invoices',
                                                             "${salesController.salesModel.salesdata.value?.unpaidinvoices.toString() ?? "0"} ${((salesController.salesModel.salesdata.value?.unpaidinvoices ?? 0) < 2) ? 'invoice' : 'invoices'}",
-                                                            style: const TextStyle(
-                                                                fontSize: Primary_font_size.Text5, color: Color.fromARGB(255, 118, 9, 1), fontWeight: FontWeight.bold, letterSpacing: 1),
+                                                            style: const TextStyle(fontSize: Primary_font_size.Text5, color: Color.fromARGB(255, 118, 9, 1), fontWeight: FontWeight.bold, letterSpacing: 1),
                                                           ),
                                                         ),
                                                       ),
@@ -1205,14 +1202,12 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                                   const Color.fromARGB(78, 0, 0, 0),
                                                                                                   const Color.fromARGB(24, 118, 253, 129),
                                                                                                 ]
-                                                                                              : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname ==
-                                                                                                      "Revised Quotation"
+                                                                                              : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Revised Quotation"
                                                                                                   ? [
                                                                                                       const Color.fromARGB(78, 0, 0, 0),
                                                                                                       const Color.fromARGB(43, 0, 76, 240),
                                                                                                     ]
-                                                                                                  : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname ==
-                                                                                                          "Request for Quotation"
+                                                                                                  : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Request for Quotation"
                                                                                                       ? [
                                                                                                           const Color.fromARGB(78, 0, 0, 0),
                                                                                                           const Color.fromARGB(43, 253, 205, 116),
@@ -1228,11 +1223,9 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                           ? Colors.green
                                                                                           : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Delivery Challan"
                                                                                               ? Colors.red
-                                                                                              : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname ==
-                                                                                                      "Revised Quotation"
+                                                                                              : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Revised Quotation"
                                                                                                   ? Colors.blue
-                                                                                                  : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname ==
-                                                                                                          "Request for Quotation"
+                                                                                                  : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Request for Quotation"
                                                                                                       ? const Color.fromARGB(255, 255, 191, 119)
                                                                                                       : Colors.white,
                                                                               width: 2,
@@ -1264,11 +1257,9 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                           ? 'assets/images/dc.png'
                                                                                           : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Quotation"
                                                                                               ? 'assets/images/Estimate.png'
-                                                                                              : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname ==
-                                                                                                      "Revised Quotation"
+                                                                                              : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Revised Quotation"
                                                                                                   ? 'assets/images/revision.png'
-                                                                                                  : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname ==
-                                                                                                          "Request for Quotation"
+                                                                                                  : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Request for Quotation"
                                                                                                       ? 'assets/images/rfq.png'
                                                                                                       : 'assets/images/Estimate.png',
                                                                               fit: BoxFit.fill,
@@ -1284,8 +1275,8 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                           ),
                                                                         ),
                                                                         onTap: () async {
-                                                                          bool success = await widget.GetSalesPDFfile(
-                                                                              context: context, eventid: salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                          bool success =
+                                                                              await widget.GetSalesPDFfile(context: context, eventid: salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
                                                                           if (success) {
                                                                             showPDF(
                                                                                 context,
@@ -1309,8 +1300,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                         ? Colors.red
                                                                                         : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Revised Quotation"
                                                                                             ? Colors.blue
-                                                                                            : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname ==
-                                                                                                    "Request for Quotation"
+                                                                                            : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Request for Quotation"
                                                                                                 ? const Color.fromARGB(255, 255, 191, 119)
                                                                                                 : Colors.white,
                                                                       ),
@@ -1437,8 +1427,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                       style: TextStyle(color: Colors.blue, fontSize: 12),
                                                                                     ),
                                                                                   ),
-                                                                                if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.revised_quatation ==
-                                                                                        true) &&
+                                                                                if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.revised_quatation == true) &&
                                                                                     (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1) &&
                                                                                     (salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus != 1))
                                                                                   TextButton(
@@ -1449,8 +1438,8 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                           eventtype: "revisedquotation");
 
                                                                                       if (success) {
-                                                                                        widget.GenerateQuote_dialougebox(context, "revisedquotation",
-                                                                                            salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                                        widget.GenerateQuote_dialougebox(
+                                                                                            context, "revisedquotation", salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
                                                                                         quoteController.setProcessID(salesController.salesModel.processList[index].processid);
                                                                                       }
                                                                                     },
@@ -1467,8 +1456,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                       bool success = await widget.GetSalesPDFfile(
                                                                                           context: context, eventid: salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
                                                                                       if (success) {
-                                                                                        widget.GenerateRfq_dialougebox(
-                                                                                            context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                                        widget.GenerateRfq_dialougebox(context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
                                                                                         rfqController.setProcessID(salesController.salesModel.processList[index].processid);
                                                                                         if (kDebugMode) {
                                                                                           print(rfqController.rfqModel.processID);
@@ -1488,8 +1476,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                       bool success = await widget.GetSalesPDFfile(
                                                                                           context: context, eventid: salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
                                                                                       if (success) {
-                                                                                        widget.GenerateInvoice_dialougebox(
-                                                                                            context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                                        widget.GenerateInvoice_dialougebox(context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
                                                                                         invoiceController.setProcessID(salesController.salesModel.processList[index].processid);
                                                                                         if (kDebugMode) {
                                                                                           print(invoiceController.invoiceModel.processID);
@@ -1501,8 +1488,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                       style: TextStyle(color: Colors.blue, fontSize: 12),
                                                                                     ),
                                                                                   ),
-                                                                                if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.delivery_challan ==
-                                                                                        true) &&
+                                                                                if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.delivery_challan == true) &&
                                                                                     (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1))
                                                                                   TextButton(
                                                                                     onPressed: () async {
@@ -1913,8 +1899,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                               ? ''
                               : (salesController.salesModel.Clientprofile.value?.customername ?? "0").contains(' ') // If there's a space, take first letter of both words
                                   ? ((salesController.salesModel.Clientprofile.value?.customername ?? "0")[0].toUpperCase() +
-                                      (salesController.salesModel.Clientprofile.value?.customername ?? "0")[(salesController.salesModel.Clientprofile.value?.customername ?? "0").indexOf(' ') + 1]
-                                          .toUpperCase())
+                                      (salesController.salesModel.Clientprofile.value?.customername ?? "0")[(salesController.salesModel.Clientprofile.value?.customername ?? "0").indexOf(' ') + 1].toUpperCase())
                                   : (salesController.salesModel.Clientprofile.value?.customername ?? "0")[0].toUpperCase(), // If no space, take only the first letter
                           style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Heading, fontWeight: FontWeight.w500),
                         ),

@@ -22,6 +22,9 @@ mixin GST_LedgerService {
         "gsttype": gst_LedgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.GSTtype.value.toLowerCase() == 'consolidate'
             ? ''
             : gst_LedgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.GSTtype.value.toLowerCase(),
+        "plantype": gst_LedgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.Plantype.value.toLowerCase() == 'show all'
+            ? ''
+            : gst_LedgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.Plantype.value.toLowerCase(),
 
         "invoicetype": gst_LedgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.invoicetype.value.toLowerCase() == 'show all'
             ? ''
@@ -102,6 +105,7 @@ mixin GST_LedgerService {
 
   void resetgst_LedgerFilters() {
     gst_LedgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.GSTtype.value = 'Consolidate';
+    gst_LedgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.Plantype.value = 'Show All';
     gst_LedgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.invoicetype.value = 'Show All';
     gst_LedgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.selectedsalescustomername.value = 'None';
     gst_LedgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.selectedcustomerid.value = '';
@@ -115,6 +119,7 @@ mixin GST_LedgerService {
 
   void assigngst_LedgerFilters() {
     gst_LedgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.GSTtype.value = gst_LedgerController.gst_LedgerModel.selectedGSTtype.value;
+    gst_LedgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.Plantype.value = gst_LedgerController.gst_LedgerModel.selectedPlantype.value;
     gst_LedgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.invoicetype.value = gst_LedgerController.gst_LedgerModel.selectedInvoiceType.value;
     gst_LedgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.selectedsalescustomername.value = gst_LedgerController.gst_LedgerModel.selectedsalescustomer.value;
     gst_LedgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.selectedsubscriptioncustomername.value = gst_LedgerController.gst_LedgerModel.selectedsubcustomer.value;
@@ -125,6 +130,7 @@ mixin GST_LedgerService {
 
   void reassigngst_LedgerFilters() {
     gst_LedgerController.gst_LedgerModel.selectedGSTtype.value = gst_LedgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.GSTtype.value;
+    gst_LedgerController.gst_LedgerModel.selectedPlantype.value = gst_LedgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.Plantype.value;
     gst_LedgerController.gst_LedgerModel.selectedInvoiceType.value = gst_LedgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.invoicetype.value;
     gst_LedgerController.gst_LedgerModel.selectedsalescustomer.value = gst_LedgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.selectedsalescustomername.value;
     gst_LedgerController.gst_LedgerModel.selectedsubcustomer.value = gst_LedgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.selectedsubscriptioncustomername.value;

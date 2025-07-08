@@ -79,10 +79,12 @@ class _ViewLedgerState extends State<ViewLedger> {
                           onPressed: () => Navigator.pop(context),
                         ),
                         const SizedBox(width: 5),
-                        Obx(() => Text(
-                              view_LedgerController.view_LedgerModel.selectedLedgerType.value,
-                              style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text10),
-                            ),),
+                        Obx(
+                          () => Text(
+                            view_LedgerController.view_LedgerModel.selectedLedgerType.value,
+                            style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text10),
+                          ),
+                        ),
                         Expanded(
                           child: Container(
                             height: 50,
@@ -96,8 +98,7 @@ class _ViewLedgerState extends State<ViewLedger> {
                                         ? account_ledger_selectedfilter()
                                         : view_LedgerController.view_LedgerModel.selectedLedgerType.value == 'GST Ledger'
                                             ? gst_ledger_selectedfilter()
-                                            : tds_ledger_selectedfilter()
-                                            ),
+                                            : tds_ledger_selectedfilter()),
                               ),
                             ),
                           ),
@@ -322,6 +323,7 @@ class _ViewLedgerState extends State<ViewLedger> {
                 gst_LedgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.invoicetype.value,
                 onRemove: () async {
                   gst_LedgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.invoicetype.value = 'Show All';
+                  gst_LedgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.Plantype.value = 'Show All';
                   gst_LedgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.selectedsalescustomername.value = 'None';
                   gst_LedgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.selectedsubscriptioncustomername.value = 'None';
                   gst_LedgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.selectedcustomerid.value = 'None';
@@ -329,6 +331,14 @@ class _ViewLedgerState extends State<ViewLedger> {
                 },
               ),
             ],
+          ),
+        if (gst_LedgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.Plantype.value != 'Show All')
+          _buildselectedFiltersChip(
+            gst_LedgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.Plantype.value,
+            onRemove: () async {
+              gst_LedgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.Plantype.value = 'Show All';
+              await widget.get_GST_LedgerList();
+            },
           ),
         if (gst_LedgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.invoicetype.value != 'Show All')
           Row(

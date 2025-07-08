@@ -11,6 +11,7 @@ import '../IAM/controllers/IAM_actions.dart';
 class Invoker extends GetxController {
   final ApiService apiService = ApiService();
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
+
   Future<Map<String, dynamic>?> IAM(Map<String, dynamic> body, String API) async {
     final configData = await Returns.loadConfigFile('assets/key.config');
     final apiKey = configData['APIkey'];
@@ -164,6 +165,50 @@ class Invoker extends GetxController {
     } else {
       Map<String, dynamic> reply = {"statusCode": response.statusCode, "message": "Server Error"};
       return reply;
+    }
+  }
+
+  Future<Map<String, dynamic>> MultiSeperateFiles(
+    String token,
+    String body,
+    File? regFile,
+    File? panFile,
+    File? chequeFile,
+    String api,
+  ) async {
+    final sessionToken = sessiontokenController.sessiontokenModel.sessiontoken.value;
+    final encryptedData = AES.encryptWithAES(sessionToken.substring(0, 16), body);
+
+    final formDataMap = <String, dynamic>{
+      "STOKEN": sessionToken,
+      "querystring": encryptedData,
+    };
+
+    // Attach each file separately with appropriate key
+    if (regFile != null) {
+      formDataMap["regFile"] = MultipartFile(regFile, filename: regFile.path.split('/').last);
+    }
+
+    if (panFile != null) {
+      formDataMap["panFile"] = MultipartFile(panFile, filename: panFile.path.split('/').last);
+    }
+
+    if (chequeFile != null) {
+      formDataMap["chequeFile"] = MultipartFile(chequeFile, filename: chequeFile.path.split('/').last);
+    }
+
+    // Convert map to FormData and send request
+    final formData = FormData(formDataMap);
+    final response = await apiService.postMulter(api, formData);
+
+    if (response.statusCode == 200) {
+      final encryptedResponse = response.body['encryptedResponse'];
+      final decrypted = AES.decryptWithAES(sessionToken.substring(0, 16), encryptedResponse);
+      final decoded = jsonDecode(decrypted);
+      decoded["statusCode"] = response.statusCode!;
+      return decoded;
+    } else {
+      return {"statusCode": response.statusCode, "message": "Server Error"};
     }
   }
 }

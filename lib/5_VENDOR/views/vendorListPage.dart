@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:glassmorphism/glassmorphism.dart';
@@ -856,8 +857,9 @@ class _VendorEditorState extends State<VendorEditor> {
     required String label,
     required String hintText,
     required TextEditingController controller,
+    // String? Function(String?)? validator,
     bool isRequired = false,
-    TextInputType? keyboardType,
+    bool digitsOnly = false,
     int? maxLines = 1,
     bool readOnly = false,
   }) {
@@ -898,7 +900,7 @@ class _VendorEditorState extends State<VendorEditor> {
           alignment: Alignment.center, // ensures vertical alignment
           child: TextFormField(
             controller: controller,
-            keyboardType: keyboardType,
+            inputFormatters: digitsOnly ? [FilteringTextInputFormatter.digitsOnly] : null,
             maxLines: 1, // ⬅️ ensure single-line for correct height alignment
             readOnly: readOnly,
             style: const TextStyle(fontSize: 12, color: Primary_colors.Color1), // optional: adjust font size
@@ -909,12 +911,7 @@ class _VendorEditorState extends State<VendorEditor> {
               isCollapsed: true, // ⬅️ important to reduce internal height
               border: InputBorder.none,
             ),
-            validator: (value) {
-              if (isRequired && (value == null || value.isEmpty)) {
-                return 'This field is required';
-              }
-              return null;
-            },
+            // validator: validator,
           ),
         ),
         const SizedBox(height: 8),
@@ -1133,13 +1130,26 @@ class _VendorEditorState extends State<VendorEditor> {
                                       hintText: "Enter vendor name",
                                       controller: widget.controller.vendorListModel.vendor_NameController.value,
                                       isRequired: true,
+                                      digitsOnly: false,
+                                      // validator: (value) {
+                                      //   if (value == null || value.isEmpty) {
+                                      //     return 'Please enter vendor name';
+                                      //   }
+                                      //   return null;
+                                      // },
                                     ),
                                     _buildTextField(
                                       label: "Vendor Email",
                                       hintText: "Enter vendor email",
                                       controller: widget.controller.vendorListModel.vendor_emailController.value,
                                       isRequired: true,
-                                      keyboardType: TextInputType.emailAddress,
+                                      digitsOnly: false,
+                                      // validator: (value) {
+                                      //   if (value == null || value.isEmpty) {
+                                      //     return 'Please enter vendor address';
+                                      //   }
+                                      //   return null;
+                                      // },
                                     ),
                                   ],
                                 ),
@@ -1201,23 +1211,36 @@ class _VendorEditorState extends State<VendorEditor> {
                                             hintText: "Enter contact person name",
                                             controller: widget.controller.vendorListModel.vendor_contactPersonNameController.value,
                                             isRequired: true,
+                                            digitsOnly: false,
+                                            // validator: (value) {
+                                            //   if (value == null || value.isEmpty) {
+                                            //     return 'Please enter contact person name';
+                                            //   }
+                                            //   return null;
+                                            // },
                                           ),
                                           _buildTextField(
                                             label: "Designation",
                                             hintText: "Enter designation",
                                             controller: widget.controller.vendorListModel.vendor_contactPersonDesignationController.value,
+                                            isRequired: true,
+                                            digitsOnly: false,
                                           ),
                                           _buildTextField(
                                             label: "Phone Number",
                                             hintText: "Enter phone number",
                                             controller: widget.controller.vendorListModel.vendor_contactPersonPhoneController.value,
-                                            keyboardType: TextInputType.phone,
+                                            isRequired: true,
+                                            digitsOnly: true,
+                                            // keyboardType: TextInputType.phone,
                                           ),
                                           _buildTextField(
                                             label: "Address",
                                             hintText: "Enter full address",
                                             controller: widget.controller.vendorListModel.vendor_addressController.value,
                                             maxLines: 2,
+                                            isRequired: true,
+                                            digitsOnly: false,
                                           ),
                                           Row(
                                             children: [
@@ -1226,6 +1249,8 @@ class _VendorEditorState extends State<VendorEditor> {
                                                   label: "State",
                                                   hintText: "Enter state",
                                                   controller: widget.controller.vendorListModel.vendor_stateController.value,
+                                                  isRequired: true,
+                                                  digitsOnly: false,
                                                 ),
                                               ),
                                               const SizedBox(width: 16),
@@ -1234,7 +1259,9 @@ class _VendorEditorState extends State<VendorEditor> {
                                                   label: "Pincode",
                                                   hintText: "Enter pincode",
                                                   controller: widget.controller.vendorListModel.vendor_pincodeController.value,
-                                                  keyboardType: TextInputType.number,
+                                                  isRequired: true,
+                                                  digitsOnly: true,
+                                                  // keyboardType: TextInputType.number,
                                                 ),
                                               ),
                                             ],
@@ -1256,6 +1283,8 @@ class _VendorEditorState extends State<VendorEditor> {
                                                   label: "Business Type",
                                                   hintText: "Enter business type",
                                                   controller: widget.controller.vendorListModel.vendor_businessTypeController.value,
+                                                  isRequired: true,
+                                                  digitsOnly: false,
                                                 ),
                                               ),
                                               const SizedBox(width: 16),
@@ -1264,7 +1293,9 @@ class _VendorEditorState extends State<VendorEditor> {
                                                   label: "Year Established",
                                                   hintText: "Enter year",
                                                   controller: widget.controller.vendorListModel.vendor_yearOfEstablishmentController.value,
-                                                  keyboardType: TextInputType.number,
+                                                  isRequired: true,
+                                                  digitsOnly: true,
+                                                  // keyboardType: TextInputType.number,
                                                 ),
                                               ),
                                             ],
@@ -1276,6 +1307,8 @@ class _VendorEditorState extends State<VendorEditor> {
                                                   label: "GST Number",
                                                   hintText: "Enter GST number",
                                                   controller: widget.controller.vendorListModel.vendor_gstNumberController.value,
+                                                  isRequired: true,
+                                                  digitsOnly: false,
                                                 ),
                                               ),
                                               const SizedBox(width: 16),
@@ -1284,6 +1317,8 @@ class _VendorEditorState extends State<VendorEditor> {
                                                   label: "PAN Number",
                                                   hintText: "Enter PAN number",
                                                   controller: widget.controller.vendorListModel.vendor_panNumberController.value,
+                                                  isRequired: true,
+                                                  digitsOnly: false,
                                                 ),
                                               ),
                                             ],
@@ -1292,19 +1327,25 @@ class _VendorEditorState extends State<VendorEditor> {
                                             label: "Annual Turnover",
                                             hintText: "Enter annual turnover",
                                             controller: widget.controller.vendorListModel.vendor_annualTurnoverController.value,
-                                            keyboardType: TextInputType.number,
+                                            isRequired: true,
+                                            digitsOnly: true,
+                                            // keyboardType: TextInputType.number,
                                           ),
                                           _buildTextField(
                                             label: "Products/Services",
                                             hintText: "List products or services",
                                             controller: widget.controller.vendorListModel.vendor_productOrServiceListController.value,
                                             maxLines: 2,
+                                            isRequired: true,
+                                            digitsOnly: false,
                                           ),
                                           _buildTextField(
                                             label: "Description",
                                             hintText: "Enter detailed description",
                                             controller: widget.controller.vendorListModel.vendor_productOrServiceDescriptionController.value,
                                             maxLines: 3,
+                                            isRequired: true,
+                                            digitsOnly: false,
                                           ),
                                         ],
                                       ),
@@ -1322,6 +1363,8 @@ class _VendorEditorState extends State<VendorEditor> {
                                             label: "Bank Name",
                                             hintText: "Enter bank name",
                                             controller: widget.controller.vendorListModel.vendor_bankNameController.value,
+                                            isRequired: true,
+                                            digitsOnly: false,
                                           ),
                                         ),
                                         const SizedBox(width: 16),
@@ -1330,7 +1373,9 @@ class _VendorEditorState extends State<VendorEditor> {
                                             label: "Account Number",
                                             hintText: "Enter account number",
                                             controller: widget.controller.vendorListModel.vendor_accountNumberController.value,
-                                            keyboardType: TextInputType.number,
+                                            isRequired: true,
+                                            digitsOnly: true,
+                                            // keyboardType: TextInputType.number,
                                           ),
                                         ),
                                       ],
@@ -1342,6 +1387,8 @@ class _VendorEditorState extends State<VendorEditor> {
                                             label: "IFSC Code",
                                             hintText: "Enter IFSC code",
                                             controller: widget.controller.vendorListModel.vendor_ifscCodeController.value,
+                                            isRequired: true,
+                                            digitsOnly: false,
                                           ),
                                         ),
                                         const SizedBox(width: 16),
@@ -1350,6 +1397,8 @@ class _VendorEditorState extends State<VendorEditor> {
                                             label: "Branch",
                                             hintText: "Enter branch details",
                                             controller: widget.controller.vendorListModel.vendor_branchController.value,
+                                            isRequired: true,
+                                            digitsOnly: false,
                                           ),
                                         ),
                                       ],

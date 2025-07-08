@@ -83,7 +83,7 @@ class VendorKYCState extends State<VendorKYC> {
                           icon: Icons.location_city,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please enter state';
+                              return 'Please enter vendor address';
                             }
                             return null;
                           },

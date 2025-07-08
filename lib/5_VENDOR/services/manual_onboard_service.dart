@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/manual_onboard_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/models/entities/manual_onboard_entities.dart';
 import 'package:ssipl_billing/5_VENDOR/views/Manual_onboard/show_Manual_onboard.dart';
@@ -102,22 +103,30 @@ mixin ManualOnboardService {
         await Error_dialog(context: context, title: "Missing Files", content: "Please upload all required documents.", onOk: () {});
         return;
       }
-      File logoFile = File(logoPath);
-      File regFile = File(regPath);
-      File panFile = File(panPath);
-      File chequeFile = File(chequePath);
-      Map<String, dynamic> files = {
-        "logo_upload": logoFile,
-        "registration_certificate": regFile,
-        "pan_upload": panFile,
-        "cancelled_cheque": chequeFile,
-      };
-      Map<String, dynamic> response = await apiController.MultiSeperateFiles(sessiontokenController.sessiontokenModel.sessiontoken.value, jsonData, files, API.addVendor);
+      // File logoFile = File(logoPath);
+      // File regFile = File(regPath);
+      // File panFile = File(panPath);
+      // File chequeFile = File(chequePath);
+      // Map<String, dynamic> files = {
+      //   "logo_upload": logoFile,
+      //   "registration_certificate": regFile,
+      //   "pan_upload": panFile,
+      //   "cancelled_cheque": chequeFile,
+      // };
+
+      final logoFile = await renameFile(File(logoPath), 'logo_upload');
+      final gstRegFile = await renameFile(File(regPath), 'registration_certificate');
+      final panFile = await renameFile(File(panPath), 'pan_upload');
+      final chequeFile = await renameFile(File(regPath), 'cancelled_cheque');
+
+      final List<File> renamedFiles = [logoFile, gstRegFile, panFile, chequeFile];
+
+      Map<String, dynamic> response = await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, jsonData, renamedFiles, API.addVendor);
       if (response['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response);
         if (value.code) {
           loader.stop();
-          await Success_dialog(context: context, title: "SUCCESS, VENDOR ADDED SUCCESSFULLY", content: value.message!, onOk: () {});
+          await Success_dialog(context: context, title: "SUCCESS", content: value.message!, onOk: () {});
           Navigator.of(context).pop(true);
           manualOnboardController.resetData();
         } else {
@@ -132,6 +141,12 @@ mixin ManualOnboardService {
       loader.stop();
       Error_dialog(context: context, title: "ERROR", content: "$e");
     }
+  }
+
+  Future<File> renameFile(File original, String newName) async {
+    final tempDir = await getTemporaryDirectory();
+    final newPath = "${tempDir.path}/$newName";
+    return original.copy(newPath);
   }
 
   dynamic show_ManualOnboard_DialogBox(context) async {

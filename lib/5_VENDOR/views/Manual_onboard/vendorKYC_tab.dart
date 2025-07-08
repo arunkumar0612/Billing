@@ -161,8 +161,9 @@ class VendorKYCState extends State<VendorKYC> {
                                 colors: Colors.green,
                                 text: 'Add Details',
                                 onPressed: () async {
-                                  // if (clientreqController.clientReqModel.detailsformKey.value.currentState?.validate() ?? false) {
-                                  widget.nextTab(context);
+                                  if (manualOnboardController.manualOnboardModel.vendorKYCformKey.value.currentState?.validate() ?? false) {
+                                    widget.nextTab(context);
+                                  }
                                   // }
                                 },
                               ),
@@ -177,7 +178,7 @@ class VendorKYCState extends State<VendorKYC> {
                     width: 750,
                     child: Text(
                       textAlign: TextAlign.center,
-                      'Generating a client requirement is the initial step in acquiring essential data that will be reflected in subsequent processes. Therefore, please exercise caution when handling sensitive information such as phone numbers, email addresses, GST numbers, and physical addresses.',
+                      'KYC details are crucial for verifying vendor authenticity and are required to successfully onboard new vendors.',
                       style: TextStyle(color: Color.fromARGB(255, 124, 124, 124), fontSize: Primary_font_size.Text7),
                     ),
                   )

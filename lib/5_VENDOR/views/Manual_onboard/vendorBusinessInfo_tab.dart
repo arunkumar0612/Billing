@@ -54,7 +54,7 @@ class VendorBusinessInfoState extends State<VendorBusinessInfo> {
                               width: 400,
                               readonly: false,
                               text: 'Type of Business/ Service',
-                              controller: manualOnboardController.manualOnboardModel.vendorNameController.value,
+                              controller: manualOnboardController.manualOnboardModel.typeOfBusiness.value,
                               icon: Icons.business,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
@@ -78,7 +78,7 @@ class VendorBusinessInfoState extends State<VendorBusinessInfo> {
                           width: 400,
                           readonly: false,
                           text: 'Year of Establishment',
-                          controller: manualOnboardController.manualOnboardModel.vendorAddressController.value,
+                          controller: manualOnboardController.manualOnboardModel.yearOfEstablishment.value,
                           icon: Icons.date_range_sharp,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -92,7 +92,7 @@ class VendorBusinessInfoState extends State<VendorBusinessInfo> {
                           width: 400,
                           readonly: false,
                           text: 'GST Number',
-                          controller: manualOnboardController.manualOnboardModel.vendorAddressStateController.value,
+                          controller: manualOnboardController.manualOnboardModel.vendorGstNo.value,
                           icon: Icons.receipt,
                           validator: (value) {
                             return Validators.GST_validator(value);
@@ -103,14 +103,14 @@ class VendorBusinessInfoState extends State<VendorBusinessInfo> {
                           width: 400,
                           readonly: false,
                           text: 'PAN Number',
-                          controller: manualOnboardController.manualOnboardModel.vendorAddressPincodeController.value,
+                          controller: manualOnboardController.manualOnboardModel.vendorPanNo.value,
                           icon: Icons.recent_actors_sharp,
                           validator: (value) {
                             return Validators.PAN_validator(value);
                           },
                         ),
                         BasicTextfield(
-                          digitsOnly: false,
+                          digitsOnly: true,
                           width: 400,
                           readonly: false,
                           text: 'Annual Turnover',
@@ -135,10 +135,6 @@ class VendorBusinessInfoState extends State<VendorBusinessInfo> {
                               return 'Please enter product details';
                             }
                             return null;
-                          },
-                          onChanged: (value) {
-                            // Update the list of products when the input changes
-                            manualOnboardController.updateListOfProducts(value);
                           },
                         ),
                         BasicTextfield(
@@ -193,8 +189,9 @@ class VendorBusinessInfoState extends State<VendorBusinessInfo> {
                                 colors: Colors.green,
                                 text: 'Add Details',
                                 onPressed: () async {
-                                  // if (clientreqController.clientReqModel.detailsformKey.value.currentState?.validate() ?? false) {
-                                  widget.nextTab(context);
+                                  if (manualOnboardController.manualOnboardModel.vendorBusinessInfoFormKey.value.currentState?.validate() ?? false) {
+                                    widget.nextTab(context);
+                                  }
                                   // }
                                 },
                               ),
@@ -209,7 +206,7 @@ class VendorBusinessInfoState extends State<VendorBusinessInfo> {
                     width: 750,
                     child: Text(
                       textAlign: TextAlign.center,
-                      'Generating a client requirement is the initial step in acquiring essential data that will be reflected in subsequent processes. Therefore, please exercise caution when handling sensitive information such as phone numbers, email addresses, GST numbers, and physical addresses.',
+                      'Business details help us verify vendor business identity and ensure proper documentation for vendor registration, compliance, and future correspondence.',
                       style: TextStyle(color: Color.fromARGB(255, 124, 124, 124), fontSize: Primary_font_size.Text7),
                     ),
                   )

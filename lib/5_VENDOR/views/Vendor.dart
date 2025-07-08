@@ -9,7 +9,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/Vendor_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/services/vendor_service.dart';
-import 'package:ssipl_billing/5_VENDOR/views/nidya_vendorListPage.dart';
+import 'package:ssipl_billing/5_VENDOR/views/vendorListPage.dart';
+
+// import 'package:ssipl_billing/5_VENDOR/views/vendorList_page.dart';
 import 'package:ssipl_billing/5_VENDOR/views/vendor_chart.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/Loading.dart';

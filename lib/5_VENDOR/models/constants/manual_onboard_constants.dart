@@ -24,7 +24,7 @@ class ManualOnboardModel extends GetxController with GetSingleTickerProviderStat
   final vendorPanNo = TextEditingController().obs;
   final vendorAnnualTurnover = TextEditingController().obs;
   final productInputController = TextEditingController();
-  var vendorListOfProducts = <String>[].obs;
+  // var vendorListOfProducts = <String>[].obs;
   final HSNcodeController = TextEditingController();
   var vendorHSNCodeList = <String>[].obs;
   final descriptionOfProducts = TextEditingController().obs;

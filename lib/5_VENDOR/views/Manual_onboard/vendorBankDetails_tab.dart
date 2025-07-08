@@ -48,11 +48,11 @@ class VendorbankdetailsState extends State<Vendorbankdetails> {
                       // mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         BasicTextfield(
-                          digitsOnly: true,
+                          digitsOnly: false,
                           width: 400,
                           readonly: false,
                           text: 'ISO Certification (If any)',
-                          controller: manualOnboardController.manualOnboardModel.vendorAddressController.value,
+                          controller: manualOnboardController.manualOnboardModel.isoCertification.value,
                           icon: Icons.verified_rounded,
                           // validator: (value) {
                           //   if (value == null || value.isEmpty) {
@@ -66,7 +66,7 @@ class VendorbankdetailsState extends State<Vendorbankdetails> {
                           width: 400,
                           readonly: false,
                           text: 'Other Certifications (If any)',
-                          controller: manualOnboardController.manualOnboardModel.vendorAddressStateController.value,
+                          controller: manualOnboardController.manualOnboardModel.otherCertification.value,
                           icon: Icons.verified_rounded,
                           // validator: (value) {
                           //   return Validators.GST_validator(value);
@@ -506,10 +506,11 @@ class VendorbankdetailsState extends State<Vendorbankdetails> {
                               const SizedBox(width: 10),
                               BasicButton(
                                 colors: Colors.green,
-                                text: 'Add Details',
+                                text: 'Submit',
                                 onPressed: () async {
-                                  // if (clientreqController.clientReqModel.detailsformKey.value.currentState?.validate() ?? false) {
-                                  widget.nextTab(context);
+                                  if (manualOnboardController.manualOnboardModel.vendorBankDetailsFormKey.value.currentState?.validate() ?? false) {
+                                    widget.postData(context);
+                                  }
                                   // }
                                 },
                               ),
@@ -524,7 +525,7 @@ class VendorbankdetailsState extends State<Vendorbankdetails> {
                     width: 750,
                     child: Text(
                       textAlign: TextAlign.center,
-                      'Generating a client requirement is the initial step in acquiring essential data that will be reflected in subsequent processes. Therefore, please exercise caution when handling sensitive information such as phone numbers, email addresses, GST numbers, and physical addresses.',
+                      'Bank details ensures that all future payments are processed securely and without delays. Please ensure your documents are clear, valid, and up to date.',
                       style: TextStyle(color: Color.fromARGB(255, 124, 124, 124), fontSize: Primary_font_size.Text7),
                     ),
                   )

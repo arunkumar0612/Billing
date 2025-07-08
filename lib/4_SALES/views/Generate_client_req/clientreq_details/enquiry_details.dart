@@ -212,6 +212,7 @@ class enquryDetailsState extends State<enquryDetails> {
                                                     children: [
                                                       if (clientreqController.clientReqModel.pickedFile.value != null)
                                                         Text(
+                                                          overflow: TextOverflow.ellipsis,
                                                           clientreqController.clientReqModel.pickedFile.value!.files.single.name,
                                                           style: const TextStyle(fontSize: 13, color: Colors.white),
                                                         ),

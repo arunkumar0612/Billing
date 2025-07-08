@@ -1142,7 +1142,9 @@ class _VendorState extends State<Vendor> with TickerProviderStateMixin {
                                                                                   ),
                                                                                 ),
                                                                                 TextButton(
-                                                                                  onPressed: () async {},
+                                                                                  onPressed: () async {
+                                                                                    widget.uploadQuote_dialougebox(context);
+                                                                                  },
                                                                                   child: const Text(
                                                                                     "Upload Quote",
                                                                                     style: TextStyle(color: Colors.blue, fontSize: 12),

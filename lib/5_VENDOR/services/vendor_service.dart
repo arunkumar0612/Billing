@@ -3,8 +3,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ssipl_billing/5_VENDOR/controllers/Quote_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/RFQ_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/views/Generate_RFQ/generateRFQ.dart';
+import 'package:ssipl_billing/5_VENDOR/views/Upload_Quote/uploadQuote.dart';
 import 'package:ssipl_billing/API/api.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
@@ -19,7 +21,7 @@ import '../controllers/Vendor_actions.dart';
 
 mixin VendorServices {
   final Invoker apiController = Get.find<Invoker>();
-
+  final Vendor_QuoteController quoteController = Get.find<Vendor_QuoteController>();
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
   final VendorController vendorController = Get.find<VendorController>();
   final vendor_RfqController rfqController = Get.find<vendor_RfqController>();
@@ -94,6 +96,9 @@ mixin VendorServices {
                         // (rfqController.rfqModel.billingAddressNameController.value.text != "") ||
                         // (rfqController.rfqModel.billingAddressController.value.text != "") ||
                         (rfqController.rfqModel.Rfq_no.value != "") ||
+                        (rfqController.rfqModel.AddressController.value.text != "") ||
+                        (rfqController.rfqModel.GSTIN_Controller.value.text != "") ||
+                        (rfqController.rfqModel.PAN_Controller.value.text != "") ||
                         (rfqController.rfqModel.TitleController.value.text != "") ||
                         (rfqController.rfqModel.recommendationHeadingController.value.text != "")) {
                       // Show confirmation dialog
@@ -101,6 +106,58 @@ mixin VendorServices {
                       if (proceed == true) {
                         Navigator.of(context).pop();
                         rfqController.resetData();
+                      }
+                    } else {
+                      Navigator.of(context).pop();
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  dynamic uploadQuote_dialougebox(context) async {
+    await showDialog(
+      context: context,
+      barrierDismissible: false, // Prevents closing the dialog by clicking outside
+      builder: (context) {
+        return AlertDialog(
+          contentPadding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          backgroundColor: Primary_colors.Dark,
+          content: Stack(
+            children: [
+              SizedBox(
+                height: 650,
+                width: 900,
+                child: UploadQuote(),
+              ),
+              Positioned(
+                top: 3,
+                right: 0,
+                child: IconButton(
+                  icon: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: const Color.fromARGB(255, 219, 216, 216),
+                    ),
+                    height: 30,
+                    width: 30,
+                    child: const Icon(Icons.close, color: Colors.red),
+                  ),
+                  onPressed: () async {
+                    // Check if the data has any value
+                    // || ( rfqController.rfqModel.Invoice_gstTotals.isNotEmpty)
+                    if ((quoteController.quoteModel.selectedPdf.value != null) || (quoteController.quoteModel.feedbackController.value.text != "")) {
+                      // Show confirmation dialog
+                      bool? proceed = await Warning_dialog(context: context, title: 'Warning', content: "The data may be lost. Do you want to proceed?");
+                      if (proceed == true) {
+                        Navigator.of(context).pop();
+                        quoteController.resetData();
                       }
                     } else {
                       Navigator.of(context).pop();

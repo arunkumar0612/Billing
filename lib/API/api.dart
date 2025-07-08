@@ -114,4 +114,10 @@ class API {
   static String vendor_getNote_SUGG_List = "http://192.168.0.111:8081/vendor/getnotes";
   static String vendor_createrfq = "http://192.168.0.111:8081/vendor/postrfq";
   static String vendor_getprocesslist_API = "http://192.168.0.111:8081/vendor/getallprocesslist";
+  static String vendor_uploadQuote = "http://192.168.0.111:8081/vendor/uploadquotation";
+  static String active_vendors = "http://192.168.0.111:8081/vendor/activevendors";
+  static String vendor_getPDF = "http://192.168.0.111:8081/vendor/getbinaryfile";
+  static String vendor_addfeedback_API = "http://192.168.0.111:8081/vendor/addfeedback";
+  static String vendor_deleteprocess_API = "http://192.168.0.111:8081/vendor/deleteprocess";
+  static String vendor_archiveprocess_API = "http://192.168.0.111:8081/vendor/archiveprocess";
 }

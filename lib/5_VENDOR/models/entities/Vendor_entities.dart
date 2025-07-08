@@ -6,34 +6,26 @@ import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 
-class Vendor {
+class Active_vendorList {
   final int vendorId;
   final String vendorName;
-  final String? ccode;
-  final String subRequirementId;
 
-  Vendor({
+  Active_vendorList({
     required this.vendorId,
     required this.vendorName,
-    this.ccode,
-    required this.subRequirementId,
   });
 
-  factory Vendor.fromJson(CMDlResponse json, int i) {
-    return Vendor(
-      vendorId: json.data[i]['Vendor_id'] as int,
+  factory Active_vendorList.fromJson(CMDlResponse json, int i) {
+    return Active_vendorList(
+      vendorId: json.data[i]['vendorid'] as int,
       vendorName: json.data[i]['vendor_name'] as String,
-      ccode: json.data[i]['ccode'] as String?,
-      subRequirementId: json.data[i]['Sub_requirement_id'] as String,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'Vendor_id': vendorId,
+      'vendorid': vendorId,
       'vendor_name': vendorName,
-      'ccode': ccode,
-      'Sub_requirement_id': subRequirementId,
     };
   }
 }
@@ -155,48 +147,41 @@ class TimelineEvent {
 }
 
 class Allowedprocess {
-  final bool rfq;
-  final bool invoice;
+  final bool rrfq;
+  final bool getApproval;
   final bool quotation;
-  final bool debit_note;
-  final bool credit_note;
-  final bool delivery_challan;
-  final bool revised_quatation;
-  final bool get_approval;
+  final bool po;
+  final bool invoice;
+  final bool dc;
+
   Allowedprocess({
-    required this.rfq,
-    required this.invoice,
+    required this.rrfq,
+    required this.getApproval,
     required this.quotation,
-    required this.debit_note,
-    required this.credit_note,
-    required this.delivery_challan,
-    required this.revised_quatation,
-    required this.get_approval,
+    required this.po,
+    required this.invoice,
+    required this.dc,
   });
 
   factory Allowedprocess.fromJson(Map<String, dynamic> json) {
     return Allowedprocess(
-      rfq: json['rfq'] as bool? ?? false,
-      invoice: json['invoice'] as bool? ?? false,
-      quotation: json['quotation'] as bool? ?? false,
-      debit_note: json['debit_note'] as bool? ?? false,
-      credit_note: json['credit_note'] as bool? ?? false,
-      delivery_challan: json['delivery_challan'] as bool? ?? false,
-      revised_quatation: json['revised_quatation'] as bool? ?? false,
-      get_approval: json['get_approval'] as bool? ?? false,
+      rrfq: json['RRFQ'] as bool? ?? false,
+      getApproval: json['GET_APPROVAL'] as bool? ?? false,
+      quotation: json['UPLOAD_QUOTE'] as bool? ?? false,
+      po: json['PO'] as bool? ?? false,
+      invoice: json['UPLOAD_INVOICE'] as bool? ?? false,
+      dc: json['UPLOAD_DC'] as bool? ?? false,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'rfq': rfq,
-      'invoice': invoice,
+      'rrfq': rrfq,
+      'getApproval': getApproval,
       'quotation': quotation,
-      'debit_note': debit_note,
-      'credit_note': credit_note,
-      'delivery_challan': delivery_challan,
-      'revised_quatation': revised_quatation,
-      'get_approval': get_approval,
+      'po': po,
+      'invoice': invoice,
+      'dc': dc,
     };
   }
 }

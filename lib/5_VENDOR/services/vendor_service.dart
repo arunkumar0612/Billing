@@ -56,6 +56,37 @@ mixin VendorServices {
     }
   }
 
+  Future<void> Get_vendorProcesscustomerList() async {
+    try {
+      Map<String, dynamic>? response = await apiController.GetbyToken(API.active_vendors);
+      if (response?['statusCode'] == 200) {
+        CMDlResponse value = CMDlResponse.fromJson(response ?? {});
+        if (value.code) {
+          // await Basic_dialog(context: context,showCancel: false, title: 'Processcustomer List', content: "Processcustomer List fetched successfully", onOk: () {});
+          vendorController.vendorModel.processcustomerList.clear();
+          vendorController.addToVendor_customerList(value);
+          vendorController.search(vendorController.vendorModel.searchQuery.value);
+          // vendorController.updatecustomerId(vendorController.salesModel.processcustomerList[vendorController.salesModel.showcustomerprocess.value!].customerId);
+        } else {
+          if (kDebugMode) {
+            print("error : ${value.message}");
+          }
+          // await Basic_dialog(context: context, showCancel: false, title: 'Processcustomer List Error', content: value.message ?? "", onOk: () {});
+        }
+      } else {
+        if (kDebugMode) {
+          print("error : ${"please contact administration"}");
+        }
+        // Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print("error : $e");
+      }
+      // Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
+    }
+  }
+
   dynamic GenerateRfq_dialougebox(context) async {
     await showDialog(
       context: context,
@@ -186,9 +217,95 @@ mixin VendorServices {
     }
   }
 
+  void UpdateFeedback(context, int vendorid, int eventid, feedback) async {
+    try {
+      Map<String, dynamic>? response = await apiController.GetbyQueryString({"eventid": eventid, "feedback": feedback}, API.vendor_addfeedback_API);
+      if (response?['statusCode'] == 200) {
+        CMResponse value = CMResponse.fromJson(response ?? {});
+        if (value.code) {
+          Get_vendorProcessList(vendorid);
+          Success_SnackBar(context, "Feedback added successfully");
+          // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
+        } else {
+          await Error_dialog(context: context, title: 'Feedback add Error', content: value.message ?? "", onOk: () {});
+        }
+      } else {
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+      }
+    } catch (e) {
+      Error_dialog(context: context, title: "ERROR", content: "$e");
+    }
+  }
+
+  Future<bool> Get_vendorPDFfile({required BuildContext context, required int eventid, String? eventtype}) async {
+    try {
+      Map<String, dynamic>? response = await apiController.GetbyQueryString({"eventid": eventid, if (eventtype != null) "eventtype": eventtype}, API.vendor_getPDF);
+      if (response?['statusCode'] == 200) {
+        CMDmResponse value = CMDmResponse.fromJson(response ?? {});
+        if (value.code) {
+          await vendorController.PDFfileApiData(value);
+          return true;
+          // await Basic_dialog(context: context, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
+        } else {
+          await Error_dialog(context: context, title: 'PDF file Error', content: value.message ?? "", onOk: () {});
+        }
+      } else {
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+      }
+      return false;
+    } catch (e) {
+      Error_dialog(context: context, title: "ERROR", content: "$e");
+      return false;
+    }
+  }
+
+  void DeleteProcess(context, List processid) async {
+    if (kDebugMode) {
+      print(processid.toString());
+    }
+    Map<String, dynamic>? response = await apiController.GetbyQueryString({
+      "processid": processid,
+    }, API.vendor_deleteprocess_API);
+    if (response?['statusCode'] == 200) {
+      CMResponse value = CMResponse.fromJson(response ?? {});
+      if (value.code) {
+        vendorController.vendorModel.selectedIndices.clear();
+        Get_vendorProcessList(vendorController.vendorModel.vendorId.value!);
+        Success_SnackBar(context, "Process Deleted successfully");
+        // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
+      } else {
+        await Error_dialog(context: context, title: 'Delete Process Error', content: value.message ?? "", onOk: () {});
+      }
+    } else {
+      Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+    }
+  }
+
+  void ArchiveProcesscontrol(context, List processid, int type) async {
+    if (kDebugMode) {
+      print(processid.toString());
+    }
+    Map<String, dynamic>? response = await apiController.GetbyQueryString({"processid": processid, "type": type}, API.vendor_archiveprocess_API);
+    if (response?['statusCode'] == 200) {
+      CMResponse value = CMResponse.fromJson(response ?? {});
+      if (value.code) {
+        vendorController.vendorModel.selectedIndices.clear();
+        Get_vendorProcessList(vendorController.vendorModel.vendorId.value!);
+        Success_SnackBar(context, type == 0 ? "Process Unarchived successfully" : "Process Archived successfully");
+        // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
+      } else {
+        await Error_dialog(context: context, title: type == 0 ? 'Error : Failed to unarchive the process.' : 'Error : Failed to archive the process.', content: value.message ?? "", onOk: () {});
+      }
+    } else {
+      Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+    }
+  }
+
   Future<void> vendor_refresh() async {
     // vendorController.resetData();
-    vendorController.updateshowvendorprocess(null);
+    vendorController.update_showVendorProcess(null);
+    vendorController.update_showVendorProcess(null);
+    await Get_vendorProcesscustomerList();
     vendorController.updatevendorId(0);
     await Get_vendorProcessList(0);
     vendorController.update();

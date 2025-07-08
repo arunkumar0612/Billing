@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
+import 'package:ssipl_billing/5_VENDOR/controllers/Quote_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/Vendor_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/services/vendor_service.dart';
 import 'package:ssipl_billing/5_VENDOR/views/vendorListPage.dart';
@@ -14,6 +15,7 @@ import 'package:ssipl_billing/5_VENDOR/views/vendorListPage.dart';
 import 'package:ssipl_billing/5_VENDOR/views/vendor_chart.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
+import 'package:ssipl_billing/COMPONENTS-/PDF_methods/showPDF.dart';
 import 'package:ssipl_billing/NOTIFICATION-/NotificationServices.dart';
 import 'package:ssipl_billing/NOTIFICATION-/Notification_actions.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
@@ -26,7 +28,7 @@ class VendorDashboard extends StatefulWidget with VendorServices, BellIconFuncti
 
 class _VendorDashboardState extends State<VendorDashboard> with TickerProviderStateMixin {
   final VendorController vendorController = Get.find<VendorController>();
-
+  final Vendor_QuoteController quoteController = Get.find<Vendor_QuoteController>();
   final NotificationController notificationController = Get.find<NotificationController>();
   final loader = LoadingOverlay();
 
@@ -46,9 +48,9 @@ class _VendorDashboardState extends State<VendorDashboard> with TickerProviderSt
   void initState() {
     super.initState();
     widget.Get_vendorProcessList(0);
-    vendorController.updateshowvendorprocess(null);
     vendorController.updatevendorId(0);
-
+    vendorController.update_showVendorProcess(null);
+    widget.Get_vendorProcesscustomerList();
     vendorController.vendorModel.animationController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
@@ -568,7 +570,9 @@ class _VendorDashboardState extends State<VendorDashboard> with TickerProviderSt
                                               image: 'assets/images/addvendorprocess.png',
                                               label: 'Vendor Process',
                                               color: Primary_colors.Color4,
-                                              onPressed: () {},
+                                              onPressed: () {
+                                                widget.GenerateRfq_dialougebox(context);
+                                              },
                                             ),
                                           ),
                                         ),
@@ -770,7 +774,13 @@ class _VendorDashboardState extends State<VendorDashboard> with TickerProviderSt
                                                       title: 'Confirmation',
                                                       content: 'Are you sure you want to Archive this process?',
                                                       // showCancel: true,
-                                                      onOk: () {},
+                                                      onOk: () {
+                                                        widget.ArchiveProcesscontrol(
+                                                          context,
+                                                          vendorController.vendorModel.selectedIndices.map((index) => vendorController.vendorModel.processList[index].processid).toList(),
+                                                          1, // 1 for Archive, 0 for Unarchive
+                                                        );
+                                                      },
                                                     );
                                                     break;
                                                   case 'Unarchive':
@@ -779,7 +789,13 @@ class _VendorDashboardState extends State<VendorDashboard> with TickerProviderSt
                                                       title: 'Confirmation',
                                                       content: 'Are you sure you want to Unarchive this process?',
                                                       // showCancel: true,
-                                                      onOk: () {},
+                                                      onOk: () {
+                                                        widget.ArchiveProcesscontrol(
+                                                          context,
+                                                          vendorController.vendorModel.selectedIndices.map((index) => vendorController.vendorModel.processList[index].processid).toList(),
+                                                          0, // 1 for Archive, 0 for Unarchive
+                                                        );
+                                                      },
                                                     );
                                                     break;
                                                   case 'Modify':
@@ -796,7 +812,12 @@ class _VendorDashboardState extends State<VendorDashboard> with TickerProviderSt
                                                       title: 'Confirmation',
                                                       content: 'Are you sure you want to delete this process?',
                                                       // showCancel: true,
-                                                      onOk: () {},
+                                                      onOk: () {
+                                                        widget.DeleteProcess(
+                                                          context,
+                                                          vendorController.vendorModel.selectedIndices.map((index) => vendorController.vendorModel.processList[index].processid).toList(),
+                                                        );
+                                                      },
                                                     );
                                                     break;
                                                 }
@@ -1111,7 +1132,16 @@ class _VendorDashboardState extends State<VendorDashboard> with TickerProviderSt
                                                                             // ),
                                                                           ),
                                                                         ),
-                                                                        onTap: () async {},
+                                                                        onTap: () async {
+                                                                          bool success = await widget.Get_vendorPDFfile(
+                                                                              context: context, eventid: vendorController.vendorModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                          if (success) {
+                                                                            showPDF(
+                                                                                context,
+                                                                                "${vendorController.vendorModel.processList[index].vendor_name}${vendorController.vendorModel.processList[index].title}${vendorController.vendorModel.processList[index].TimelineEvents[childIndex].Eventname}",
+                                                                                vendorController.vendorModel.pdfFile.value!);
+                                                                          }
+                                                                        },
                                                                       ),
                                                                     ),
                                                                     if (childIndex != vendorController.vendorModel.processList[index].TimelineEvents.length - 1)
@@ -1157,38 +1187,55 @@ class _VendorDashboardState extends State<VendorDashboard> with TickerProviderSt
                                                                             Row(
                                                                               mainAxisAlignment: MainAxisAlignment.start,
                                                                               children: [
-                                                                                TextButton(
-                                                                                  onPressed: () async {},
-                                                                                  child: const Text(
-                                                                                    "Revised RFQ",
-                                                                                    style: TextStyle(color: Colors.blue, fontSize: 12),
+                                                                                if ((vendorController.vendorModel.processList[index].TimelineEvents[childIndex].Allowed_process.rrfq == true) &&
+                                                                                    (vendorController.vendorModel.processList[index].TimelineEvents.length == childIndex + 1))
+                                                                                  TextButton(
+                                                                                    onPressed: () async {},
+                                                                                    child: const Text(
+                                                                                      "Revised RFQ",
+                                                                                      style: TextStyle(color: Colors.blue, fontSize: 12),
+                                                                                    ),
                                                                                   ),
-                                                                                ),
-                                                                                TextButton(
-                                                                                  onPressed: () async {
-                                                                                    widget.uploadQuote_dialougebox(context);
-                                                                                  },
-                                                                                  child: const Text(
-                                                                                    "Upload Quote",
-                                                                                    style: TextStyle(color: Colors.blue, fontSize: 12),
+                                                                                if ((vendorController.vendorModel.processList[index].TimelineEvents[childIndex].Allowed_process.getApproval == true) &&
+                                                                                    (vendorController.vendorModel.processList[index].TimelineEvents.length == childIndex + 1))
+                                                                                  TextButton(
+                                                                                    onPressed: () async {},
+                                                                                    child: const Text(
+                                                                                      "Get Approval",
+                                                                                      style: TextStyle(color: Colors.blue, fontSize: 12),
+                                                                                    ),
                                                                                   ),
-                                                                                ),
-                                                                                TextButton(
-                                                                                  onPressed: () async {},
-                                                                                  child: const Text(
-                                                                                    "Generate PO",
-                                                                                    style: TextStyle(color: Colors.blue, fontSize: 12),
+                                                                                if ((vendorController.vendorModel.processList[index].TimelineEvents[childIndex].Allowed_process.quotation == true) &&
+                                                                                    (vendorController.vendorModel.processList[index].TimelineEvents.length == childIndex + 1))
+                                                                                  TextButton(
+                                                                                    onPressed: () async {
+                                                                                      widget.uploadQuote_dialougebox(context);
+                                                                                      vendorController.setProcessID(vendorController.vendorModel.processList[index].processid);
+                                                                                    },
+                                                                                    child: const Text(
+                                                                                      "Upload Quote",
+                                                                                      style: TextStyle(color: Colors.blue, fontSize: 12),
+                                                                                    ),
                                                                                   ),
-                                                                                ),
-                                                                                TextButton(
-                                                                                  onPressed: () async {},
-                                                                                  child: const Text(
-                                                                                    "Upload Invoice",
-                                                                                    style: TextStyle(color: Colors.blue, fontSize: 12),
+                                                                                if ((vendorController.vendorModel.processList[index].TimelineEvents[childIndex].Allowed_process.po == true) &&
+                                                                                    (vendorController.vendorModel.processList[index].TimelineEvents.length == childIndex + 1))
+                                                                                  TextButton(
+                                                                                    onPressed: () async {},
+                                                                                    child: const Text(
+                                                                                      "Generate PO",
+                                                                                      style: TextStyle(color: Colors.blue, fontSize: 12),
+                                                                                    ),
                                                                                   ),
-                                                                                ),
-                                                                                if ((vendorController.vendorModel.processList[index].TimelineEvents[childIndex].Allowed_process.delivery_challan ==
-                                                                                        true) &&
+                                                                                if ((vendorController.vendorModel.processList[index].TimelineEvents[childIndex].Allowed_process.invoice == true) &&
+                                                                                    (vendorController.vendorModel.processList[index].TimelineEvents.length == childIndex + 1))
+                                                                                  TextButton(
+                                                                                    onPressed: () async {},
+                                                                                    child: const Text(
+                                                                                      "Upload Invoice",
+                                                                                      style: TextStyle(color: Colors.blue, fontSize: 12),
+                                                                                    ),
+                                                                                  ),
+                                                                                if ((vendorController.vendorModel.processList[index].TimelineEvents[childIndex].Allowed_process.dc == true) &&
                                                                                     (vendorController.vendorModel.processList[index].TimelineEvents.length == childIndex + 1))
                                                                                   TextButton(
                                                                                     onPressed: () async {},
@@ -1225,12 +1272,18 @@ class _VendorDashboardState extends State<VendorDashboard> with TickerProviderSt
                                                                                 border: InputBorder.none, // Remove default border
                                                                                 contentPadding: EdgeInsets.all(10), // Adjust padding
                                                                               ),
+
                                                                               controller: vendorController.vendorModel.processList[index].TimelineEvents[childIndex].feedback,
 
                                                                               onChanged: (value) {
                                                                                 textColor.value = Colors.white;
                                                                               },
                                                                               onFieldSubmitted: (newValue) {
+                                                                                widget.UpdateFeedback(
+                                                                                    context,
+                                                                                    vendorController.vendorModel.vendorId.value!,
+                                                                                    vendorController.vendorModel.processList[index].TimelineEvents[childIndex].Eventid,
+                                                                                    vendorController.vendorModel.processList[index].TimelineEvents[childIndex].feedback.text);
                                                                                 // textColor = Colors.green;
                                                                               },
                                                                             ),
@@ -1403,12 +1456,12 @@ class _VendorDashboardState extends State<VendorDashboard> with TickerProviderSt
                                           child: Container(
                                             color: Colors.transparent,
                                             key: const ValueKey(1),
-                                            child: vendorController.vendorModel.processvendorList.isNotEmpty
+                                            child: vendorController.vendorModel.processcustomerList.isNotEmpty
                                                 ? ListView.builder(
-                                                    itemCount: vendorController.vendorModel.processvendorList.length,
+                                                    itemCount: vendorController.vendorModel.processcustomerList.length,
                                                     itemBuilder: (context, index) {
-                                                      final vendorname = vendorController.vendorModel.processvendorList[index].vendorName;
-                                                      final vendorid = vendorController.vendorModel.processvendorList[index].vendorId;
+                                                      final vendorname = vendorController.vendorModel.processcustomerList[index].vendorName;
+                                                      final vendorid = vendorController.vendorModel.processcustomerList[index].vendorId;
                                                       return _buildVendorCard(vendorname, vendorid, index);
                                                     },
                                                   )
@@ -2066,7 +2119,7 @@ class _VendorDashboardState extends State<VendorDashboard> with TickerProviderSt
     );
   }
 
-  Widget _buildVendorCard(String vendorname, int vendorid, int index) {
+  Widget _buildVendorCard(String vendorName, int vendor_id, int index) {
     return Obx(
       () {
         return Padding(
@@ -2097,11 +2150,11 @@ class _VendorDashboardState extends State<VendorDashboard> with TickerProviderSt
                 child: CircleAvatar(
                   backgroundColor: vendorController.vendorModel.showvendorprocess.value == index ? const Color.fromARGB(118, 18, 22, 33) : const Color.fromARGB(99, 100, 110, 255),
                   child: Text(
-                    vendorname.trim().isEmpty
+                    vendorName.trim().isEmpty
                         ? ''
-                        : vendorname.contains(' ') // If there's a space, take first letter of both words
-                            ? (vendorname[0].toUpperCase() + vendorname[vendorname.indexOf(' ') + 1].toUpperCase())
-                            : vendorname[0].toUpperCase(), // If no space, take only the first letter
+                        : vendorName.contains(' ') // If there's a space, take first letter of both words
+                            ? (vendorName[0].toUpperCase() + vendorName[vendorName.indexOf(' ') + 1].toUpperCase())
+                            : vendorName[0].toUpperCase(), // If no space, take only the first letter
                     style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7, fontWeight: FontWeight.w500),
                   ),
                 ),
@@ -2112,7 +2165,7 @@ class _VendorDashboardState extends State<VendorDashboard> with TickerProviderSt
               //   size: 25,
               // ),
               title: Text(
-                vendorname,
+                vendorName,
                 style: GoogleFonts.lato(
                   textStyle: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7, fontWeight: FontWeight.w500),
                 ),
@@ -2136,15 +2189,118 @@ class _VendorDashboardState extends State<VendorDashboard> with TickerProviderSt
                     color: vendorController.vendorModel.showvendorprocess.value == index ? Primary_colors.Dark : Primary_colors.Color3,
                   ),
                 ),
-                onTap: () {},
+                onTap: () {
+                  // widget.Getclientprofile(context, customerid);
+                },
               ),
-              onTap: vendorController.vendorModel.showvendorprocess.value != index ? () {} : () {},
+              onTap: vendorController.vendorModel.showvendorprocess.value != index
+                  ? () {
+                      vendorController.update_showVendorProcess(index);
+                      vendorController.updatevendorId(vendor_id);
+
+                      widget.Get_vendorProcessList(vendor_id);
+                    }
+                  : () {
+                      vendorController.update_showVendorProcess(null);
+                      vendorController.updatevendorId(0);
+                      widget.Get_vendorProcessList(vendorController.vendorModel.vendorId.value!);
+                    },
             ),
           ),
         );
       },
     );
   }
+  // Widget _buildVendorCard(String vendorname, int vendorid, int index) {
+  //   return Obx(
+  //     () {
+  //       return Padding(
+  //         padding: const EdgeInsets.only(bottom: 0),
+  //         child: Card(
+  //           color: (vendorController.vendorModel.showvendorprocess.value != null && vendorController.vendorModel.showvendorprocess.value == index) ? Primary_colors.Color3 : Primary_colors.Dark,
+  //           shape: RoundedRectangleBorder(
+  //             borderRadius: BorderRadius.circular(15),
+  //           ),
+  //           elevation: 10,
+  //           // decoration: BoxDecoration(
+  //           //   gradient: LinearGradient(
+  //           // colors: (vendorController.vendorModel.showvendorprocess.value != null && vendorController.vendorModel.showvendorprocess.value == index)
+  //           //     ? [Primary_colors.Color3, Primary_colors.Color3]
+  //           //     : [Primary_colors.Dark, Primary_colors.Dark],
+  //           //     begin: Alignment.topLeft,
+  //           //     end: Alignment.bottomRight,
+  //           //   ),
+  //           //   borderRadius: BorderRadius.circular(20), // Ensure border radius for smooth corners
+  //           // ),
+  //           child: ListTile(
+  //             shape: RoundedRectangleBorder(
+  //               borderRadius: BorderRadius.circular(10), // Rounded corners
+  //             ),
+  //             splashColor: Colors.transparent,
+  //             leading: Padding(
+  //               padding: const EdgeInsets.all(7),
+  //               child: CircleAvatar(
+  //                 backgroundColor: vendorController.vendorModel.showvendorprocess.value == index ? const Color.fromARGB(118, 18, 22, 33) : const Color.fromARGB(99, 100, 110, 255),
+  //                 child: Text(
+  //                   vendorname.trim().isEmpty
+  //                       ? ''
+  //                       : vendorname.contains(' ') // If there's a space, take first letter of both words
+  //                           ? (vendorname[0].toUpperCase() + vendorname[vendorname.indexOf(' ') + 1].toUpperCase())
+  //                           : vendorname[0].toUpperCase(), // If no space, take only the first letter
+  //                   style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7, fontWeight: FontWeight.w500),
+  //                 ),
+  //               ),
+  //             ),
+  //             // leading: const Icon(
+  //             //   Icons.people,
+  //             //   color: Colors.white,
+  //             //   size: 25,
+  //             // ),
+  //             title: Text(
+  //               vendorname,
+  //               style: GoogleFonts.lato(
+  //                 textStyle: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7, fontWeight: FontWeight.w500),
+  //               ),
+  //             ),
+  //             // trailing: IconButton(
+  //             //   onPressed: () {},
+  //             //   icon: Icon(
+  //             //     size: 20,
+  //             //     Icons.notifications,
+  //             //     color: vendorController.vendorModel.showvendorprocess.value == index ? Colors.red : Colors.amber,
+  //             //   ),
+  //             // ),
+  //             trailing: GestureDetector(
+  //               onTap: vendorController.vendorModel.showvendorprocess.value != index
+  //                   ? () {
+  //                       vendorController.update_showVendorProcess(index);
+  //                       vendorController.updatevendorId(vendorid);
+
+  //                       widget.Get_vendorProcessList(vendorid);
+  //                     }
+  //                   : () {
+  //                       vendorController.update_showVendorProcess(null);
+  //                       vendorController.updatevendorId(0);
+  //                       widget.Get_vendorProcessList(vendorController.vendorModel.vendorId.value!);
+  //                     },
+  //               child: Container(
+  //                 decoration: const BoxDecoration(
+  //                   color: Color.fromARGB(0, 233, 4, 4),
+  //                   // shape: BoxShape.circle,
+  //                 ),
+  //                 child: Icon(
+  //                   Icons.info_rounded,
+  //                   color: vendorController.vendorModel.showvendorprocess.value == index ? Primary_colors.Dark : Primary_colors.Color3,
+  //                 ),
+  //               ),
+  //             ),
+  //             onTap: vendorController.vendorModel.showvendorprocess.value != index ? () {} : () {},
+  //           ),
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 
   Widget _buildIconWithLabel({
     required String image,

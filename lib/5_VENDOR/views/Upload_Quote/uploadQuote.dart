@@ -173,20 +173,44 @@ class _UploadQuoteState extends State<UploadQuote> with SingleTickerProviderStat
                   SizedBox(
                     height: 20,
                   ),
-                  ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 400, maxHeight: 75),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        BasicButton(
-                          colors: Colors.green,
-                          text: 'Upload Quote',
-                          onPressed: () async {},
-                        ),
-                      ],
-                    ),
-                  ),
+                  Obx(() {
+                    return quoteController.quoteModel.selectedPdf.value != null
+                        ? ConstrainedBox(
+                            constraints: const BoxConstraints(maxWidth: 400, maxHeight: 75),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                BasicButton(
+                                  colors: Colors.green,
+                                  text: 'Upload Quote',
+                                  onPressed: () async {
+                                    if (quoteController.quoteModel.selectedPdf.value != null) {
+                                      widget.uploadQuote(context, quoteController.quoteModel.selectedPdf.value!);
+                                    }
+                                  },
+                                ),
+                              ],
+                            ),
+                          )
+                        : ConstrainedBox(
+                            constraints: const BoxConstraints(maxWidth: 400, maxHeight: 75),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                MouseRegion(
+                                  cursor: SystemMouseCursors.forbidden,
+                                  child: BasicButton(
+                                    colors: Colors.grey,
+                                    text: 'Upload Quote',
+                                    onPressed: () async {},
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                  }),
                 ],
               ),
             ))

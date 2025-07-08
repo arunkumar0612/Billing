@@ -433,7 +433,8 @@ class _VendorDashboardState extends State<VendorDashboard> with TickerProviderSt
                                                             // '210 invoices',
 
                                                             "${vendorController.vendorModel.vendordata.value?.totalinvoices.toString() ?? "0"} ${((vendorController.vendorModel.vendordata.value?.totalinvoices ?? 0) < 2) ? 'invoice' : 'invoices'}",
-                                                            style: const TextStyle(fontSize: Primary_font_size.Text5, color: Color.fromARGB(255, 1, 53, 92), letterSpacing: 1, fontWeight: FontWeight.bold),
+                                                            style: const TextStyle(
+                                                                fontSize: Primary_font_size.Text5, color: Color.fromARGB(255, 1, 53, 92), letterSpacing: 1, fontWeight: FontWeight.bold),
                                                           ),
                                                         ),
                                                       ),
@@ -476,7 +477,8 @@ class _VendorDashboardState extends State<VendorDashboard> with TickerProviderSt
                                                         () => Text(
                                                           // '210 invoices',
                                                           "${vendorController.vendorModel.vendordata.value?.paidinvoices.toString() ?? "0"} ${((vendorController.vendorModel.vendordata.value?.paidinvoices ?? 0) < 2) ? 'invoice' : 'invoices'}",
-                                                          style: const TextStyle(fontSize: Primary_font_size.Text5, color: Color.fromARGB(255, 2, 87, 4), letterSpacing: 1, fontWeight: FontWeight.bold),
+                                                          style:
+                                                              const TextStyle(fontSize: Primary_font_size.Text5, color: Color.fromARGB(255, 2, 87, 4), letterSpacing: 1, fontWeight: FontWeight.bold),
                                                         ),
                                                       ),
                                                     ),
@@ -520,7 +522,8 @@ class _VendorDashboardState extends State<VendorDashboard> with TickerProviderSt
                                                           () => Text(
                                                             // '110 invoices',
                                                             "${vendorController.vendorModel.vendordata.value?.unpaidinvoices.toString() ?? "0"} ${((vendorController.vendorModel.vendordata.value?.unpaidinvoices ?? 0) < 2) ? 'invoice' : 'invoices'}",
-                                                            style: const TextStyle(fontSize: Primary_font_size.Text5, color: Color.fromARGB(255, 118, 9, 1), fontWeight: FontWeight.bold, letterSpacing: 1),
+                                                            style: const TextStyle(
+                                                                fontSize: Primary_font_size.Text5, color: Color.fromARGB(255, 118, 9, 1), fontWeight: FontWeight.bold, letterSpacing: 1),
                                                           ),
                                                         ),
                                                       ),
@@ -726,15 +729,23 @@ class _VendorDashboardState extends State<VendorDashboard> with TickerProviderSt
                                     child: Obx(
                                       () => Text(
                                         vendorController.vendorModel.type.value == 0 ? 'ACTIVE PROCESS LIST' : "ARCHIVED PROCESS LIST",
-                                        style: TextStyle(letterSpacing: 1, wordSpacing: 3, color: vendorController.vendorModel.type.value == 0 ? Primary_colors.Color3 : const Color.fromARGB(255, 254, 113, 113), fontSize: Primary_font_size.Text10, fontWeight: FontWeight.bold),
+                                        style: TextStyle(
+                                            letterSpacing: 1,
+                                            wordSpacing: 3,
+                                            color: vendorController.vendorModel.type.value == 0 ? Primary_colors.Color3 : const Color.fromARGB(255, 254, 113, 113),
+                                            fontSize: Primary_font_size.Text10,
+                                            fontWeight: FontWeight.bold),
                                       ),
                                     ),
                                   ),
                                   Obx(() => Row(
                                         children: [
                                           Text(
-                                            vendorController.vendorModel.searchQuery.value.isNotEmpty ? 'Found: ${vendorController.vendorModel.processList.length} Process | Selected: ${vendorController.vendorModel.selectedIndices.length}' : 'Total: ${vendorController.vendorModel.processList.length} Process | Selected: ${vendorController.vendorModel.selectedIndices.length}',
-                                            style: theme.textTheme.bodyLarge?.copyWith(color: Colors.white, fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text8, letterSpacing: 1.0, overflow: TextOverflow.ellipsis),
+                                            vendorController.vendorModel.searchQuery.value.isNotEmpty
+                                                ? 'Found: ${vendorController.vendorModel.processList.length} Process | Selected: ${vendorController.vendorModel.selectedIndices.length}'
+                                                : 'Total: ${vendorController.vendorModel.processList.length} Process | Selected: ${vendorController.vendorModel.selectedIndices.length}',
+                                            style: theme.textTheme.bodyLarge
+                                                ?.copyWith(color: Colors.white, fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text8, letterSpacing: 1.0, overflow: TextOverflow.ellipsis),
                                           ),
                                           const SizedBox(width: 10),
                                           if (vendorController.vendorModel.selectedIndices.isNotEmpty)
@@ -928,7 +939,8 @@ class _VendorDashboardState extends State<VendorDashboard> with TickerProviderSt
                                                               vendorController.vendorModel.selectedIndices.add(index);
                                                             } else {
                                                               vendorController.vendorModel.selectedIndices.remove(index);
-                                                              vendorController.updateisAllSelected(vendorController.vendorModel.selectedIndices.length == vendorController.vendorModel.processList.length);
+                                                              vendorController
+                                                                  .updateisAllSelected(vendorController.vendorModel.selectedIndices.length == vendorController.vendorModel.processList.length);
                                                             }
                                                           },
                                                           activeColor: Primary_colors.Color3, // More vibrant color
@@ -1153,7 +1165,9 @@ class _VendorDashboardState extends State<VendorDashboard> with TickerProviderSt
                                                                                   ),
                                                                                 ),
                                                                                 TextButton(
-                                                                                  onPressed: () async {},
+                                                                                  onPressed: () async {
+                                                                                    widget.uploadQuote_dialougebox(context);
+                                                                                  },
                                                                                   child: const Text(
                                                                                     "Upload Quote",
                                                                                     style: TextStyle(color: Colors.blue, fontSize: 12),
@@ -1173,7 +1187,9 @@ class _VendorDashboardState extends State<VendorDashboard> with TickerProviderSt
                                                                                     style: TextStyle(color: Colors.blue, fontSize: 12),
                                                                                   ),
                                                                                 ),
-                                                                                if ((vendorController.vendorModel.processList[index].TimelineEvents[childIndex].Allowed_process.delivery_challan == true) && (vendorController.vendorModel.processList[index].TimelineEvents.length == childIndex + 1))
+                                                                                if ((vendorController.vendorModel.processList[index].TimelineEvents[childIndex].Allowed_process.delivery_challan ==
+                                                                                        true) &&
+                                                                                    (vendorController.vendorModel.processList[index].TimelineEvents.length == childIndex + 1))
                                                                                   TextButton(
                                                                                     onPressed: () async {},
                                                                                     child: const Text(
@@ -1534,7 +1550,9 @@ class _VendorDashboardState extends State<VendorDashboard> with TickerProviderSt
                           (vendorController.vendorModel.Clientprofile.value?.vendorname ?? "0").trim().isEmpty
                               ? ''
                               : (vendorController.vendorModel.Clientprofile.value?.vendorname ?? "0").contains(' ') // If there's a space, take first letter of both words
-                                  ? ((vendorController.vendorModel.Clientprofile.value?.vendorname ?? "0")[0].toUpperCase() + (vendorController.vendorModel.Clientprofile.value?.vendorname ?? "0")[(vendorController.vendorModel.Clientprofile.value?.vendorname ?? "0").indexOf(' ') + 1].toUpperCase())
+                                  ? ((vendorController.vendorModel.Clientprofile.value?.vendorname ?? "0")[0].toUpperCase() +
+                                      (vendorController.vendorModel.Clientprofile.value?.vendorname ?? "0")[(vendorController.vendorModel.Clientprofile.value?.vendorname ?? "0").indexOf(' ') + 1]
+                                          .toUpperCase())
                                   : (vendorController.vendorModel.Clientprofile.value?.vendorname ?? "0")[0].toUpperCase(), // If no space, take only the first letter
                           style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Heading, fontWeight: FontWeight.w500),
                         ),

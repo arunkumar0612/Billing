@@ -82,10 +82,10 @@ class ManualOnboardController extends GetxController {
     manualOnboardModel.vendorAnnualTurnover.value.text = value;
   }
 
-  void updateListOfProducts(String value) {
-    // Split by comma, trim spaces, and remove empty strings
-    manualOnboardModel.vendorListOfProducts.value = value.split(',').map((e) => e.trim()).where((e) => e.isNotEmpty).toList();
-  }
+  // void updateListOfProducts(String value) {
+  //   // Split by comma, trim spaces, and remove empty strings
+  //   manualOnboardModel.vendorListOfProducts.value = value.split(',').map((e) => e.trim()).where((e) => e.isNotEmpty).toList();
+  // }
 
   void updateProductInput(String value) {
     manualOnboardModel.productInputController.text = value;
@@ -250,7 +250,7 @@ class ManualOnboardController extends GetxController {
         manualOnboardModel.vendorGstNo.value.text.isNotEmpty ||
         manualOnboardModel.vendorPanNo.value.text.isNotEmpty ||
         manualOnboardModel.vendorAnnualTurnover.value.text.isNotEmpty ||
-        manualOnboardModel.vendorListOfProducts.isNotEmpty ||
+        // manualOnboardModel.vendorListOfProducts.isNotEmpty ||
         manualOnboardModel.descriptionOfProducts.value.text.isNotEmpty ||
         manualOnboardModel.isoCertification.value.text.isNotEmpty ||
         manualOnboardModel.otherCertification.value.text.isNotEmpty ||
@@ -283,12 +283,46 @@ class ManualOnboardController extends GetxController {
     manualOnboardModel.cancelledChequeFile.value = null;
   }
 
+  bool postDataValidation() {
+    return (manualOnboardModel.vendorNameController.value.text.isEmpty ||
+        manualOnboardModel.vendorAddressController.value.text.isEmpty ||
+        manualOnboardModel.vendorAddressStateController.value.text.isEmpty ||
+        manualOnboardModel.vendorAddressPincodeController.value.text.isEmpty ||
+        manualOnboardModel.contactpersonName.value.text.isEmpty ||
+        manualOnboardModel.contactPersonDesignation.value.text.isEmpty ||
+        manualOnboardModel.contactPersonPhoneNumber.value.text.isEmpty ||
+        manualOnboardModel.contactPersonEmail.value.text.isEmpty ||
+        manualOnboardModel.typeOfBusiness.value.text.isEmpty ||
+        manualOnboardModel.yearOfEstablishment.value.text.isEmpty ||
+        manualOnboardModel.vendorGstNo.value.text.isEmpty ||
+        manualOnboardModel.vendorPanNo.value.text.isEmpty ||
+        manualOnboardModel.vendorAnnualTurnover.value.text.isEmpty ||
+        // manualOnboardModel.vendorListOfProducts.isEmpty ||
+        manualOnboardModel.descriptionOfProducts.value.text.isEmpty ||
+        manualOnboardModel.isoCertification.value.text.isEmpty ||
+        manualOnboardModel.otherCertification.value.text.isEmpty ||
+        manualOnboardModel.vendorBankName.value.text.isEmpty ||
+        manualOnboardModel.vendorBankBranch.value.text.isEmpty ||
+        manualOnboardModel.vendorBankAccountNumber.value.text.isEmpty ||
+        manualOnboardModel.vendorBankIfsc.value.text.isEmpty ||
+        manualOnboardModel.logoPickedFile.value == null ||
+        manualOnboardModel.uploadedLogo.value == null ||
+        manualOnboardModel.GSTregCertiPickedFile.value == null ||
+        manualOnboardModel.vendorPANPickedFile.value == null ||
+        manualOnboardModel.cancelledChequePickedFile.value == null ||
+        manualOnboardModel.GSTregCertiFile.value == null ||
+        manualOnboardModel.vendorPANfile.value == null ||
+        manualOnboardModel.cancelledChequeFile.value == null);
+  }
+
   void resetData() {
     manualOnboardModel.tabController.value = null;
+
     manualOnboardModel.selectedLogoPath.value = File('E://vendor_logo.png');
     manualOnboardModel.selectedGSTregCertiFile.value = File('E://reg_certi.pdf');
     manualOnboardModel.selectedPANfile.value = File('E://vendor_pan.pdf');
     manualOnboardModel.selectedCancelledChequeFile.value = File('E://cancelled_cheque.pdf');
+    //KYC
     manualOnboardModel.vendorNameController.value.clear();
     manualOnboardModel.vendorAddressController.value.clear();
     manualOnboardModel.vendorAddressStateController.value.clear();
@@ -297,13 +331,17 @@ class ManualOnboardController extends GetxController {
     manualOnboardModel.contactPersonDesignation.value.clear();
     manualOnboardModel.contactPersonPhoneNumber.value.clear();
     manualOnboardModel.contactPersonEmail.value.clear();
+
+    //Business details
     manualOnboardModel.typeOfBusiness.value.clear();
     manualOnboardModel.yearOfEstablishment.value.clear();
     manualOnboardModel.vendorGstNo.value.clear();
     manualOnboardModel.vendorPanNo.value.clear();
     manualOnboardModel.vendorAnnualTurnover.value.clear();
-    manualOnboardModel.vendorListOfProducts.clear();
+    // manualOnboardModel.vendorListOfProducts.clear();
     manualOnboardModel.descriptionOfProducts.value.clear();
+
+    //Bank deails
     manualOnboardModel.isoCertification.value.clear();
     manualOnboardModel.otherCertification.value.clear();
     manualOnboardModel.vendorBankName.value.clear();

@@ -67,7 +67,7 @@ class _ShowManualOnboardState extends State<ShowManualOnboard> with SingleTicker
                           tabs: const [
                             Tab(text: "KYC"),
                             Tab(text: "BUSINESS INFO"),
-                            Tab(text: "BANK DETAILS"),
+                            Tab(text: "BANK DETAILS & UPLOADS"),
                             // Tab(text: "POST"),
                           ],
                         ),

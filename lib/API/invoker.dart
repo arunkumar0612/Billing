@@ -171,9 +171,11 @@ class Invoker extends GetxController {
   Future<Map<String, dynamic>> MultiSeperateFiles(
     String token,
     String body,
-    File? regFile,
-    File? panFile,
-    File? chequeFile,
+    Map<String, dynamic> files,
+    // File? logoFile,
+    // File? regFile,
+    // File? panFile,
+    // File? chequeFile,
     String api,
   ) async {
     final sessionToken = sessiontokenController.sessiontokenModel.sessiontoken.value;
@@ -183,19 +185,25 @@ class Invoker extends GetxController {
       "STOKEN": sessionToken,
       "querystring": encryptedData,
     };
+    files.forEach((key, value) {
+      formDataMap[key] = value;
+    });
 
     // Attach each file separately with appropriate key
-    if (regFile != null) {
-      formDataMap["regFile"] = MultipartFile(regFile, filename: regFile.path.split('/').last);
-    }
+    // if (logoFile != null) {
+    //   formDataMap["logo_upload"] = MultipartFile(regFile, filename: logoFile.path.split('/').last);
+    // }
+    // if (regFile != null) {
+    //   formDataMap["registration_certificate"] = MultipartFile(regFile, filename: regFile.path.split('/').last);
+    // }
 
-    if (panFile != null) {
-      formDataMap["panFile"] = MultipartFile(panFile, filename: panFile.path.split('/').last);
-    }
+    // if (panFile != null) {
+    //   formDataMap["pan_upload"] = MultipartFile(panFile, filename: panFile.path.split('/').last);
+    // }
 
-    if (chequeFile != null) {
-      formDataMap["chequeFile"] = MultipartFile(chequeFile, filename: chequeFile.path.split('/').last);
-    }
+    // if (chequeFile != null) {
+    //   formDataMap["cancelled_cheque"] = MultipartFile(chequeFile, filename: chequeFile.path.split('/').last);
+    // }
 
     // Convert map to FormData and send request
     final formData = FormData(formDataMap);

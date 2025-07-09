@@ -23,6 +23,10 @@ class VendorController extends GetxController {
     }
   }
 
+  void updatetype(int value) {
+    vendorModel.type.value = value;
+  }
+
   void update_showVendorProcess(int? value) {
     vendorModel.showvendorprocess.value = value;
   }
@@ -80,10 +84,6 @@ class VendorController extends GetxController {
 
   void toggleCCemailvisibility(bool value) {
     vendorModel.CCemailToggle.value = value;
-  }
-
-  void updatetype(int value) {
-    vendorModel.type.value = value;
   }
 
   void updateprofilepage(bool value) {
@@ -164,6 +164,7 @@ class VendorController extends GetxController {
     vendorModel.showvendorprocess.value = null;
     vendorModel.vendorId.value = null;
     vendorModel.pdfFile.value = null;
+    vendorModel.type.value = 0;
 
     vendorModel.selectedIndices.clear();
     vendorModel.isAllSelected.value = false;

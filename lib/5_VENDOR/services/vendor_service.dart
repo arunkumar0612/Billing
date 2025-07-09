@@ -28,7 +28,7 @@ mixin VendorServices {
   final loader = LoadingOverlay();
   Future<void> Get_vendorProcessList(int vendorid) async {
     try {
-      Map<String, dynamic>? response = await apiController.GetbyQueryString({"vendorid": vendorid, "listtype": 1}, API.vendor_getprocesslist_API);
+      Map<String, dynamic>? response = await apiController.GetbyQueryString({"vendorid": vendorid, "listtype": vendorController.vendorModel.type.value}, API.vendor_getprocesslist_API);
       if (response?['statusCode'] == 200) {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {

@@ -622,7 +622,11 @@ class _VendorDashboardState extends State<VendorDashboard> with TickerProviderSt
                                                   image: vendorController.vendorModel.type.value == 0 ? 'assets/images/viewarchivelist.png' : 'assets/images/mainlist.png',
                                                   label: vendorController.vendorModel.type.value == 0 ? 'Archive List' : 'Main List',
                                                   color: Primary_colors.Color8,
-                                                  onPressed: () {},
+                                                  onPressed: () {
+                                                    vendorController.vendorModel.selectedIndices.clear();
+                                                    vendorController.updatetype(vendorController.vendorModel.type.value == 0 ? 1 : 0);
+                                                    widget.Get_vendorProcessList(vendorController.vendorModel.vendorId.value!);
+                                                  },
                                                 ),
                                               ),
                                             ),
@@ -1390,7 +1394,11 @@ class _VendorDashboardState extends State<VendorDashboard> with TickerProviderSt
                                                       ),
                                                       padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 12),
                                                     ),
-                                                    onPressed: () {},
+                                                    onPressed: () {
+                                                      vendorController.vendorModel.selectedIndices.clear();
+                                                      vendorController.updatetype(vendorController.vendorModel.type.value == 0 ? 1 : 0);
+                                                      widget.Get_vendorProcessList(vendorController.vendorModel.vendorId.value!);
+                                                    },
                                                     child: Text(
                                                       'View Active Processes',
                                                       style: TextStyle(

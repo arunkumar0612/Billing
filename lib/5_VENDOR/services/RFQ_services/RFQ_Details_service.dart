@@ -78,9 +78,7 @@ mixin RfqdetailsService {
     }
   }
 
-  void get_VendorList(
-    context,
-  ) async {
+  void get_VendorList(context) async {
     try {
       Map<String, dynamic> body = {"vendorid": 0};
       Map<String, dynamic>? response = await apiController.GetbyQueryString(body, API.fetch_vendorList);

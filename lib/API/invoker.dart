@@ -168,35 +168,35 @@ class Invoker extends GetxController {
     }
   }
 
-  Future<Map<String, dynamic>> MultiSeperateFiles(
-    String token,
-    String body,
-    Map<String, dynamic> files,
-    String api,
-  ) async {
-    final sessionToken = sessiontokenController.sessiontokenModel.sessiontoken.value;
-    final encryptedData = AES.encryptWithAES(sessionToken.substring(0, 16), body);
+  // Future<Map<String, dynamic>> MultiSeperateFiles(
+  //   String token,
+  //   String body,
+  //   Map<String, dynamic> files,
+  //   String api,
+  // ) async {
+  //   final sessionToken = sessiontokenController.sessiontokenModel.sessiontoken.value;
+  //   final encryptedData = AES.encryptWithAES(sessionToken.substring(0, 16), body);
 
-    final formDataMap = <String, dynamic>{
-      "STOKEN": sessionToken,
-      "querystring": encryptedData,
-    };
-    files.forEach((key, value) {
-      formDataMap[key] = value;
-    });
+  //   final formDataMap = <String, dynamic>{
+  //     "STOKEN": sessionToken,
+  //     "querystring": encryptedData,
+  //   };
+  //   files.forEach((key, value) {
+  //     formDataMap[key] = value;
+  //   });
 
-    // Convert map to FormData and send request
-    final formData = FormData(formDataMap);
-    final response = await apiService.postMulter(api, formData);
+  //   // Convert map to FormData and send request
+  //   final formData = FormData(formDataMap);
+  //   final response = await apiService.postMulter(api, formData);
 
-    if (response.statusCode == 200) {
-      final encryptedResponse = response.body['encryptedResponse'];
-      final decrypted = AES.decryptWithAES(sessionToken.substring(0, 16), encryptedResponse);
-      final decoded = jsonDecode(decrypted);
-      decoded["statusCode"] = response.statusCode!;
-      return decoded;
-    } else {
-      return {"statusCode": response.statusCode, "message": "Server Error"};
-    }
-  }
+  //   if (response.statusCode == 200) {
+  //     final encryptedResponse = response.body['encryptedResponse'];
+  //     final decrypted = AES.decryptWithAES(sessionToken.substring(0, 16), encryptedResponse);
+  //     final decoded = jsonDecode(decrypted);
+  //     decoded["statusCode"] = response.statusCode!;
+  //     return decoded;
+  //   } else {
+  //     return {"statusCode": response.statusCode, "message": "Server Error"};
+  //   }
+  // }
 }

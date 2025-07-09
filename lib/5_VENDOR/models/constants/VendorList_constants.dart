@@ -270,47 +270,50 @@ class VendorListModel extends GetxController with GetSingleTickerProviderStateMi
   ].obs;
 
   var backup_VendorList = <VendorsData>[].obs;
-// Basic Info
   var vendor_IdController = TextEditingController().obs;
-  var vendor_NameController = TextEditingController().obs;
-  var vendor_addressController = TextEditingController().obs;
-  var vendor_stateController = TextEditingController().obs;
-  var vendor_pincodeController = TextEditingController().obs;
+  final vendorManagementFormKey = GlobalKey<FormState>().obs;
+}
 
-// Contact Person Info
-  var vendor_contactPersonNameController = TextEditingController().obs;
-  var vendor_contactPersonDesignationController = TextEditingController().obs;
-  var vendor_contactPersonPhoneController = TextEditingController().obs;
-  var vendor_emailController = TextEditingController().obs;
 
-// Business Info
-  var vendor_businessTypeController = TextEditingController().obs;
-  var vendor_yearOfEstablishmentController = TextEditingController().obs;
-  var vendor_gstNumberController = TextEditingController().obs;
-  var vendor_panNumberController = TextEditingController().obs;
-  var vendor_annualTurnoverController = TextEditingController().obs;
-  var vendor_productOrServiceListController = TextEditingController().obs;
-  var vendor_hsnOrSacCodeController = TextEditingController().obs;
-  var vendor_productOrServiceDescriptionController = TextEditingController().obs;
+//   var vendor_NameController = TextEditingController().obs;
+//   var vendor_addressController = TextEditingController().obs;
+//   var vendor_stateController = TextEditingController().obs;
+//   var vendor_pincodeController = TextEditingController().obs;
 
-// Certification Info
-  var vendor_isoCertificationController = TextEditingController().obs;
-  var vendor_otherCertificationsController = TextEditingController().obs;
-  var vendor_panUpload = Rx<Uint8List?>(null);
-  var vendor_registrationCertificate = Rx<Uint8List?>(null);
-  var vendor_cancelledCheque = Rx<Uint8List?>(null);
-// Bank Info
-  var vendor_bankNameController = TextEditingController().obs;
-  var vendor_branchController = TextEditingController().obs;
-  var vendor_accountNumberController = TextEditingController().obs;
-  var vendor_ifscCodeController = TextEditingController().obs;
+// // Contact Person Info
+//   var vendor_contactPersonNameController = TextEditingController().obs;
+//   var vendor_contactPersonDesignationController = TextEditingController().obs;
+//   var vendor_contactPersonPhoneController = TextEditingController().obs;
+//   var vendor_emailController = TextEditingController().obs;
+
+// // Business Info
+//   var vendor_businessTypeController = TextEditingController().obs;
+//   var vendor_yearOfEstablishmentController = TextEditingController().obs;
+//   var vendor_gstNumberController = TextEditingController().obs;
+//   var vendor_panNumberController = TextEditingController().obs;
+//   var vendor_annualTurnoverController = TextEditingController().obs;
+//   var vendor_productOrServiceListController = TextEditingController().obs;
+//   var vendor_hsnOrSacCodeController = TextEditingController().obs;
+//   var vendor_productOrServiceDescriptionController = TextEditingController().obs;
+
+// // Certification Info
+//   var vendor_isoCertificationController = TextEditingController().obs;
+//   var vendor_otherCertificationsController = TextEditingController().obs;
+//   var vendor_panUpload = Rx<Uint8List?>(null);
+//   var vendor_registrationCertificate = Rx<Uint8List?>(null);
+//   var vendor_cancelledCheque = Rx<Uint8List?>(null);
+// // Bank Info
+//   var vendor_bankNameController = TextEditingController().obs;
+//   var vendor_branchController = TextEditingController().obs;
+//   var vendor_accountNumberController = TextEditingController().obs;
+//   var vendor_ifscCodeController = TextEditingController().obs;
 
 ////////////////////////////////-----------------------------BRANCHES-------------------------------//////////////////////////////////
 
-  void initTabController(TickerProvider tickerProvider, int length) {
-    tabController = TabController(length: length, vsync: tickerProvider);
-    tabController.addListener(() {
-      selectedtab.value = tabController.index;
-    });
-  }
-}
+  // void initTabController(TickerProvider tickerProvider, int length) {
+  //   tabController = TabController(length: length, vsync: tickerProvider);
+  //   tabController.addListener(() {
+  //     selectedtab.value = tabController.index;
+  //   });
+  // }
+

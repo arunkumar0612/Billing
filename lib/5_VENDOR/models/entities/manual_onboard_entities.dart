@@ -11,7 +11,7 @@ class ManualOnboard {
   final String yearOfEstablishment;
   final String gstNumber;
   final String panNumber;
-  final double annualTurnover;
+  final String annualTurnover;
   final String productsServices;
   final String hsnSacCode;
   final String description;
@@ -67,7 +67,7 @@ class ManualOnboard {
         yearOfEstablishment: json['yearofestablishment'],
         gstNumber: json['gstnumber'],
         panNumber: json['pannumber'],
-        annualTurnover: json['annualturnover']?.toDouble() ?? 0.0,
+        annualTurnover: json['annualturnover'],
         productsServices: json['productsservices'],
         hsnSacCode: json['hsnsaccode'],
         description: json['description'],

@@ -14,9 +14,6 @@ import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
-
-// import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-
 import '../../API/invoker.dart';
 
 mixin ManualOnboardService {
@@ -75,7 +72,7 @@ mixin ManualOnboardService {
           yearOfEstablishment: manualOnboardController.manualOnboardModel.yearOfEstablishment.value.text,
           gstNumber: manualOnboardController.manualOnboardModel.vendorGstNo.value.text,
           panNumber: manualOnboardController.manualOnboardModel.vendorPanNo.value.text,
-          annualTurnover: double.tryParse(manualOnboardController.manualOnboardModel.vendorAnnualTurnover.value.text) ?? 0.0,
+          annualTurnover: manualOnboardController.manualOnboardModel.vendorAnnualTurnover.value.text,
           productsServices: manualOnboardController.manualOnboardModel.productInputController.value.text,
           hsnSacCode: manualOnboardController.manualOnboardModel.HSNcodeController.value.text,
           description: manualOnboardController.manualOnboardModel.descriptionOfProducts.value.text,

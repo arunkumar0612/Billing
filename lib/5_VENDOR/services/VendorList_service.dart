@@ -1,20 +1,19 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/VendorList_actions.dart';
-
+import 'package:ssipl_billing/5_VENDOR/controllers/manual_onboard_actions.dart';
 import 'package:ssipl_billing/API/invoker.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
-
 import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart';
 
 mixin VendorListService {
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
   final VendorListController vendorListController = Get.find<VendorListController>();
+  final ManualOnboardController manualOnboardController = Get.find<ManualOnboardController>();
   final Invoker apiController = Get.find<Invoker>();
   final loader = LoadingOverlay();
 

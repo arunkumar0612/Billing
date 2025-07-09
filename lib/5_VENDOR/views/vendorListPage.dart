@@ -785,69 +785,40 @@ class _VendorEditorState extends State<VendorEditor> {
   }
 
   Widget _buildLogoSection() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Primary_colors.Dark,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            // ignore: deprecated_member_use
-            color: Colors.grey.withOpacity(0.1),
-            blurRadius: 6,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // const Text(
-          //   "Vendor Logo",
-          //   style: TextStyle(
-          //     fontSize: 16,
-          //     fontWeight: FontWeight.bold,
-          //     color: Colors.blueGrey,
-          //   ),
-          // ),
-          // const SizedBox(height: 5),
-          Center(
-            child: GestureDetector(
-              onTap: _pickLogo,
-              child: Container(
-                width: 100,
-                height: 100,
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 40, 44, 54),
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(
-                    color: const Color.fromARGB(255, 17, 17, 17),
-                    width: 1,
-                  ),
-                ),
-                child: _logoFile != null
-                    ? ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: Image.file(_logoFile!, fit: BoxFit.cover),
-                      )
-                    : Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(Icons.add_a_photo, color: Colors.grey, size: 32),
-                          const SizedBox(height: 8),
-                          Text(
-                            "Upload Logo",
-                            style: TextStyle(
-                              color: Colors.grey[600],
-                              fontSize: 12,
-                            ),
-                          ),
-                        ],
-                      ),
-              ),
+    return Center(
+      child: GestureDetector(
+        onTap: _pickLogo,
+        child: Container(
+          width: 130,
+          height: 130,
+          decoration: BoxDecoration(
+            color: const Color.fromARGB(255, 40, 44, 54),
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+              color: const Color.fromARGB(255, 17, 17, 17),
+              width: 1,
             ),
           ),
-        ],
+          child: _logoFile != null
+              ? ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.file(_logoFile!, fit: BoxFit.cover),
+                )
+              : Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.add_a_photo, color: Colors.grey, size: 32),
+                    const SizedBox(height: 8),
+                    Text(
+                      "Upload Logo",
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ),
+        ),
       ),
     );
   }
@@ -1288,23 +1259,68 @@ class _VendorEditorState extends State<VendorEditor> {
                                               ),
                                             ],
                                           ),
-                                          _buildTextField(
-                                            label: "Annual Turnover",
-                                            hintText: "Enter annual turnover",
-                                            controller: widget.controller.vendorListModel.vendor_annualTurnoverController.value,
-                                            keyboardType: TextInputType.number,
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: _buildTextField(
+                                                  label: "Annual Turnover",
+                                                  hintText: "Enter annual turnover",
+                                                  controller: widget.controller.vendorListModel.vendor_annualTurnoverController.value,
+                                                  keyboardType: TextInputType.number,
+                                                ),
+                                              ),
+                                              const SizedBox(width: 16),
+                                              Expanded(
+                                                child: _buildTextField(
+                                                  label: "Products/Services",
+                                                  hintText: "List products or services",
+                                                  controller: widget.controller.vendorListModel.vendor_productOrServiceListController.value,
+                                                  maxLines: 2,
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                          _buildTextField(
-                                            label: "Products/Services",
-                                            hintText: "List products or services",
-                                            controller: widget.controller.vendorListModel.vendor_productOrServiceListController.value,
-                                            maxLines: 2,
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: _buildTextField(
+                                                  label: "HSN/SAC Code",
+                                                  hintText: "Enter HSN/SAC Codes",
+                                                  controller: widget.controller.vendorListModel.vendor_hsnOrSacCodeController.value,
+                                                  maxLines: 2,
+                                                ),
+                                              ),
+                                              const SizedBox(width: 16),
+                                              Expanded(
+                                                child: _buildTextField(
+                                                  label: "Description",
+                                                  hintText: "Enter detailed description",
+                                                  controller: widget.controller.vendorListModel.vendor_productOrServiceDescriptionController.value,
+                                                  maxLines: 3,
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                          _buildTextField(
-                                            label: "Description",
-                                            hintText: "Enter detailed description",
-                                            controller: widget.controller.vendorListModel.vendor_productOrServiceDescriptionController.value,
-                                            maxLines: 3,
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: _buildTextField(
+                                                  label: "ISO Certification",
+                                                  hintText: "Enter ISO certification details",
+                                                  controller: widget.controller.vendorListModel.vendor_isoCertificationController.value,
+                                                  maxLines: 2,
+                                                ),
+                                              ),
+                                              const SizedBox(width: 16),
+                                              Expanded(
+                                                child: _buildTextField(
+                                                  label: "Other Certifications",
+                                                  hintText: "Enter Other Certifications",
+                                                  controller: widget.controller.vendorListModel.vendor_otherCertificationsController.value,
+                                                  maxLines: 3,
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       ),

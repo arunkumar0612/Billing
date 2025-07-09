@@ -604,7 +604,7 @@ class _VendorDashboardState extends State<VendorDashboard> with TickerProviderSt
                                                       label: 'Vendor Process',
                                                       color: Primary_colors.Color4,
                                                       onPressed: () {
-                                                        widget.GenerateRfq_dialougebox(context);
+                                                        widget.Generate_VendorRfq_dialougebox(context);
                                                       },
                                                     ),
                                                   ),
@@ -1279,7 +1279,9 @@ class _VendorDashboardState extends State<VendorDashboard> with TickerProviderSt
                                                                                         if ((vendorController.vendorModel.processList[index].TimelineEvents[childIndex].Allowed_process.po == true) &&
                                                                                             (vendorController.vendorModel.processList[index].TimelineEvents.length == childIndex + 1))
                                                                                           TextButton(
-                                                                                            onPressed: () async {},
+                                                                                            onPressed: () async {
+                                                                                              widget.GeneratePo_dialougebox(context);
+                                                                                            },
                                                                                             child: const Text(
                                                                                               "Generate PO",
                                                                                               style: TextStyle(color: Colors.blue, fontSize: 12),

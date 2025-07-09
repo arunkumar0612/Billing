@@ -226,6 +226,62 @@ class RRFQProduct {
     );
   }
 }
+
+class POProduct {
+  final int sno;
+  final String productName;
+  final String hsn;
+  final double price;
+  final int quantity;
+
+  const POProduct({
+    required this.sno,
+    required this.productName,
+    required this.hsn,
+    required this.price,
+    required this.quantity,
+  });
+
+  /// Returns specific values based on the given index
+  String getIndex(int index) {
+    switch (index) {
+      case 0:
+        return sno.toString();
+      case 1:
+        return productName;
+      case 2:
+        return hsn.toString();
+      case 3:
+        return price.toString();
+      case 4:
+        return quantity.toString();
+      default:
+        return '';
+    }
+  }
+
+  /// Converts object to JSON format
+  Map<String, dynamic> toJson() {
+    return {
+      'productsno': sno,
+      'productname': productName,
+      'hsn': hsn,
+      'price': price,
+      'productquantity': quantity,
+    };
+  }
+
+  /// Factory constructor to create an instance from JSON
+  factory POProduct.fromJson(Map<String, dynamic> json) {
+    return POProduct(
+      sno: json['productsno'] as int,
+      productName: json['productname'] as String,
+      hsn: json['hsn'] as String,
+      price: json['price'] as double,
+      quantity: json['productquantity'] as int,
+    );
+  }
+}
 // class RFQProduct {
 //   const RFQProduct(
 //     this.sno,

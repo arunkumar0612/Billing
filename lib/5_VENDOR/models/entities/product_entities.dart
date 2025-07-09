@@ -183,6 +183,49 @@ class RFQProduct {
   }
 }
 
+class RRFQProduct {
+  final int sno;
+  final String productName;
+  final int quantity;
+
+  const RRFQProduct({
+    required this.sno,
+    required this.productName,
+    required this.quantity,
+  });
+
+  /// Returns specific values based on the given index
+  String getIndex(int index) {
+    switch (index) {
+      case 0:
+        return sno.toString();
+      case 1:
+        return productName;
+      case 2:
+        return quantity.toString();
+      default:
+        return '';
+    }
+  }
+
+  /// Converts object to JSON format
+  Map<String, dynamic> toJson() {
+    return {
+      'productsno': sno,
+      'productname': productName,
+      'productquantity': quantity,
+    };
+  }
+
+  /// Factory constructor to create an instance from JSON
+  factory RRFQProduct.fromJson(Map<String, dynamic> json) {
+    return RRFQProduct(
+      sno: json['productsno'] as int,
+      productName: json['productname'] as String,
+      quantity: json['productquantity'] as int,
+    );
+  }
+}
 // class RFQProduct {
 //   const RFQProduct(
 //     this.sno,

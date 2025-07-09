@@ -601,7 +601,9 @@ class _VendorDashboardState extends State<VendorDashboard> with TickerProviderSt
                                                     image: 'assets/images/addvendorprocess.png',
                                                     label: 'Vendor Process',
                                                     color: Primary_colors.Color4,
-                                                    onPressed: () {},
+                                                    onPressed: () {
+                                                      widget.GenerateRfq_dialougebox(context);
+                                                    },
                                                   ),
                                                 ),
                                               ),
@@ -771,105 +773,113 @@ class _VendorDashboardState extends State<VendorDashboard> with TickerProviderSt
                                             ),
                                           ),
                                         ),
-                                        Obx(() => Row(
-                                              children: [
-                                                Text(
-                                                  vendorController.vendorModel.searchQuery.value.isNotEmpty
-                                                      ? 'Found: ${vendorController.vendorModel.processList.length} Process | Selected: ${vendorController.vendorModel.selectedIndices.length}'
-                                                      : 'Total: ${vendorController.vendorModel.processList.length} Process | Selected: ${vendorController.vendorModel.selectedIndices.length}',
-                                                  style: theme.textTheme.bodyLarge?.copyWith(
-                                                      color: Colors.white, fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text8, letterSpacing: 1.0, overflow: TextOverflow.ellipsis),
-                                                ),
-                                                const SizedBox(width: 10),
-                                                if (vendorController.vendorModel.selectedIndices.isNotEmpty)
-                                                  PopupMenuButton<String>(
-                                                    splashRadius: 20,
-                                                    padding: const EdgeInsets.all(0),
-                                                    icon: const Icon(Icons.menu),
-                                                    shape: const RoundedRectangleBorder(
-                                                      borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                                                      // side: const BorderSide(color: Primary_colors.Color3, width: 2),
-                                                    ),
-                                                    color: Colors.white,
-                                                    elevation: 6,
-                                                    offset: const Offset(-10, 30),
-                                                    onSelected: (String item) {
-                                                      // Handle menu item selection
-
-                                                      switch (item) {
-                                                        case 'Archive':
-                                                          Warning_dialog(
-                                                            context: context,
-                                                            title: 'Confirmation',
-                                                            content: 'Are you sure you want to Archive this process?',
-                                                            // showCancel: true,
-                                                            onOk: () {},
-                                                          );
-                                                          break;
-                                                        case 'Unarchive':
-                                                          Warning_dialog(
-                                                            context: context,
-                                                            title: 'Confirmation',
-                                                            content: 'Are you sure you want to Unarchive this process?',
-                                                            // showCancel: true,
-                                                            onOk: () {},
-                                                          );
-                                                          break;
-                                                        case 'Modify':
-                                                          Error_dialog(
-                                                            context: context,
-                                                            title: 'Error',
-                                                            content: 'Unable to modify the process',
-                                                            // showCancel: true,
-                                                          );
-                                                          break;
-                                                        case 'Delete':
-                                                          Warning_dialog(
-                                                            context: context,
-                                                            title: 'Confirmation',
-                                                            content: 'Are you sure you want to delete this process?',
-                                                            // showCancel: true,
-                                                            onOk: () {},
-                                                          );
-                                                          break;
-                                                      }
-                                                    },
-                                                    itemBuilder: (BuildContext context) {
-                                                      // Determine the label for the archive/unarchive action
-
-                                                      return [
-                                                        PopupMenuItem<String>(
-                                                          value: vendorController.vendorModel.type.value != 0 ? 'Unarchive' : 'Archive',
-                                                          child: ListTile(
-                                                            leading: Icon(
-                                                              vendorController.vendorModel.type.value != 0 ? Icons.unarchive_outlined : Icons.archive_outlined,
-                                                              color: Colors.blueAccent,
-                                                            ),
-                                                            title: Text(
-                                                              vendorController.vendorModel.type.value != 0 ? 'Unarchive' : 'Archive',
-                                                              style: const TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        const PopupMenuItem<String>(
-                                                          value: 'Modify',
-                                                          child: ListTile(
-                                                            leading: Icon(Icons.edit_outlined, color: Colors.green),
-                                                            title: Text('Modify', style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10)),
-                                                          ),
-                                                        ),
-                                                        const PopupMenuItem<String>(
-                                                          value: 'Delete',
-                                                          child: ListTile(
-                                                            leading: Icon(Icons.delete_outline, color: Colors.redAccent),
-                                                            title: Text('Delete', style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10)),
-                                                          ),
-                                                        ),
-                                                      ];
-                                                    },
+                                        Obx(
+                                          () => Row(
+                                            children: [
+                                              Text(
+                                                vendorController.vendorModel.searchQuery.value.isNotEmpty
+                                                    ? 'Found: ${vendorController.vendorModel.processList.length} Process | Selected: ${vendorController.vendorModel.selectedIndices.length}'
+                                                    : 'Total: ${vendorController.vendorModel.processList.length} Process | Selected: ${vendorController.vendorModel.selectedIndices.length}',
+                                                style: theme.textTheme.bodyLarge?.copyWith(
+                                                    color: Colors.white, fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text8, letterSpacing: 1.0, overflow: TextOverflow.ellipsis),
+                                              ),
+                                              const SizedBox(width: 10),
+                                              if (vendorController.vendorModel.selectedIndices.isNotEmpty)
+                                                PopupMenuButton<String>(
+                                                  splashRadius: 20,
+                                                  padding: const EdgeInsets.all(0),
+                                                  icon: const Icon(Icons.menu),
+                                                  shape: const RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                                                    // side: const BorderSide(color: Primary_colors.Color3, width: 2),
                                                   ),
-                                              ],
-                                            )),
+                                                  color: Colors.white,
+                                                  elevation: 6,
+                                                  offset: const Offset(-10, 30),
+                                                  onSelected: (String item) {
+                                                    // Handle menu item selection
+
+                                                    switch (item) {
+                                                      case 'Archive':
+                                                        Warning_dialog(
+                                                          context: context,
+                                                          title: 'Confirmation',
+                                                          content: 'Are you sure you want to Archive this process?',
+                                                          // showCancel: true,
+                                                          onOk: () {},
+                                                        );
+                                                        break;
+                                                      case 'Unarchive':
+                                                        Warning_dialog(
+                                                          context: context,
+                                                          title: 'Confirmation',
+                                                          content: 'Are you sure you want to Unarchive this process?',
+                                                          // showCancel: true,
+                                                          onOk: () {},
+                                                        );
+                                                        break;
+                                                      case 'Modify':
+                                                        Error_dialog(
+                                                          context: context,
+                                                          title: 'Error',
+                                                          content: 'Unable to modify the process',
+                                                          // showCancel: true,
+                                                        );
+                                                        break;
+                                                      case 'Delete':
+                                                        Warning_dialog(
+                                                          context: context,
+                                                          title: 'Confirmation',
+                                                          content: 'Are you sure you want to delete this process?',
+                                                          // showCancel: true,
+                                                          onOk: () {},
+                                                        );
+                                                        break;
+                                                    }
+                                                  },
+                                                  itemBuilder: (BuildContext context) {
+                                                    // Determine the label for the archive/unarchive action
+
+                                                    return [
+                                                      PopupMenuItem<String>(
+                                                        value: vendorController.vendorModel.type.value != 0 ? 'Unarchive' : 'Archive',
+                                                        child: ListTile(
+                                                          leading: Icon(
+                                                            vendorController.vendorModel.type.value != 0 ? Icons.unarchive_outlined : Icons.archive_outlined,
+                                                            color: Colors.blueAccent,
+                                                          ),
+                                                          title: Text(
+                                                            vendorController.vendorModel.type.value != 0 ? 'Unarchive' : 'Archive',
+                                                            style: const TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      const PopupMenuItem<String>(
+                                                        value: 'Modify',
+                                                        child: ListTile(
+                                                          leading: Icon(Icons.edit_outlined, color: Colors.green),
+                                                          title: Text(
+                                                            'Modify',
+                                                            style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      const PopupMenuItem<String>(
+                                                        value: 'Delete',
+                                                        child: ListTile(
+                                                          leading: Icon(Icons.delete_outline, color: Colors.redAccent),
+                                                          title: Text(
+                                                            'Delete',
+                                                            style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ];
+                                                  },
+                                                ),
+                                            ],
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -1191,7 +1201,9 @@ class _VendorDashboardState extends State<VendorDashboard> with TickerProviderSt
                                                                                     mainAxisAlignment: MainAxisAlignment.start,
                                                                                     children: [
                                                                                       TextButton(
-                                                                                        onPressed: () async {},
+                                                                                        onPressed: () {
+                                                                                          widget.GenerateRrfq_dialougebox(context);
+                                                                                        },
                                                                                         child: const Text(
                                                                                           "Revised RFQ",
                                                                                           style: TextStyle(color: Colors.blue, fontSize: 12),

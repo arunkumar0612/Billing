@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/Quote_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/RFQ_actions.dart';
+import 'package:ssipl_billing/5_VENDOR/controllers/RRFQ_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/views/Generate_RFQ/generateRFQ.dart';
+import 'package:ssipl_billing/5_VENDOR/views/Generate_RRFQ/generateRRFQ.dart';
 import 'package:ssipl_billing/5_VENDOR/views/Upload_Quote/uploadQuote.dart';
 import 'package:ssipl_billing/API/api.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
@@ -25,6 +27,7 @@ mixin VendorServices {
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
   final VendorController vendorController = Get.find<VendorController>();
   final vendor_RfqController rfqController = Get.find<vendor_RfqController>();
+  final vendor_RrfqController rrfqController = Get.find<vendor_RrfqController>();
   final loader = LoadingOverlay();
   Future<void> Get_vendorProcessList(int vendorid) async {
     try {
@@ -106,6 +109,69 @@ mixin VendorServices {
                       if (proceed == true) {
                         Navigator.of(context).pop();
                         rfqController.resetData();
+                      }
+                    } else {
+                      Navigator.of(context).pop();
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  dynamic GenerateRrfq_dialougebox(context) async {
+    await showDialog(
+      context: context,
+      barrierDismissible: false, // Prevents closing the dialog by clicking outside
+      builder: (context) {
+        return AlertDialog(
+          contentPadding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          backgroundColor: Primary_colors.Dark,
+          content: Stack(
+            children: [
+              SizedBox(
+                height: 650,
+                width: 1300,
+                child: GenerateRrfq(),
+              ),
+              Positioned(
+                top: 3,
+                right: 0,
+                child: IconButton(
+                  icon: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: const Color.fromARGB(255, 219, 216, 216),
+                    ),
+                    height: 30,
+                    width: 30,
+                    child: const Icon(Icons.close, color: Colors.red),
+                  ),
+                  onPressed: () async {
+                    // Check if the data has any value
+                    // || ( rfqController.rfqModel.Invoice_gstTotals.isNotEmpty)
+                    if ((rrfqController.rrfqModel.Rrfq_products.isNotEmpty) ||
+                        (rrfqController.rrfqModel.Rrfq_noteList.isNotEmpty) ||
+                        (rrfqController.rrfqModel.Rrfq_recommendationList.isNotEmpty) ||
+                        // (rfqController.rfqModel.clientAddressNameController.value.text != "") ||
+                        (rrfqController.rrfqModel.AddressController.value.text != "") ||
+                        // (rfqController.rfqModel.billingAddressNameController.value.text != "") ||
+                        // (rfqController.rfqModel.billingAddressController.value.text != "") ||
+                        (rrfqController.rrfqModel.Rrfq_no.value != "") ||
+                        (rrfqController.rrfqModel.AddressController.value.text != "") ||
+                        (rrfqController.rrfqModel.GSTIN_Controller.value.text != "") ||
+                        (rrfqController.rrfqModel.PAN_Controller.value.text != "") ||
+                        (rrfqController.rrfqModel.recommendationHeadingController.value.text != "")) {
+                      // Show confirmation dialog
+                      bool? proceed = await Warning_dialog(context: context, title: 'Warning', content: "The data may be lost. Do you want to proceed?");
+                      if (proceed == true) {
+                        Navigator.of(context).pop();
+                        rrfqController.resetData();
                       }
                     } else {
                       Navigator.of(context).pop();

@@ -22,7 +22,7 @@ mixin RfqdetailsService {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.RFQ_preloader);
       // Map<String, dynamic>? response = await apiController.GetbyToken(API.RFQ_preloader);
-      print(response);
+      // print(response);
       if (response?['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response ?? {});
         if (value.code) {
@@ -78,9 +78,7 @@ mixin RfqdetailsService {
     }
   }
 
-  void get_VendorList(
-    context,
-  ) async {
+  void get_VendorList(context) async {
     try {
       Map<String, dynamic> body = {"vendorid": 0};
       Map<String, dynamic>? response = await apiController.GetbyQueryString(body, API.fetch_vendorList);
@@ -103,7 +101,6 @@ mixin RfqdetailsService {
       Navigator.of(context).pop();
     }
   }
-
   // void get_productSuggestionList(context) async {
   //   try {
   //     Map<String, dynamic>? response = await apiController.GetbyToken(API.sales_getProduct_SUGG_List);

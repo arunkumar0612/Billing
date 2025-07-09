@@ -264,7 +264,7 @@ class VendorList {
   String contactPersonPhone;
   String email;
   String businessType;
-  int yearOfEstablishment;
+  String yearOfEstablishment;
   String gstNumber;
   String panNumber;
   String annualTurnover;

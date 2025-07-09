@@ -2,8 +2,9 @@ import 'package:ssipl_billing/2_BILLING/Vouchers/services/voucher_service.dart';
 import 'package:ssipl_billing/2_BILLING/_main_BILLING/services/billing_services.dart';
 import 'package:ssipl_billing/3_SUBSCRIPTION/services/subscription_service.dart';
 import 'package:ssipl_billing/4_SALES/services/sales_service.dart';
+import 'package:ssipl_billing/5_VENDOR/services/vendor_service.dart';
 
-class Refresher with SalesServices, SubscriptionServices, VoucherService, main_BillingService {
+class Refresher with SalesServices, SubscriptionServices, VoucherService, main_BillingService, VendorServices {
   static final Refresher _instance = Refresher._internal();
   factory Refresher() => _instance;
   Refresher._internal();
@@ -13,5 +14,6 @@ class Refresher with SalesServices, SubscriptionServices, VoucherService, main_B
     await voucher_refresh();
     await sales_refresh();
     await subscription_refresh();
+    await vendor_refresh();
   }
 }

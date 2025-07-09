@@ -403,9 +403,14 @@ class vendor_RfqController extends GetxController {
 
   // void on_vendorSelected() {}
   void update_vendorList(CMDlResponse value) {
-    rfqModel.vendorList.clear();
-    for (int i = 0; i < value.data.length; i++) {
-      rfqModel.vendorList.add(VendorList.fromJson(value.data[i]));
+    try {
+      rfqModel.vendorList.clear();
+      for (int i = 0; i < value.data.length; i++) {
+        rfqModel.vendorList.add(VendorList.fromJson(value.data[i]));
+      }
+      print(rfqModel.vendorList);
+    } catch (e) {
+      print('$e');
     }
   }
 

@@ -3,9 +3,11 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ssipl_billing/5_VENDOR/models/entities/manual_onboard_entities.dart';
 
 class ManualOnboardModel extends GetxController with GetSingleTickerProviderStateMixin {
   final Rxn<TabController> tabController = Rxn<TabController>();
+  final mainData = Rxn<ManualOnboard>();
 
   ///Manual onboard KYC Details
   final vendorNameController = TextEditingController().obs;

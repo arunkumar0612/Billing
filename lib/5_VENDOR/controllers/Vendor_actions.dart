@@ -13,10 +13,22 @@ class VendorController extends GetxController {
   // final VendorController vendorController = Get.find<VendorController>();
   var vendorfilteredModel = VendorModel();
 
-  void addToVendorList(CMDlResponse value) {
+  void addToVendor_customerList(CMDlResponse value) {
+    vendorModel.processcustomerList.clear();
+    vendorfilteredModel.processcustomerList.clear();
+
     for (int i = 0; i < value.data.length; i++) {
-      vendorModel.vendorList.add(Vendor.fromJson(value, i));
+      vendorModel.processcustomerList.add(Active_vendorList.fromJson(value, i));
+      vendorfilteredModel.processcustomerList.add(Active_vendorList.fromJson(value, i));
     }
+  }
+
+  void updatetype(int value) {
+    vendorModel.type.value = value;
+  }
+
+  void update_showVendorProcess(int? value) {
+    vendorModel.showvendorprocess.value = value;
   }
 
   Future<void> PDFfileApiData(CMDmResponse value) async {
@@ -29,13 +41,17 @@ class VendorController extends GetxController {
     vendorModel.pdfFile.value = value;
   }
 
-  void addToProcessvendorList(CMDlResponse value) {
-    for (int i = 0; i < value.data.length; i++) {
-      vendorModel.processvendorList.add(Processvendor.fromJson(value, i));
-    }
-    vendorfilteredModel.processvendorList.assignAll(vendorModel.processvendorList);
-    // print('object');
+  void setProcessID(int processid) {
+    vendorModel.processID.value = processid;
   }
+
+  // void addToProcessvendorList(CMDlResponse value) {
+  //   for (int i = 0; i < value.data.length; i++) {
+  //     vendorModel.processvendorList.add(Processvendor.fromJson(value, i));
+  //   }
+  //   vendorfilteredModel.processvendorList.assignAll(vendorModel.processvendorList);
+  //   // print('object');
+  // }
 
   void addToProcessList(CMDlResponse value) {
     for (int i = 0; i < value.data.length; i++) {
@@ -46,10 +62,6 @@ class VendorController extends GetxController {
 
   void updatevendorId(int value) {
     vendorModel.vendorId.value = value;
-  }
-
-  void updateshowvendorprocess(int? value) {
-    vendorModel.showvendorprocess.value = value;
   }
 
   // Future<void> PDFfileApiData(CMDmResponse value) async {
@@ -74,10 +86,6 @@ class VendorController extends GetxController {
     vendorModel.CCemailToggle.value = value;
   }
 
-  void updatetype(int value) {
-    vendorModel.type.value = value;
-  }
-
   void updateprofilepage(bool value) {
     vendorModel.isprofilepage.value = value;
   }
@@ -97,14 +105,17 @@ class VendorController extends GetxController {
 
     if (query.isEmpty) {
       vendorModel.processList.assignAll(vendorfilteredModel.processList);
-      vendorModel.processvendorList.assignAll(vendorfilteredModel.processvendorList);
+      vendorModel.processcustomerList.assignAll(vendorfilteredModel.processcustomerList);
     } else {
-      var filteredProcesses = vendorfilteredModel.processList.where((process) => process.title.toLowerCase().contains(query.toLowerCase()) || process.vendor_name.toLowerCase().contains(query.toLowerCase()) || process.Process_date.toLowerCase().contains(query.toLowerCase()));
+      var filteredProcesses = vendorfilteredModel.processList.where((process) =>
+          process.title.toLowerCase().contains(query.toLowerCase()) ||
+          process.vendor_name.toLowerCase().contains(query.toLowerCase()) ||
+          process.Process_date.toLowerCase().contains(query.toLowerCase()));
 
-      var filteredVendors = vendorfilteredModel.processvendorList.where((vendor) => vendor.vendorName.toLowerCase().contains(query.toLowerCase()) || vendor.vendor_phoneno.toLowerCase().contains(query.toLowerCase()) || vendor.vendor_gstno.toLowerCase().contains(query.toLowerCase()));
+      var filteredVendors = vendorfilteredModel.processcustomerList.where((vendor) => vendor.vendorName.toLowerCase().contains(query.toLowerCase()));
 
       vendorModel.processList.assignAll(filteredProcesses);
-      vendorModel.processvendorList.assignAll(filteredVendors);
+      vendorModel.processcustomerList.assignAll(filteredVendors);
     }
   }
 
@@ -146,13 +157,14 @@ class VendorController extends GetxController {
 
   void resetData() {
     // CLIENT DATA
-    vendorModel.vendorList.clear();
-    vendorModel.processvendorList.clear();
-
+    // vendorModel.vendorList.clear();
+    vendorModel.processcustomerList.clear();
+    vendorModel.processID.value = null;
     vendorModel.processList.clear();
     vendorModel.showvendorprocess.value = null;
     vendorModel.vendorId.value = null;
     vendorModel.pdfFile.value = null;
+    vendorModel.type.value = 0;
 
     vendorModel.selectedIndices.clear();
     vendorModel.isAllSelected.value = false;

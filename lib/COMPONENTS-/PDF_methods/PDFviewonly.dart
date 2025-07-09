@@ -70,7 +70,7 @@ class _PDFviewonlyState extends State<PDFviewonly> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      insetPadding: const EdgeInsets.all(20),
+      insetPadding: const EdgeInsets.all(0),
       child: SizedBox(
         width: MediaQuery.of(context).size.width * 0.35,
         height: MediaQuery.of(context).size.height * 0.95,

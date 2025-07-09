@@ -22,7 +22,7 @@ mixin RfqdetailsService {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.RFQ_preloader);
       // Map<String, dynamic>? response = await apiController.GetbyToken(API.RFQ_preloader);
-      print(response);
+      // print(response);
       if (response?['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response ?? {});
         if (value.code) {

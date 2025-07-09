@@ -1235,7 +1235,19 @@ class _VendorDashboardState extends State<VendorDashboard> with TickerProviderSt
                                                                                         if ((vendorController.vendorModel.processList[index].TimelineEvents[childIndex].Allowed_process.rrfq == true) &&
                                                                                             (vendorController.vendorModel.processList[index].TimelineEvents.length == childIndex + 1))
                                                                                           TextButton(
-                                                                                            onPressed: () async {},
+                                                                                            onPressed: () async {
+                                                                                              bool success = await widget.Get_vendorPDFfile(
+                                                                                                  context: context,
+                                                                                                  eventid: vendorController.vendorModel.processList[index].TimelineEvents[childIndex].Eventid,
+                                                                                                  eventtype: "rrfq");
+
+                                                                                              if (success) {
+                                                                                                widget.GenerateRrfq_dialougebox(context);
+                                                                                                vendorController.setProcessID(vendorController.vendorModel.processList[index].processid);
+                                                                                              }
+
+                                                                                              // widget.GenerateRrfq_dialougebox(context);
+                                                                                            },
                                                                                             child: const Text(
                                                                                               "Revised RFQ",
                                                                                               style: TextStyle(color: Colors.blue, fontSize: 12),

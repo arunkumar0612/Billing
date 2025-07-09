@@ -26,7 +26,7 @@ mixin VendorServices {
   final Vendor_QuoteController quoteController = Get.find<Vendor_QuoteController>();
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
   final VendorController vendorController = Get.find<VendorController>();
-  final vendor_RfqController rfqController = Get.find<vendor_RfqController>();
+  final vendor_RfqController vendor_rfqController = Get.find<vendor_RfqController>();
   final vendor_RrfqController rrfqController = Get.find<vendor_RrfqController>();
   final loader = LoadingOverlay();
   Future<void> Get_vendorProcessList(int vendorid) async {
@@ -38,7 +38,7 @@ mixin VendorServices {
           // await Basic_dialog(context: context,showCancel: false, title: 'Process List', content: "Process List fetched successfully", onOk: () {});
           vendorController.vendorModel.processList.clear();
           vendorController.addToProcessList(value);
-          // rfqController.search(rfqController.rfqModel.searchQuery.value);
+          // vendor_rfqController.search(vendor_rfqController.rfqModel.searchQuery.value);
         } else {
           if (kDebugMode) {
             print("error : ${value.message}");
@@ -90,7 +90,7 @@ mixin VendorServices {
     }
   }
 
-  dynamic GenerateRfq_dialougebox(context) async {
+  dynamic Generate_VendorRfq_dialougebox(context) async {
     await showDialog(
       context: context,
       barrierDismissible: false, // Prevents closing the dialog by clicking outside
@@ -121,25 +121,25 @@ mixin VendorServices {
                   ),
                   onPressed: () async {
                     // Check if the data has any value
-                    // || ( rfqController.rfqModel.Invoice_gstTotals.isNotEmpty)
-                    if ((rfqController.rfqModel.Rfq_products.isNotEmpty) ||
-                        (rfqController.rfqModel.Rfq_noteList.isNotEmpty) ||
-                        (rfqController.rfqModel.Rfq_recommendationList.isNotEmpty) ||
-                        // (rfqController.rfqModel.clientAddressNameController.value.text != "") ||
-                        (rfqController.rfqModel.AddressController.value.text != "") ||
-                        // (rfqController.rfqModel.billingAddressNameController.value.text != "") ||
-                        // (rfqController.rfqModel.billingAddressController.value.text != "") ||
-                        (rfqController.rfqModel.Rfq_no.value != "") ||
-                        (rfqController.rfqModel.AddressController.value.text != "") ||
-                        (rfqController.rfqModel.GSTIN_Controller.value.text != "") ||
-                        (rfqController.rfqModel.PAN_Controller.value.text != "") ||
-                        (rfqController.rfqModel.TitleController.value.text != "") ||
-                        (rfqController.rfqModel.recommendationHeadingController.value.text != "")) {
+                    // || ( vendor_rfqController.rfqModel.Invoice_gstTotals.isNotEmpty)
+                    if ((vendor_rfqController.rfqModel.Rfq_products.isNotEmpty) ||
+                        (vendor_rfqController.rfqModel.Rfq_noteList.isNotEmpty) ||
+                        (vendor_rfqController.rfqModel.Rfq_recommendationList.isNotEmpty) ||
+                        // (vendor_rfqController.rfqModel.clientAddressNameController.value.text != "") ||
+                        (vendor_rfqController.rfqModel.AddressController.value.text != "") ||
+                        // (vendor_rfqController.rfqModel.billingAddressNameController.value.text != "") ||
+                        // (vendor_rfqController.rfqModel.billingAddressController.value.text != "") ||
+                        (vendor_rfqController.rfqModel.Rfq_no.value != "") ||
+                        (vendor_rfqController.rfqModel.AddressController.value.text != "") ||
+                        (vendor_rfqController.rfqModel.GSTIN_Controller.value.text != "") ||
+                        (vendor_rfqController.rfqModel.PAN_Controller.value.text != "") ||
+                        (vendor_rfqController.rfqModel.TitleController.value.text != "") ||
+                        (vendor_rfqController.rfqModel.recommendationHeadingController.value.text != "")) {
                       // Show confirmation dialog
                       bool? proceed = await Warning_dialog(context: context, title: 'Warning', content: "The data may be lost. Do you want to proceed?");
                       if (proceed == true) {
                         Navigator.of(context).pop();
-                        rfqController.resetData();
+                        vendor_rfqController.resetData();
                       }
                     } else {
                       Navigator.of(context).pop();
@@ -185,14 +185,14 @@ mixin VendorServices {
                   ),
                   onPressed: () async {
                     // Check if the data has any value
-                    // || ( rfqController.rfqModel.Invoice_gstTotals.isNotEmpty)
+                    // || ( vendor_rfqController.rfqModel.Invoice_gstTotals.isNotEmpty)
                     if ((rrfqController.rrfqModel.Rrfq_products.isNotEmpty) ||
                         (rrfqController.rrfqModel.Rrfq_noteList.isNotEmpty) ||
                         (rrfqController.rrfqModel.Rrfq_recommendationList.isNotEmpty) ||
-                        // (rfqController.rfqModel.clientAddressNameController.value.text != "") ||
+                        // (vendor_rfqController.rfqModel.clientAddressNameController.value.text != "") ||
                         (rrfqController.rrfqModel.AddressController.value.text != "") ||
-                        // (rfqController.rfqModel.billingAddressNameController.value.text != "") ||
-                        // (rfqController.rfqModel.billingAddressController.value.text != "") ||
+                        // (vendor_rfqController.rfqModel.billingAddressNameController.value.text != "") ||
+                        // (vendor_rfqController.rfqModel.billingAddressController.value.text != "") ||
                         (rrfqController.rrfqModel.Rrfq_no.value != "") ||
                         (rrfqController.rrfqModel.AddressController.value.text != "") ||
                         (rrfqController.rrfqModel.GSTIN_Controller.value.text != "") ||
@@ -248,7 +248,7 @@ mixin VendorServices {
                   ),
                   onPressed: () async {
                     // Check if the data has any value
-                    // || ( rfqController.rfqModel.Invoice_gstTotals.isNotEmpty)
+                    // || ( vendor_rfqController.rfqModel.Invoice_gstTotals.isNotEmpty)
                     if ((quoteController.quoteModel.selectedPdf.value != null) || (quoteController.quoteModel.feedbackController.value.text != "")) {
                       // Show confirmation dialog
                       bool? proceed = await Warning_dialog(context: context, title: 'Warning', content: "The data may be lost. Do you want to proceed?");

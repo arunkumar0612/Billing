@@ -65,8 +65,7 @@ class _GenerateRrfqState extends State<GenerateRrfq> with SingleTickerProviderSt
                     child: GestureDetector(
                       child: Stack(
                         children: [
-                          // if (vendorController.vendorModel.pdfFile.value != null)
-                          // PDFviewonly.dialogWidget(vendorController.vendorModel.pdfFile.value!),
+                          if (vendorController.vendorModel.pdfFile.value != null) PDFviewonly.dialogWidget(vendorController.vendorModel.pdfFile.value!),
                           Align(
                             alignment: AlignmentDirectional.bottomEnd,
                             child: Padding(
@@ -81,8 +80,7 @@ class _GenerateRrfqState extends State<GenerateRrfq> with SingleTickerProviderSt
                         ],
                       ),
                       onDoubleTap: () {
-                        // PDFviewonly(context, vendorController.vendorModel.pdfFile.value!);
-                        // _showReadablePdf();
+                        PDFviewonly.show(context, vendorController.vendorModel.pdfFile.value!);
                       },
                     ),
                   ),

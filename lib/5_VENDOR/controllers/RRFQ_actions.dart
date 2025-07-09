@@ -69,6 +69,18 @@ class vendor_RrfqController extends GetxController {
     rrfqModel.AddressController.value.text = text;
   }
 
+  void updateGSTIN(String text) {
+    rrfqModel.GSTIN_Controller.value.text = text;
+  }
+
+  void updatePAN(String text) {
+    rrfqModel.PAN_Controller.value.text = text;
+  }
+
+  void update_contactPerson(String text) {
+    rrfqModel.contactPerson_Controller.value.text = text;
+  }
+
   // void updateBillingAddressName(String text) {
   //   rrfqModel.billingAddressNameController.value.text = text;
   // }
@@ -76,10 +88,6 @@ class vendor_RrfqController extends GetxController {
   // void updateBillingAddress(String text) {
   //   rrfqModel.billingAddressController.value.text = text;
   // }
-
-  void updatePhone(String phone) {
-    rrfqModel.phoneController.value.text = phone;
-  }
 
   void updateEmail(String email) {
     rrfqModel.emailController.value.text = email;
@@ -152,6 +160,14 @@ class vendor_RrfqController extends GetxController {
   // Update feedback text
   void updateFeedback(String feedback) {
     rrfqModel.feedbackController.value.text = feedback;
+  }
+
+  void updateVendorID(int vendorID) {
+    rrfqModel.vendorID.value = vendorID;
+  }
+
+  void updateVendorName(String vendorName) {
+    rrfqModel.vendorName.value = vendorName;
   }
 
   // Update file path text
@@ -378,8 +394,17 @@ class vendor_RrfqController extends GetxController {
   }
 
   void update_requiredData(CMDmResponse value) {
-    RequiredData instance = RequiredData.fromJson(value);
-    updateRrfqnumber(instance.eventnumber);
+    RequiredData instance = RequiredData.fromJson(value.data);
+    updateVendorID(instance.vendorRfqDetails.vendorId);
+    updateVendorName(instance.vendorRfqDetails.vendorName);
+    updateRrfqnumber(instance.rrfqId);
+    updateAddress(instance.vendorRfqDetails.vendorAddress);
+    updateGSTIN(instance.vendorRfqDetails.gstin);
+    updatePAN(instance.vendorRfqDetails.pan);
+    update_contactPerson(instance.vendorRfqDetails.contactPerson);
+    updatePhoneNumber(instance.vendorRfqDetails.phoneNo);
+    updateEmail(instance.vendorRfqDetails.emailId);
+    updateProducts(instance.vendorRfqDetails.products);
 
     // updateRrfqnumber(instance.eventnumber);
     // updateTitle(instance.title!);

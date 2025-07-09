@@ -1,5 +1,4 @@
 import 'package:ssipl_billing/5_VENDOR/models/entities/product_entities.dart';
-import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 
 class Recommendation {
   final String key;
@@ -65,53 +64,143 @@ class RrfqGSTtotals {
 }
 
 class RequiredData {
-  final String eventnumber;
-  // final String? title;
-  // final String? name;
-  // final String? emailId;
-  // final String? phoneNo;
-  // final String? address;
-  // final String? gst;
-  // final String? billingAddressName;
-  // final String? billingAddress;
-  // final List<RRFQProduct> product;
+  final String rrfqId;
+  final VendorRfqDetails vendorRfqDetails;
+
   RequiredData({
-    required this.eventnumber,
-    // required this.title,
-    // required this.name,
-    // required this.emailId,
-    // required this.phoneNo,
-    // required this.address,
-    // required this.gst,
-    // required this.billingAddressName,
-    // required this.billingAddress,
-    // required this.product
+    required this.rrfqId,
+    required this.vendorRfqDetails,
   });
 
-  factory RequiredData.fromJson(CMDmResponse json) {
+  factory RequiredData.fromJson(Map<String, dynamic> json) {
     return RequiredData(
-      eventnumber: json.data['rrfq_id'] as String,
-      // title: json.data['title'] as String,
-      // name: json.data['client_addressname'] as String,
-      // emailId: json.data['emailid'] as String,
-      // phoneNo: json.data['contact_number'] as String,
-      // address: json.data['client_address'] as String,
-      // gst: json.data['gstnumber'] as String,
-      // billingAddressName: json.data['billingaddress_name'] as String,
-      // billingAddress: json.data['billing_address'] as String,
-      // product: (json.data['product'] as List<dynamic>)
-      //     .map((e) => RRFQProduct.fromJson(e)) // ✅ Convert each item to RrfqProduct
-      //     .toList(),
+      rrfqId: json['rrfq_id'],
+      vendorRfqDetails: VendorRfqDetails.fromJson(json['vendor_rfq_details']),
     );
   }
+
   Map<String, dynamic> toJson() {
     return {
-      'ID': eventnumber,
+      'rrfq_id': rrfqId,
+      'vendor_rfq_details': vendorRfqDetails.toJson(),
     };
   }
 }
 
+class VendorRfqDetails {
+  final int id;
+  final String rfqGenId;
+  final int vendorId;
+  final String vendorName;
+  final String gstin;
+  final String pan;
+  final String contactPerson;
+  final String vendorAddress;
+  final String title;
+  final String emailId;
+  final String phoneNo;
+  final String ccEmail;
+  final int messageType;
+  final String feedback;
+  final String rfqDate;
+  final List<String> notes;
+  final List<RRFQProduct> products;
+
+  VendorRfqDetails({
+    required this.id,
+    required this.rfqGenId,
+    required this.vendorId,
+    required this.vendorName,
+    required this.gstin,
+    required this.pan,
+    required this.contactPerson,
+    required this.vendorAddress,
+    required this.title,
+    required this.emailId,
+    required this.phoneNo,
+    required this.ccEmail,
+    required this.messageType,
+    required this.feedback,
+    required this.rfqDate,
+    required this.notes,
+    required this.products,
+  });
+
+  factory VendorRfqDetails.fromJson(Map<String, dynamic> json) {
+    return VendorRfqDetails(
+      id: json['id'],
+      rfqGenId: json['rfqgenid'],
+      vendorId: json['vendor_id'],
+      vendorName: json['vendor_name'],
+      gstin: json['gstin'],
+      pan: json['pan'],
+      contactPerson: json['contact_person'],
+      vendorAddress: json['vendor_address'],
+      title: json['title'],
+      emailId: json['email_id'],
+      phoneNo: json['phone_no'],
+      ccEmail: json['cc_email'],
+      messageType: json['message_type'],
+      feedback: json['feedback'],
+      rfqDate: json['rfq_date'],
+      notes: List<String>.from(json['notes']),
+      products: (json['products'] as List).map((e) => RRFQProduct.fromJson(e)).toList(),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'rfqgenid': rfqGenId,
+      'vendor_id': vendorId,
+      'vendor_name': vendorName,
+      'gstin': gstin,
+      'pan': pan,
+      'contact_person': contactPerson,
+      'vendor_address': vendorAddress,
+      'title': title,
+      'email_id': emailId,
+      'phone_no': phoneNo,
+      'cc_email': ccEmail,
+      'message_type': messageType,
+      'feedback': feedback,
+      'rfq_date': rfqDate,
+      'notes': notes,
+      'products': products.map((e) => e.toJson()).toList(),
+    };
+  }
+}
+
+// class Product {
+//   final int productsNo;
+//   final String productName;
+//   final int productQuantity;
+
+//   Product({
+//     required this.productsNo,
+//     required this.productName,
+//     required this.productQuantity,
+//   });
+
+//   factory Product.fromJson(Map<String, dynamic> json) {
+//     return Product(
+//       productsNo: json['productsno'],
+//       productName: json['productname'],
+//       productQuantity: json['productquantity'],
+//     );
+//   }
+
+//   Map<String, dynamic> toJson() {
+//     return {
+//       'productsno': productsNo,
+//       'productname': productName,
+//       'productquantity': productQuantity,
+//     };
+//   }
+// }
+
 class Post_Rrfq {
+  int? processid;
   int? vendorID;
   String? vendorName;
   String? vendorAddress;
@@ -132,6 +221,7 @@ class Post_Rrfq {
   String? ccEmail;
 
   Post_Rrfq({
+    required this.processid,
     required this.vendorID,
     required this.vendorName,
     required this.vendorAddress,
@@ -151,6 +241,7 @@ class Post_Rrfq {
   });
 
   factory Post_Rrfq.fromJson({
+    required int processid,
     required int vendorID,
     required String vendorName,
     required String vendorAddress,
@@ -169,6 +260,8 @@ class Post_Rrfq {
     required String ccEmail,
   }) {
     return Post_Rrfq(
+      processid: processid,
+
       GSTIN: GSTIN,
       PAN: PAN,
       Contact_person: Contact_person,
@@ -191,6 +284,7 @@ class Post_Rrfq {
 
   Map<String, dynamic> toJson() {
     return {
+      "processid": processid,
       "vendorname": vendorName,
       "vendorid": vendorID,
       "GSTIN": GSTIN,

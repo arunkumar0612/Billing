@@ -120,4 +120,6 @@ class API {
   static String vendor_deleteprocess_API = "http://192.168.0.111:8081/vendor/deleteprocess";
   static String vendor_archiveprocess_API = "http://192.168.0.111:8081/vendor/archiveprocess";
   static String fetch_vendorList = "http://192.168.0.111:8081/vendor/getvendor";
+  static String RRFQ_preloader = "http://192.168.0.111:8081/vendor/rrfqpreloader";
+  static String vendor_createRrfq = "http://192.168.0.111:8081/vendor/postrrfq";
 }

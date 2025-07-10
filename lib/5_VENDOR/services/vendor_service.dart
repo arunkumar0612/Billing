@@ -3,6 +3,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ssipl_billing/5_VENDOR/controllers/DC_actions.dart';
+import 'package:ssipl_billing/5_VENDOR/controllers/Invoice_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/PO_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/Quote_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/RFQ_actions.dart';
@@ -10,6 +12,8 @@ import 'package:ssipl_billing/5_VENDOR/controllers/RRFQ_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/views/Generate_PO/generatePO.dart';
 import 'package:ssipl_billing/5_VENDOR/views/Generate_RFQ/generateRFQ.dart';
 import 'package:ssipl_billing/5_VENDOR/views/Generate_RRFQ/generateRRFQ.dart';
+import 'package:ssipl_billing/5_VENDOR/views/Upload_DC/uploadDC.dart';
+import 'package:ssipl_billing/5_VENDOR/views/Upload_Invoice/uploadInvoice.dart';
 import 'package:ssipl_billing/5_VENDOR/views/Upload_Quote/uploadQuote.dart';
 import 'package:ssipl_billing/API/api.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
@@ -26,6 +30,8 @@ import '../controllers/Vendor_actions.dart';
 mixin VendorServices {
   final Invoker apiController = Get.find<Invoker>();
   final Vendor_QuoteController quoteController = Get.find<Vendor_QuoteController>();
+  final Vendor_InvoiceController invoiceController = Get.find<Vendor_InvoiceController>();
+  final Vendor_DCController dcController = Get.find<Vendor_DCController>();
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
   final VendorController vendorController = Get.find<VendorController>();
   final vendor_RfqController rfqController = Get.find<vendor_RfqController>();
@@ -289,7 +295,7 @@ mixin VendorServices {
       barrierDismissible: false, // Prevents closing the dialog by clicking outside
       builder: (context) {
         return AlertDialog(
-          contentPadding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+          contentPadding: const EdgeInsets.only(left: 10, right: 10, bottom: 10, top: 10),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           backgroundColor: Primary_colors.Dark,
           content: Stack(
@@ -335,6 +341,109 @@ mixin VendorServices {
     );
   }
 
+  dynamic uploadInvoice_dialougebox(context) async {
+    await showDialog(
+      context: context,
+      barrierDismissible: false, // Prevents closing the dialog by clicking outside
+      builder: (context) {
+        return AlertDialog(
+          contentPadding: const EdgeInsets.only(left: 10, right: 10, bottom: 10, top: 10),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          backgroundColor: Primary_colors.Dark,
+          content: Stack(
+            children: [
+              SizedBox(
+                height: 650,
+                width: 900,
+                child: UploadInvoice(),
+              ),
+              Positioned(
+                top: 3,
+                right: 0,
+                child: IconButton(
+                  icon: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: const Color.fromARGB(255, 219, 216, 216),
+                    ),
+                    height: 30,
+                    width: 30,
+                    child: const Icon(Icons.close, color: Colors.red),
+                  ),
+                  onPressed: () async {
+                    // Check if the data has any value
+                    // || ( rfqController.rfqModel.Invoice_gstTotals.isNotEmpty)
+                    if ((invoiceController.invoiceModel.selectedPdf.value != null) || (invoiceController.invoiceModel.feedbackController.value.text != "")) {
+                      // Show confirmation dialog
+                      bool? proceed = await Warning_dialog(context: context, title: 'Warning', content: "The data may be lost. Do you want to proceed?");
+                      if (proceed == true) {
+                        Navigator.of(context).pop();
+                        invoiceController.resetData();
+                      }
+                    } else {
+                      Navigator.of(context).pop();
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  dynamic uploadDC_dialougebox(context) async {
+    await showDialog(
+      context: context,
+      barrierDismissible: false, // Prevents closing the dialog by clicking outside
+      builder: (context) {
+        return AlertDialog(
+          contentPadding: const EdgeInsets.only(left: 10, right: 10, bottom: 10, top: 10),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          backgroundColor: Primary_colors.Dark,
+          content: Stack(
+            children: [
+              SizedBox(
+                height: 650,
+                width: 900,
+                child: UploadDC(),
+              ),
+              Positioned(
+                top: 3,
+                right: 0,
+                child: IconButton(
+                  icon: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: const Color.fromARGB(255, 219, 216, 216),
+                    ),
+                    height: 30,
+                    width: 30,
+                    child: const Icon(Icons.close, color: Colors.red),
+                  ),
+                  onPressed: () async {
+                    // Check if the data has any value
+                    // || ( rfqController.rfqModel.Invoice_gstTotals.isNotEmpty)
+                    if ((dcController.dcModel.selectedPdf.value != null) || (dcController.dcModel.feedbackController.value.text != "")) {
+                      // Show confirmation dialog
+                      bool? proceed = await Warning_dialog(context: context, title: 'Warning', content: "The data may be lost. Do you want to proceed?");
+                      if (proceed == true) {
+                        Navigator.of(context).pop();
+                        dcController.resetData();
+                      }
+                    } else {
+                      Navigator.of(context).pop();
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 // // ##################################################################################################################################################################################################################################################################################################################################################################
 
   String formatNumber(int number) {

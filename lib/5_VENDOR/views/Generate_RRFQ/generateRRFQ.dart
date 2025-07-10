@@ -9,7 +9,7 @@ import 'package:ssipl_billing/5_VENDOR/views/Generate_RRFQ/RRFQ_details.dart';
 import 'package:ssipl_billing/5_VENDOR/views/Generate_RRFQ/RRFQ_note.dart';
 import 'package:ssipl_billing/5_VENDOR/views/Generate_RRFQ/RRFQ_products.dart';
 import 'package:ssipl_billing/5_VENDOR/views/Generate_RRFQ/post_RRFQ.dart';
-import 'package:ssipl_billing/COMPONENTS-/PDF_methods/PDFviewonly.dart';
+// import 'package:ssipl_billing/COMPONENTS-/PDF_methods/PDFviewonly.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 
 class GenerateRrfq extends StatefulWidget with RrfqdetailsService {

@@ -3,21 +3,21 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/5_VENDOR/controllers/Quote_actions.dart';
+import 'package:ssipl_billing/5_VENDOR/controllers/DC_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/Vendor_actions.dart';
-import 'package:ssipl_billing/5_VENDOR/services/Quote_services/QuoteService.dart';
+import 'package:ssipl_billing/5_VENDOR/services/DC_services/DCService.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 import 'package:ssipl_billing/UTILS/validators/minimal_validators.dart';
 
-class UploadQuote extends StatefulWidget with Quoteservice {
-  UploadQuote({super.key});
+class UploadDC extends StatefulWidget with DCservice {
+  UploadDC({super.key});
 
   @override
-  _UploadQuoteState createState() => _UploadQuoteState();
+  _UploadDCState createState() => _UploadDCState();
 }
 
-class _UploadQuoteState extends State<UploadQuote> with SingleTickerProviderStateMixin {
-  final Vendor_QuoteController quoteController = Get.find<Vendor_QuoteController>();
+class _UploadDCState extends State<UploadDC> with SingleTickerProviderStateMixin {
+  final Vendor_DCController dcController = Get.find<Vendor_DCController>();
   final VendorController vendorController = Get.find<VendorController>();
 
   @override
@@ -55,7 +55,7 @@ class _UploadQuoteState extends State<UploadQuote> with SingleTickerProviderStat
         ),
         const SizedBox(height: 10),
         Text(
-          'Submit Your Quote',
+          'Submit Your DC',
           style: TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.bold,
@@ -64,7 +64,7 @@ class _UploadQuoteState extends State<UploadQuote> with SingleTickerProviderStat
         ),
         const SizedBox(height: 8),
         Text(
-          'Please provide feedback and upload your quote document',
+          'Please provide feedback and upload your dc document',
           style: TextStyle(
             fontSize: 14,
             color: Colors.grey[600],
@@ -91,7 +91,7 @@ class _UploadQuoteState extends State<UploadQuote> with SingleTickerProviderStat
         TextFormField(
           // inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.white),
-          controller: quoteController.quoteModel.feedbackController.value,
+          controller: dcController.dcModel.feedbackController.value,
           decoration: InputDecoration(
             filled: true,
             fillColor: Primary_colors.Dark,
@@ -124,13 +124,13 @@ class _UploadQuoteState extends State<UploadQuote> with SingleTickerProviderStat
 
   Widget _buildFileUploadSection() {
     return FormField<FilePickerResult>(
-      validator: (value) => Validators.fileValidator(quoteController.quoteModel.pickedFile.value),
+      validator: (value) => Validators.fileValidator(dcController.dcModel.pickedFile.value),
       builder: (FormFieldState<FilePickerResult> field) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Quote Document',
+              'DC Document',
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
@@ -140,8 +140,8 @@ class _UploadQuoteState extends State<UploadQuote> with SingleTickerProviderStat
             const SizedBox(height: 8),
             InkWell(
               onTap: () async {
-                await widget.Quote_action(context);
-                field.didChange(quoteController.quoteModel.pickedFile.value);
+                await widget.DC_action(context);
+                field.didChange(dcController.dcModel.pickedFile.value);
               },
               borderRadius: BorderRadius.circular(8),
               child: Container(
@@ -166,13 +166,13 @@ class _UploadQuoteState extends State<UploadQuote> with SingleTickerProviderStat
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          if (quoteController.quoteModel.pickedFile.value != null)
+                          if (dcController.dcModel.pickedFile.value != null)
                             Text(
-                              quoteController.quoteModel.pickedFile.value!.files.single.name,
+                              dcController.dcModel.pickedFile.value!.files.single.name,
                               style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Colors.white),
                               overflow: TextOverflow.ellipsis,
                             ),
-                          if (quoteController.quoteModel.pickedFile.value == null)
+                          if (dcController.dcModel.pickedFile.value == null)
                             Text(
                               'Select a PDF file',
                               style: TextStyle(
@@ -219,15 +219,15 @@ class _UploadQuoteState extends State<UploadQuote> with SingleTickerProviderStat
   Widget _buildUploadButton() {
     return Obx(
       () {
-        final isEnabled = quoteController.quoteModel.selectedPdf.value != null;
+        final isEnabled = dcController.dcModel.selectedPdf.value != null;
 
         return ElevatedButton(
           onPressed: isEnabled
               ? () async {
-                  if (quoteController.quoteModel.selectedPdf.value != null) {
-                    widget.uploadQuote(
+                  if (dcController.dcModel.selectedPdf.value != null) {
+                    widget.uploadDC(
                       context,
-                      quoteController.quoteModel.selectedPdf.value!,
+                      dcController.dcModel.selectedPdf.value!,
                     );
                   }
                 }
@@ -246,7 +246,7 @@ class _UploadQuoteState extends State<UploadQuote> with SingleTickerProviderStat
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'SUBMIT QUOTE',
+                'SUBMIT INVOICE',
                 style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.bold,

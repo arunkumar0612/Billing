@@ -1281,7 +1281,10 @@ class _VendorDashboardState extends State<VendorDashboard> with TickerProviderSt
                                                                                         //         true) &&
                                                                                         //     (vendorController.vendorModel.processList[index].TimelineEvents.length == childIndex + 1))
                                                                                         TextButton(
-                                                                                          onPressed: () async {},
+                                                                                          onPressed: () async {
+                                                                                            widget.uploadInvoice_dialougebox(context);
+                                                                                            vendorController.setProcessID(vendorController.vendorModel.processList[index].processid);
+                                                                                          },
                                                                                           child: const Text(
                                                                                             "Upload Invoice",
                                                                                             style: TextStyle(color: Colors.blue, fontSize: 12),
@@ -1290,7 +1293,10 @@ class _VendorDashboardState extends State<VendorDashboard> with TickerProviderSt
                                                                                         // if ((vendorController.vendorModel.processList[index].TimelineEvents[childIndex].Allowed_process.dc == true) &&
                                                                                         //     (vendorController.vendorModel.processList[index].TimelineEvents.length == childIndex + 1))
                                                                                         TextButton(
-                                                                                          onPressed: () async {},
+                                                                                          onPressed: () async {
+                                                                                            widget.uploadDC_dialougebox(context);
+                                                                                            vendorController.setProcessID(vendorController.vendorModel.processList[index].processid);
+                                                                                          },
                                                                                           child: const Text(
                                                                                             "Upload DC",
                                                                                             style: TextStyle(color: Colors.blue, fontSize: 12),

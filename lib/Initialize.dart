@@ -18,6 +18,8 @@ import 'package:ssipl_billing/4_SALES/controllers/Invoice_actions.dart';
 import 'package:ssipl_billing/4_SALES/controllers/Quote_actions.dart';
 import 'package:ssipl_billing/4_SALES/controllers/RFQ_actions.dart';
 import 'package:ssipl_billing/4_SALES/controllers/Sales_actions.dart';
+import 'package:ssipl_billing/5_VENDOR/controllers/DC_actions.dart';
+import 'package:ssipl_billing/5_VENDOR/controllers/Invoice_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/PO_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/Quote_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/RFQ_actions.dart';
@@ -78,5 +80,7 @@ void initialize_others() {
   Get.lazyPut<vendor_RrfqController>(() => vendor_RrfqController());
   Get.lazyPut<vendor_PoController>(() => vendor_PoController());
   Get.lazyPut<Vendor_QuoteController>(() => Vendor_QuoteController());
+  Get.lazyPut<Vendor_InvoiceController>(() => Vendor_InvoiceController());
+  Get.lazyPut<Vendor_DCController>(() => Vendor_DCController());
   Get.lazyPut<VendorListController>(() => VendorListController());
 }

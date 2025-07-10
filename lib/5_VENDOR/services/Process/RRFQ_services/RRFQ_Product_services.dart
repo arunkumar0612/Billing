@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/5_VENDOR/controllers/RRFQ_actions.dart';
-import 'package:ssipl_billing/5_VENDOR/models/entities/product_entities.dart';
+import 'package:ssipl_billing/5_VENDOR/controllers/Process/RRFQ_actions.dart';
+import 'package:ssipl_billing/5_VENDOR/models/entities/Process/product_entities.dart';
 import 'package:ssipl_billing/API/api.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';

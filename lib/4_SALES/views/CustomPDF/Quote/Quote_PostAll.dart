@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 // ignore: depend_on_referenced_packages
 import 'package:path/path.dart' as path;
 import 'package:ssipl_billing/4_SALES/controllers/CustomPDF_Controllers/CustomPDF_Quote_actions.dart';
-import 'package:ssipl_billing/4_SALES/services/CustomPDF_services/Quote/PostAll_Quote_services.dart';
+import 'package:ssipl_billing/4_SALES/services/Process/CustomPDF_services/Quote/PostAll_Quote_services.dart';
 import 'package:ssipl_billing/COMPONENTS-/PDF_methods/PDFviewonly.dart';
 import 'package:ssipl_billing/COMPONENTS-/PDF_methods/downloadPDF.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';

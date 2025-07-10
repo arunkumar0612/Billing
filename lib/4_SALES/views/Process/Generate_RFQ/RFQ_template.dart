@@ -3,8 +3,8 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:ssipl_billing/4_SALES/controllers/RFQ_actions.dart';
-import 'package:ssipl_billing/4_SALES/models/entities/product_entities.dart';
+import 'package:ssipl_billing/4_SALES/controllers/Process/RFQ_actions.dart';
+import 'package:ssipl_billing/4_SALES/models/entities/Process/product_entities.dart';
 import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
 
 Future<Uint8List> generate_RFQ(

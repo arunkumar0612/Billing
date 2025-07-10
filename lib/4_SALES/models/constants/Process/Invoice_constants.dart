@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/4_SALES/models/entities/Invoice_entities.dart';
+import 'package:ssipl_billing/4_SALES/models/entities/Process/Invoice_entities.dart';
+import 'package:ssipl_billing/4_SALES/models/entities/Process/product_entities.dart';
 import 'package:ssipl_billing/4_SALES/models/entities/Sales_entities.dart';
-import 'package:ssipl_billing/4_SALES/models/entities/product_entities.dart';
 
 class InvoiceModel extends GetxController with GetSingleTickerProviderStateMixin {
   final Rxn<TabController> tabController = Rxn<TabController>();

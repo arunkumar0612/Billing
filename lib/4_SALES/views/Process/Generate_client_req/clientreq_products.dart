@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/4_SALES/models/entities/Sales_entities.dart';
-import 'package:ssipl_billing/4_SALES/services/ClientReq_services/ClientreqProduct_service.dart';
+import 'package:ssipl_billing/4_SALES/services/Process/ClientReq_services/ClientreqProduct_service.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 
-import '../../controllers/ClientReq_actions.dart';
+import '../../../controllers/Process/ClientReq_actions.dart';
 
 class clientreqProducts extends StatefulWidget with ClientreqProductService {
   clientreqProducts({super.key});

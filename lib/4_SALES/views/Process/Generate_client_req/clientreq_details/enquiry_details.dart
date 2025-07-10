@@ -1,13 +1,13 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/4_SALES/services/ClientReq_services/ClientreqDetails_service.dart';
+import 'package:ssipl_billing/4_SALES/services/Process/ClientReq_services/ClientreqDetails_service.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 import 'package:ssipl_billing/UTILS/validators/minimal_validators.dart';
 
-import '../../../controllers/ClientReq_actions.dart';
+import '../../../../controllers/Process/ClientReq_actions.dart';
 
 class enquryDetails extends StatefulWidget with ClientreqDetailsService {
   enquryDetails({super.key});

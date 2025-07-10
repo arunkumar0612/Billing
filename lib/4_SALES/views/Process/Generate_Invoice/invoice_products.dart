@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/4_SALES/services/Invoice_services/InvoiceProduct_services.dart';
+import 'package:ssipl_billing/4_SALES/services/Process/Invoice_services/InvoiceProduct_services.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 
-import '../../controllers/Invoice_actions.dart';
+import '../../../controllers/Process/Invoice_actions.dart';
 
 class InvoiceProducts extends StatefulWidget with InvoiceproductService {
   InvoiceProducts({super.key});

@@ -6,8 +6,8 @@ import 'package:get/get.dart';
 import 'package:image/image.dart' as img;
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:ssipl_billing/3_SUBSCRIPTION/controllers/SUBSCRIPTION_ClientReq_actions.dart' show SUBSCRIPTION_ClientreqController;
-import 'package:ssipl_billing/3_SUBSCRIPTION/models/entities/SUBSCRIPTION_ClientReq_entities.dart';
+import 'package:ssipl_billing/3_SUBSCRIPTION/controllers/Process/SUBSCRIPTION_ClientReq_actions.dart' show SUBSCRIPTION_ClientreqController;
+import 'package:ssipl_billing/3_SUBSCRIPTION/models/entities/Process/SUBSCRIPTION_ClientReq_entities.dart';
 import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
 
 Future<Uint8List> generateClientReq({

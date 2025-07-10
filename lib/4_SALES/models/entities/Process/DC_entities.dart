@@ -1,4 +1,4 @@
-import 'package:ssipl_billing/4_SALES/models/entities/product_entities.dart';
+import 'package:ssipl_billing/4_SALES/models/entities/Process/product_entities.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 
 class Recommendation {

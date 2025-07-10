@@ -2,15 +2,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/4_SALES/controllers/Sales_actions.dart';
-import 'package:ssipl_billing/4_SALES/services/Invoice_services/InvoiceDetails_service.dart';
-import 'package:ssipl_billing/4_SALES/views/Generate_Invoice/invoice_details.dart';
-import 'package:ssipl_billing/4_SALES/views/Generate_Invoice/invoice_note.dart';
-import 'package:ssipl_billing/4_SALES/views/Generate_Invoice/invoice_products.dart';
-import 'package:ssipl_billing/4_SALES/views/Generate_Invoice/post_Invoice.dart';
+import 'package:ssipl_billing/4_SALES/services/Process/Invoice_services/InvoiceDetails_service.dart';
+import 'package:ssipl_billing/4_SALES/views/Process/Generate_Invoice/invoice_details.dart';
+import 'package:ssipl_billing/4_SALES/views/Process/Generate_Invoice/invoice_note.dart';
+import 'package:ssipl_billing/4_SALES/views/Process/Generate_Invoice/invoice_products.dart';
+import 'package:ssipl_billing/4_SALES/views/Process/Generate_Invoice/post_Invoice.dart';
 import 'package:ssipl_billing/COMPONENTS-/PDF_methods/PDFviewonly.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 
-import '../../controllers/Invoice_actions.dart';
+import '../../../controllers/Process/Invoice_actions.dart';
 
 class GenerateInvoice extends StatefulWidget with InvoicedetailsService {
   GenerateInvoice({super.key, required this.eventID});

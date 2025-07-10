@@ -4,13 +4,13 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/4_SALES/models/entities/Quote_entities.dart';
+import 'package:ssipl_billing/4_SALES/models/entities/Process/Quote_entities.dart';
+import 'package:ssipl_billing/4_SALES/models/entities/Process/product_entities.dart';
 import 'package:ssipl_billing/4_SALES/models/entities/Sales_entities.dart';
-import 'package:ssipl_billing/4_SALES/models/entities/product_entities.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 
-import '../models/constants/Quote_constants.dart';
+import '../../models/constants/Process/Quote_constants.dart';
 
 class QuoteController extends GetxController {
   var quoteModel = QuoteModel();

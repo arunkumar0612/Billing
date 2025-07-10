@@ -1,13 +1,13 @@
 // ignore_for_file: must_be_immutable
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/4_SALES/controllers/RFQ_actions.dart';
+import 'package:ssipl_billing/4_SALES/controllers/Process/RFQ_actions.dart';
 import 'package:ssipl_billing/4_SALES/controllers/Sales_actions.dart';
-import 'package:ssipl_billing/4_SALES/services/RFQ_services/RFQ_Details_service.dart';
-import 'package:ssipl_billing/4_SALES/views/Generate_RFQ/RFQ_details.dart';
-import 'package:ssipl_billing/4_SALES/views/Generate_RFQ/RFQ_note.dart';
-import 'package:ssipl_billing/4_SALES/views/Generate_RFQ/RFQ_products.dart';
-import 'package:ssipl_billing/4_SALES/views/Generate_RFQ/post_RFQ.dart';
+import 'package:ssipl_billing/4_SALES/services/Process/RFQ_services/RFQ_Details_service.dart';
+import 'package:ssipl_billing/4_SALES/views/Process/Generate_RFQ/RFQ_details.dart';
+import 'package:ssipl_billing/4_SALES/views/Process/Generate_RFQ/RFQ_note.dart';
+import 'package:ssipl_billing/4_SALES/views/Process/Generate_RFQ/RFQ_products.dart';
+import 'package:ssipl_billing/4_SALES/views/Process/Generate_RFQ/post_RFQ.dart';
 import 'package:ssipl_billing/COMPONENTS-/PDF_methods/PDFviewonly.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 

@@ -3,9 +3,9 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:ssipl_billing/4_SALES/controllers/Invoice_actions.dart';
-import 'package:ssipl_billing/4_SALES/models/entities/Invoice_entities.dart';
-import 'package:ssipl_billing/4_SALES/models/entities/product_entities.dart';
+import 'package:ssipl_billing/4_SALES/controllers/Process/Invoice_actions.dart';
+import 'package:ssipl_billing/4_SALES/models/entities/Process/Invoice_entities.dart';
+import 'package:ssipl_billing/4_SALES/models/entities/Process/product_entities.dart';
 import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
 
 Future<Uint8List> generate_Invoice(PdfPageFormat pageFormat, products, client_addr_name, client_addr, bill_addr_name, bill_addr, invoice_num, GSTIN, invoice_gstTotals, isGST_local) async {

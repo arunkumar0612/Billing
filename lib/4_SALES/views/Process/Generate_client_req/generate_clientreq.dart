@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/4_SALES/services/ClientReq_services/ClientreqDetails_service.dart';
+import 'package:ssipl_billing/4_SALES/services/Process/ClientReq_services/ClientreqDetails_service.dart';
 // import 'package:ssipl_billing/views/screens/SALES/Generate_client_req/clientreq_details.dart';
-import 'package:ssipl_billing/4_SALES/views/Generate_client_req/clientreq_details/customer_details.dart';
-import 'package:ssipl_billing/4_SALES/views/Generate_client_req/clientreq_details/enquiry_details.dart';
-import 'package:ssipl_billing/4_SALES/views/Generate_client_req/clientreq_note.dart';
-import 'package:ssipl_billing/4_SALES/views/Generate_client_req/clientreq_products.dart';
+import 'package:ssipl_billing/4_SALES/views/Process/Generate_client_req/clientreq_details/customer_details.dart';
+import 'package:ssipl_billing/4_SALES/views/Process/Generate_client_req/clientreq_details/enquiry_details.dart';
+import 'package:ssipl_billing/4_SALES/views/Process/Generate_client_req/clientreq_note.dart';
+import 'package:ssipl_billing/4_SALES/views/Process/Generate_client_req/clientreq_products.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 
 // import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
-import '../../controllers/ClientReq_actions.dart';
+import '../../../controllers/Process/ClientReq_actions.dart';
 
 class Generate_clientreq extends StatefulWidget with ClientreqDetailsService {
   final String? value;

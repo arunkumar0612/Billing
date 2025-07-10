@@ -1,19 +1,17 @@
 // ignore_for_file: must_be_immutable
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/5_VENDOR/controllers/PO_actions.dart';
+import 'package:ssipl_billing/5_VENDOR/controllers/Process/PO_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/Vendor_actions.dart';
-import 'package:ssipl_billing/5_VENDOR/services/PO_services/PO_Details_service.dart';
-import 'package:ssipl_billing/5_VENDOR/views/Generate_PO/PO_details.dart';
-import 'package:ssipl_billing/5_VENDOR/views/Generate_PO/PO_note.dart';
-import 'package:ssipl_billing/5_VENDOR/views/Generate_PO/PO_products.dart';
-import 'package:ssipl_billing/5_VENDOR/views/Generate_PO/post_PO.dart';
+import 'package:ssipl_billing/5_VENDOR/services/Process/PO_services/PO_Details_service.dart';
+import 'package:ssipl_billing/5_VENDOR/views/Process/Generate_PO/PO_details.dart';
+import 'package:ssipl_billing/5_VENDOR/views/Process/Generate_PO/PO_note.dart';
+import 'package:ssipl_billing/5_VENDOR/views/Process/Generate_PO/PO_products.dart';
+import 'package:ssipl_billing/5_VENDOR/views/Process/Generate_PO/post_PO.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 
 class GeneratePo extends StatefulWidget with PodetailsService {
-  GeneratePo({
-    super.key,
-  });
+  GeneratePo({super.key});
 
   @override
   _GeneratePoState createState() => _GeneratePoState();

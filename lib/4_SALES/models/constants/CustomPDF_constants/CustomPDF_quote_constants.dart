@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/4_SALES/models/entities/CustomPDF_entities/CustomPDF_Product_entities.dart';
-import 'package:ssipl_billing/4_SALES/models/entities/Quote_entities.dart';
+import 'package:ssipl_billing/4_SALES/models/entities/Process/Quote_entities.dart';
 
 class CustomPDF_QuoteModel {
   final date = TextEditingController().obs;

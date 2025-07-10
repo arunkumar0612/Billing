@@ -1,14 +1,14 @@
 // ignore_for_file: must_be_immutable
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/5_VENDOR/controllers/RRFQ_actions.dart';
+import 'package:ssipl_billing/5_VENDOR/controllers/Process/RRFQ_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/Vendor_actions.dart';
 // import 'package:ssipl_billing/5_VENDOR/controllers/Sales_actions.dart';
-import 'package:ssipl_billing/5_VENDOR/services/RRFQ_services/RRFQ_Details_service.dart';
-import 'package:ssipl_billing/5_VENDOR/views/Generate_RRFQ/RRFQ_details.dart';
-import 'package:ssipl_billing/5_VENDOR/views/Generate_RRFQ/RRFQ_note.dart';
-import 'package:ssipl_billing/5_VENDOR/views/Generate_RRFQ/RRFQ_products.dart';
-import 'package:ssipl_billing/5_VENDOR/views/Generate_RRFQ/post_RRFQ.dart';
+import 'package:ssipl_billing/5_VENDOR/services/Process/RRFQ_services/RRFQ_Details_service.dart';
+import 'package:ssipl_billing/5_VENDOR/views/Process/Generate_RRFQ/RRFQ_details.dart';
+import 'package:ssipl_billing/5_VENDOR/views/Process/Generate_RRFQ/RRFQ_note.dart';
+import 'package:ssipl_billing/5_VENDOR/views/Process/Generate_RRFQ/RRFQ_products.dart';
+import 'package:ssipl_billing/5_VENDOR/views/Process/Generate_RRFQ/post_RRFQ.dart';
 import 'package:ssipl_billing/COMPONENTS-/PDF_methods/PDFviewonly.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 

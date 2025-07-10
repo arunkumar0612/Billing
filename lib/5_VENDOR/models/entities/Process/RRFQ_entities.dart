@@ -1,4 +1,4 @@
-import 'package:ssipl_billing/5_VENDOR/models/entities/product_entities.dart';
+import 'package:ssipl_billing/5_VENDOR/models/entities/Process/product_entities.dart';
 
 class Recommendation {
   final String key;
@@ -170,34 +170,6 @@ class VendorRfqDetails {
     };
   }
 }
-
-// class Product {
-//   final int productsNo;
-//   final String productName;
-//   final int productQuantity;
-
-//   Product({
-//     required this.productsNo,
-//     required this.productName,
-//     required this.productQuantity,
-//   });
-
-//   factory Product.fromJson(Map<String, dynamic> json) {
-//     return Product(
-//       productsNo: json['productsno'],
-//       productName: json['productname'],
-//       productQuantity: json['productquantity'],
-//     );
-//   }
-
-//   Map<String, dynamic> toJson() {
-//     return {
-//       'productsno': productsNo,
-//       'productname': productName,
-//       'productquantity': productQuantity,
-//     };
-//   }
-// }
 
 class Post_Rrfq {
   int? processid;

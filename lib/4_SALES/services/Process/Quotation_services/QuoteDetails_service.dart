@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/4_SALES/controllers/Quote_actions.dart';
+import 'package:ssipl_billing/4_SALES/controllers/Process/Quote_actions.dart';
 import 'package:ssipl_billing/API/api.dart';
 import 'package:ssipl_billing/API/invoker.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';

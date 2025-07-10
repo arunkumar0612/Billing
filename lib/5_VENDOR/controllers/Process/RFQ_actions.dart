@@ -4,10 +4,10 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/5_VENDOR/models/constants/RFQ_constants.dart';
-import 'package:ssipl_billing/5_VENDOR/models/entities/RFQ_entities.dart';
+import 'package:ssipl_billing/5_VENDOR/models/constants/Process/RFQ_constants.dart';
+import 'package:ssipl_billing/5_VENDOR/models/entities/Process/RFQ_entities.dart';
+import 'package:ssipl_billing/5_VENDOR/models/entities/Process/product_entities.dart';
 import 'package:ssipl_billing/5_VENDOR/models/entities/Vendor_entities.dart';
-import 'package:ssipl_billing/5_VENDOR/models/entities/product_entities.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 

@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/5_VENDOR/controllers/Quote_actions.dart';
+import 'package:ssipl_billing/5_VENDOR/controllers/Process/Quote_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/Vendor_actions.dart';
 import 'package:ssipl_billing/API/api.dart';
 import 'package:ssipl_billing/API/invoker.dart';

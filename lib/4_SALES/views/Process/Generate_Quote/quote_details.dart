@@ -7,8 +7,8 @@ import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 import 'package:ssipl_billing/UTILS/validators/minimal_validators.dart';
 
-import '../../controllers/Quote_actions.dart';
-import '../../services/Quotation_services/QuoteDetails_service.dart';
+import '../../../controllers/Process/Quote_actions.dart';
+import '../../../services/Process/Quotation_services/QuoteDetails_service.dart';
 
 class QuoteDetails extends StatefulWidget with QuotedetailsService {
   QuoteDetails({super.key, required this.eventtype, required this.eventID});

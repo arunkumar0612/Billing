@@ -6,7 +6,7 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:ssipl_billing/4_SALES/controllers/CustomPDF_Controllers/CustomPDF_Quote_actions.dart';
 
 import '../../4_SALES/models/entities/CustomPDF_entities/CustomPDF_Product_entities.dart';
-import '../../4_SALES/models/entities/Quote_entities.dart';
+import '../../4_SALES/models/entities/Process/Quote_entities.dart';
 import '../../UTILS/helpers/support_functions.dart';
 
 Future<Uint8List> generate_CustomPDFQuote(

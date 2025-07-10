@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/5_VENDOR/models/constants/Quote_constants.dart';
+import 'package:ssipl_billing/5_VENDOR/models/constants/Process/Quote_constants.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 
 class Vendor_QuoteController extends GetxController {

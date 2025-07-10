@@ -4,8 +4,8 @@ import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 
-import '../../controllers/ClientReq_actions.dart';
-import '../../services/ClientReq_services/ClientreqNote_service.dart';
+import '../../../controllers/Process/ClientReq_actions.dart';
+import '../../../services/Process/ClientReq_services/ClientreqNote_service.dart';
 
 class ClientreqNote extends StatefulWidget with ClientreqNoteService {
   final String? customer_type;

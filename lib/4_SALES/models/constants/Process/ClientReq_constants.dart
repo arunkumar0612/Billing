@@ -4,9 +4,9 @@ import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/4_SALES/models/entities/ClientReq_entities.dart';
+import 'package:ssipl_billing/4_SALES/models/entities/Process/ClientReq_entities.dart';
+import 'package:ssipl_billing/4_SALES/models/entities/Process/product_entities.dart';
 import 'package:ssipl_billing/4_SALES/models/entities/Sales_entities.dart';
-import 'package:ssipl_billing/4_SALES/models/entities/product_entities.dart';
 
 class ClientReqModel {
   var MOR_uploadedPath = Rxn<String>();

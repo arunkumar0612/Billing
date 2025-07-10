@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/3_SUBSCRIPTION/controllers/SUBSCRIPTION_ClientReq_actions.dart' show SUBSCRIPTION_ClientreqController;
-import 'package:ssipl_billing/3_SUBSCRIPTION/services/ClientReq_services/SUBSCRIPTION_ClientreqDetails_service.dart';
+import 'package:ssipl_billing/3_SUBSCRIPTION/controllers/Process/SUBSCRIPTION_ClientReq_actions.dart' show SUBSCRIPTION_ClientreqController;
+import 'package:ssipl_billing/3_SUBSCRIPTION/services/Process/ClientReq_services/SUBSCRIPTION_ClientreqDetails_service.dart';
 import 'package:ssipl_billing/3_SUBSCRIPTION/views/Process/Generate_client_req/SUBSCRIPTION_Cus_Enq_Details.dart';
 import 'package:ssipl_billing/3_SUBSCRIPTION/views/Process/Generate_client_req/SUBSCRIPTION_clientreq_note.dart';
 import 'package:ssipl_billing/3_SUBSCRIPTION/views/Process/Generate_client_req/SUBSCRIPTION_clientreq_sites.dart';

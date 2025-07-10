@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/4_SALES/controllers/RFQ_actions.dart';
-import 'package:ssipl_billing/4_SALES/models/entities/RFQ_entities.dart';
-import 'package:ssipl_billing/4_SALES/services/RFQ_services/RFQ_Product_services.dart';
+import 'package:ssipl_billing/4_SALES/controllers/Process/RFQ_actions.dart';
+import 'package:ssipl_billing/4_SALES/models/entities/Process/RFQ_entities.dart';
+import 'package:ssipl_billing/4_SALES/services/Process/RFQ_services/RFQ_Product_services.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 

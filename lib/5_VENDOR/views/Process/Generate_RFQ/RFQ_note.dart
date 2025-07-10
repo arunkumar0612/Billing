@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
-import 'package:ssipl_billing/5_VENDOR/controllers/RFQ_actions.dart';
-import 'package:ssipl_billing/5_VENDOR/services/RFQ_services/RFQ_Notes_service.dart';
+import 'package:ssipl_billing/5_VENDOR/controllers/Process/RFQ_actions.dart';
+import 'package:ssipl_billing/5_VENDOR/services/Process/RFQ_services/RFQ_Notes_service.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
 import 'package:ssipl_billing/THEMES/style.dart';

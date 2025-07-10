@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
-import 'package:ssipl_billing/4_SALES/controllers/Invoice_actions.dart';
-import 'package:ssipl_billing/4_SALES/models/entities/Invoice_entities.dart';
+import 'package:ssipl_billing/4_SALES/controllers/Process/Invoice_actions.dart';
+import 'package:ssipl_billing/4_SALES/models/entities/Process/Invoice_entities.dart';
+import 'package:ssipl_billing/4_SALES/models/entities/Process/product_entities.dart';
 import 'package:ssipl_billing/4_SALES/models/entities/Sales_entities.dart';
-import 'package:ssipl_billing/4_SALES/models/entities/product_entities.dart';
 
 mixin InvoiceproductService {
   final InvoiceController invoiceController = Get.find<InvoiceController>();

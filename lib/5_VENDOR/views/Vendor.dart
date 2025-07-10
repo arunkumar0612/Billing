@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
-import 'package:ssipl_billing/5_VENDOR/controllers/Quote_actions.dart';
+import 'package:ssipl_billing/5_VENDOR/controllers/Process/Quote_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/Vendor_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/services/vendor_service.dart';
 import 'package:ssipl_billing/5_VENDOR/views/vendorListPage.dart';
@@ -1361,7 +1361,9 @@ class _VendorDashboardState extends State<VendorDashboard> with TickerProviderSt
                                                                                                 true) &&
                                                                                             (vendorController.vendorModel.processList[index].TimelineEvents.length == childIndex + 1))
                                                                                           TextButton(
-                                                                                            onPressed: () async {},
+                                                                                            onPressed: () async {
+                                                                                              widget.uploadInvoice_dialougebox(context);
+                                                                                            },
                                                                                             child: const Text(
                                                                                               "Upload Invoice",
                                                                                               style: TextStyle(color: Colors.blue, fontSize: 12),
@@ -1370,7 +1372,9 @@ class _VendorDashboardState extends State<VendorDashboard> with TickerProviderSt
                                                                                         if ((vendorController.vendorModel.processList[index].TimelineEvents[childIndex].Allowed_process.dc == true) &&
                                                                                             (vendorController.vendorModel.processList[index].TimelineEvents.length == childIndex + 1))
                                                                                           TextButton(
-                                                                                            onPressed: () async {},
+                                                                                            onPressed: () async {
+                                                                                              widget.uploadDC_dialougebox(context);
+                                                                                            },
                                                                                             child: const Text(
                                                                                               "Upload DC",
                                                                                               style: TextStyle(color: Colors.blue, fontSize: 12),

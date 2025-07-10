@@ -4,8 +4,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/3_SUBSCRIPTION/models/constants/SUBSCRIPTION_ClientReq_constants.dart';
-import 'package:ssipl_billing/3_SUBSCRIPTION/models/entities/SUBSCRIPTION_ClientReq_entities.dart';
+import 'package:ssipl_billing/3_SUBSCRIPTION/models/constants/Process/SUBSCRIPTION_ClientReq_constants.dart';
+import 'package:ssipl_billing/3_SUBSCRIPTION/models/entities/Process/SUBSCRIPTION_ClientReq_entities.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 

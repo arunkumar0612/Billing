@@ -1,15 +1,15 @@
 // ignore_for_file: must_be_immutable
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/5_VENDOR/controllers/RFQ_actions.dart';
+import 'package:ssipl_billing/5_VENDOR/controllers/Process/RFQ_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/Vendor_actions.dart';
 // import 'package:ssipl_billing/5_VENDOR/controllers/Sales_actions.dart';
-import 'package:ssipl_billing/5_VENDOR/services/RFQ_services/RFQ_Details_service.dart';
+import 'package:ssipl_billing/5_VENDOR/services/Process/RFQ_services/RFQ_Details_service.dart';
 import 'package:ssipl_billing/5_VENDOR/services/vendor_service.dart';
-import 'package:ssipl_billing/5_VENDOR/views/Generate_RFQ/RFQ_details.dart';
-import 'package:ssipl_billing/5_VENDOR/views/Generate_RFQ/RFQ_note.dart';
-import 'package:ssipl_billing/5_VENDOR/views/Generate_RFQ/RFQ_products.dart';
-import 'package:ssipl_billing/5_VENDOR/views/Generate_RFQ/post_RFQ.dart';
+import 'package:ssipl_billing/5_VENDOR/views/Process/Generate_RFQ/RFQ_details.dart';
+import 'package:ssipl_billing/5_VENDOR/views/Process/Generate_RFQ/RFQ_note.dart';
+import 'package:ssipl_billing/5_VENDOR/views/Process/Generate_RFQ/RFQ_products.dart';
+import 'package:ssipl_billing/5_VENDOR/views/Process/Generate_RFQ/post_RFQ.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 
 class GenerateRfq extends StatefulWidget with RfqdetailsService, VendorServices {

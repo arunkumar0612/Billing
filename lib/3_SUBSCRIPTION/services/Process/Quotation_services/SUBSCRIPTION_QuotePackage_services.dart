@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/3_SUBSCRIPTION/controllers/SUBSCRIPTION_Quote_actions.dart';
-import 'package:ssipl_billing/3_SUBSCRIPTION/models/entities/SUBSCRIPTION_Quote_entities.dart';
+import 'package:ssipl_billing/3_SUBSCRIPTION/controllers/Process/SUBSCRIPTION_Quote_actions.dart';
+import 'package:ssipl_billing/3_SUBSCRIPTION/models/entities/Process/SUBSCRIPTION_Quote_entities.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 
 mixin SUBSCRIPTION_QuotepackageService {

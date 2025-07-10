@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/5_VENDOR/controllers/RRFQ_actions.dart';
-import 'package:ssipl_billing/5_VENDOR/services/RRFQ_services/RRFQ_Details_service.dart';
+import 'package:ssipl_billing/5_VENDOR/controllers/Process/RRFQ_actions.dart';
+import 'package:ssipl_billing/5_VENDOR/services/Process/RRFQ_services/RRFQ_Details_service.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
 import 'package:ssipl_billing/THEMES/style.dart';

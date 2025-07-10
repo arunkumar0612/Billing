@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
-import 'package:ssipl_billing/4_SALES/controllers/DC_actions.dart';
-import 'package:ssipl_billing/4_SALES/services/DC_services/DC_Notes_service.dart';
+import 'package:ssipl_billing/4_SALES/controllers/Process/DC_actions.dart';
+import 'package:ssipl_billing/4_SALES/services/Process/DC_services/DC_Notes_service.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 

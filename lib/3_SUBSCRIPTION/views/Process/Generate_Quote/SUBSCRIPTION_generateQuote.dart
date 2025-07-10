@@ -3,13 +3,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/3_SUBSCRIPTION/controllers/Subscription_actions.dart';
-import 'package:ssipl_billing/3_SUBSCRIPTION/services/Quotation_services/SUBSCRIPTION_QuoteDetails_service.dart';
+import 'package:ssipl_billing/3_SUBSCRIPTION/services/Process/Quotation_services/SUBSCRIPTION_QuoteDetails_service.dart';
 import 'package:ssipl_billing/3_SUBSCRIPTION/views/Process/Generate_Quote/SUBSCRIPTION_post_Quote.dart';
 import 'package:ssipl_billing/3_SUBSCRIPTION/views/Process/Generate_Quote/SUBSCRIPTION_quote_package.dart';
 import 'package:ssipl_billing/COMPONENTS-/PDF_methods/PDFviewonly.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 
-import '../../../controllers/SUBSCRIPTION_Quote_actions.dart';
+import '../../../controllers/Process/SUBSCRIPTION_Quote_actions.dart';
 import 'SUBSCRIPTION_quote_details.dart';
 import 'SUBSCRIPTION_quote_note.dart';
 import 'SUBSCRIPTION_quote_sites.dart';

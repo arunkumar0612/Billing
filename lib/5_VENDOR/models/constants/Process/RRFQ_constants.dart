@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/5_VENDOR/models/entities/RRFQ_entities.dart';
-import 'package:ssipl_billing/5_VENDOR/models/entities/product_entities.dart';
+import 'package:ssipl_billing/5_VENDOR/models/entities/Process/RRFQ_entities.dart';
+import 'package:ssipl_billing/5_VENDOR/models/entities/Process/product_entities.dart';
 
 class RrfqModel extends GetxController with GetSingleTickerProviderStateMixin {
   final Rxn<TabController> tabController = Rxn<TabController>();

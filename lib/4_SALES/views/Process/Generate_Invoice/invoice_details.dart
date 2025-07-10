@@ -2,13 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/4_SALES/services/Invoice_services/InvoiceDetails_service.dart';
+import 'package:ssipl_billing/4_SALES/services/Process/Invoice_services/InvoiceDetails_service.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 import 'package:ssipl_billing/UTILS/validators/minimal_validators.dart';
 
-import '../../controllers/Invoice_actions.dart';
+import '../../../controllers/Process/Invoice_actions.dart';
 
 class InvoiceDetails extends StatefulWidget with InvoicedetailsService {
   InvoiceDetails({super.key, required this.eventID});

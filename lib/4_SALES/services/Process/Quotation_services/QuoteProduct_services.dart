@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
-import 'package:ssipl_billing/4_SALES/controllers/Quote_actions.dart';
-import 'package:ssipl_billing/4_SALES/models/entities/Quote_entities.dart';
+import 'package:ssipl_billing/4_SALES/controllers/Process/Quote_actions.dart';
+import 'package:ssipl_billing/4_SALES/models/entities/Process/Quote_entities.dart';
+import 'package:ssipl_billing/4_SALES/models/entities/Process/product_entities.dart';
 import 'package:ssipl_billing/4_SALES/models/entities/Sales_entities.dart';
-import 'package:ssipl_billing/4_SALES/models/entities/product_entities.dart';
 
 mixin QuoteproductService {
   final QuoteController quoteController = Get.find<QuoteController>();

@@ -6,10 +6,10 @@ import 'package:get/get.dart';
 import 'package:image/image.dart' as img;
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:ssipl_billing/4_SALES/models/entities/product_entities.dart';
+import 'package:ssipl_billing/4_SALES/models/entities/Process/product_entities.dart';
 import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
 
-import '../../controllers/ClientReq_actions.dart';
+import '../../../controllers/Process/ClientReq_actions.dart';
 
 Future<Uint8List> generateClientReq({
   required PdfPageFormat pageFormat,

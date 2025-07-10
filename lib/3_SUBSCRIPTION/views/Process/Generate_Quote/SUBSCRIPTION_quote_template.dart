@@ -3,8 +3,8 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:ssipl_billing/3_SUBSCRIPTION/controllers/SUBSCRIPTION_Quote_actions.dart';
-import 'package:ssipl_billing/3_SUBSCRIPTION/models/entities/SUBSCRIPTION_Quote_entities.dart';
+import 'package:ssipl_billing/3_SUBSCRIPTION/controllers/Process/SUBSCRIPTION_Quote_actions.dart';
+import 'package:ssipl_billing/3_SUBSCRIPTION/models/entities/Process/SUBSCRIPTION_Quote_entities.dart';
 import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
 
 Future<Uint8List> SUBSCRIPTION_generate_Quote(PdfPageFormat pageFormat, SUBSCRIPTION_Quote instQuote) async {

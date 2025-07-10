@@ -6,16 +6,16 @@ import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:ssipl_billing/4_SALES/controllers/CustomPDF_Controllers/CustomPDF_Invoice_actions.dart';
-import 'package:ssipl_billing/4_SALES/controllers/Invoice_actions.dart';
+import 'package:ssipl_billing/4_SALES/controllers/Process/Invoice_actions.dart';
 import 'package:ssipl_billing/4_SALES/models/entities/CustomPDF_entities/CustomPDF_Product_entities.dart';
-import 'package:ssipl_billing/4_SALES/models/entities/Invoice_entities.dart';
+import 'package:ssipl_billing/4_SALES/models/entities/Process/Invoice_entities.dart';
 import 'package:ssipl_billing/4_SALES/views/CustomPDF/Invoice/Invoice_PostAll.dart';
 import 'package:ssipl_billing/COMPONENTS-/CustomPDF_templates/CustomPDF_Invoice_template.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 import 'package:ssipl_billing/UTILS/helpers/returns.dart';
 import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
 
-import '../../../../API/invoker.dart';
+import '../../../../../API/invoker.dart';
 
 class Custom_Invoice_Services {
   final Invoker apiController = Get.find<Invoker>();

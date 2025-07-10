@@ -5,8 +5,8 @@ import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 
-import '../../controllers/Quote_actions.dart';
-import '../../services/Quotation_services/QuoteNotes_service.dart';
+import '../../../controllers/Process/Quote_actions.dart';
+import '../../../services/Process/Quotation_services/QuoteNotes_service.dart';
 
 class QuoteNote extends StatefulWidget with QuotenotesService {
   QuoteNote({super.key});

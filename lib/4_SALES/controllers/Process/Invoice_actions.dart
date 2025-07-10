@@ -4,13 +4,13 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/4_SALES/models/entities/Invoice_entities.dart';
+import 'package:ssipl_billing/4_SALES/models/entities/Process/Invoice_entities.dart';
+import 'package:ssipl_billing/4_SALES/models/entities/Process/product_entities.dart';
 import 'package:ssipl_billing/4_SALES/models/entities/Sales_entities.dart';
-import 'package:ssipl_billing/4_SALES/models/entities/product_entities.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 
-import '../models/constants/Invoice_constants.dart';
+import '../../models/constants/Process/Invoice_constants.dart';
 
 class InvoiceController extends GetxController {
   var invoiceModel = InvoiceModel();

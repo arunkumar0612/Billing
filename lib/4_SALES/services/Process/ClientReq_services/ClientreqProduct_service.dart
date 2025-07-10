@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
-import 'package:ssipl_billing/4_SALES/models/entities/product_entities.dart';
+import 'package:ssipl_billing/4_SALES/models/entities/Process/product_entities.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 
-import '../../controllers/ClientReq_actions.dart';
+import '../../../controllers/Process/ClientReq_actions.dart';
 
 mixin ClientreqProductService {
   final ClientreqController clientreqController = Get.find<ClientreqController>();

@@ -6,16 +6,16 @@ import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:ssipl_billing/4_SALES/controllers/CustomPDF_Controllers/CustomPDF_Quote_actions.dart';
-import 'package:ssipl_billing/4_SALES/controllers/Quote_actions.dart';
+import 'package:ssipl_billing/4_SALES/controllers/Process/Quote_actions.dart';
 import 'package:ssipl_billing/4_SALES/models/entities/CustomPDF_entities/CustomPDF_Product_entities.dart';
-import 'package:ssipl_billing/4_SALES/models/entities/Quote_entities.dart';
+import 'package:ssipl_billing/4_SALES/models/entities/Process/Quote_entities.dart';
 import 'package:ssipl_billing/4_SALES/views/CustomPDF/Quote/Quote_PostAll.dart';
 import 'package:ssipl_billing/COMPONENTS-/CustomPDF_templates/CustomPDF_Quote_template.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 import 'package:ssipl_billing/UTILS/helpers/returns.dart';
 import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
 
-import '../../../../API/invoker.dart';
+import '../../../../../API/invoker.dart';
 
 class Custom_Quote_Services {
   final Invoker apiController = Get.find<Invoker>();

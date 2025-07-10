@@ -1,8 +1,8 @@
 // ignore_for_file: unrelated_type_equality_checks, duplicate_ignore
 
 import 'package:get/get.dart';
-import 'package:ssipl_billing/4_SALES/controllers/DC_actions.dart';
-import 'package:ssipl_billing/4_SALES/models/entities/product_entities.dart';
+import 'package:ssipl_billing/4_SALES/controllers/Process/DC_actions.dart';
+import 'package:ssipl_billing/4_SALES/models/entities/Process/product_entities.dart';
 
 mixin DcproductService {
   final DcController dcController = Get.find<DcController>();

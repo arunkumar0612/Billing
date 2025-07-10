@@ -1,4 +1,4 @@
-import 'package:ssipl_billing/5_VENDOR/models/entities/product_entities.dart';
+import 'package:ssipl_billing/5_VENDOR/models/entities/Process/product_entities.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 
 class Recommendation {
@@ -24,24 +24,6 @@ class Recommendation {
     };
   }
 }
-
-// class Note {
-//   final String notename;
-
-//   Note({required this.notename});
-
-//   factory Note.fromJson(Map<String, dynamic> json) {
-//     return Note(
-//       notename: json['notename'] as String,
-//     );
-//   }
-
-//   Map<String, dynamic> toJson() {
-//     return {
-//       'notename': notename,
-//     };
-//   }
-// }
 
 class RfqGSTtotals {
   final double gst;

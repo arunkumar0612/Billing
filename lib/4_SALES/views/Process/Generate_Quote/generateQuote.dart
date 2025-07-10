@@ -3,12 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/4_SALES/controllers/Sales_actions.dart';
-import 'package:ssipl_billing/4_SALES/services/Quotation_services/QuoteDetails_service.dart';
-import 'package:ssipl_billing/4_SALES/views/Generate_Quote/post_Quote.dart';
+import 'package:ssipl_billing/4_SALES/services/Process/Quotation_services/QuoteDetails_service.dart';
+import 'package:ssipl_billing/4_SALES/views/Process/Generate_Quote/post_Quote.dart';
 import 'package:ssipl_billing/COMPONENTS-/PDF_methods/PDFviewonly.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 
-import '../../controllers/Quote_actions.dart';
+import '../../../controllers/Process/Quote_actions.dart';
 import 'quote_details.dart';
 import 'quote_note.dart';
 import 'quote_products.dart';

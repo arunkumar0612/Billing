@@ -9,17 +9,17 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
-import 'package:ssipl_billing/4_SALES/controllers/ClientReq_actions.dart';
 import 'package:ssipl_billing/4_SALES/controllers/CustomPDF_Controllers/CustomPDF_DC_actions.dart';
 import 'package:ssipl_billing/4_SALES/controllers/CustomPDF_Controllers/CustomPDF_Invoice_actions.dart';
 import 'package:ssipl_billing/4_SALES/controllers/CustomPDF_Controllers/CustomPDF_Quote_actions.dart';
-import 'package:ssipl_billing/4_SALES/controllers/DC_actions.dart';
-import 'package:ssipl_billing/4_SALES/controllers/Invoice_actions.dart';
-import 'package:ssipl_billing/4_SALES/controllers/Quote_actions.dart';
-import 'package:ssipl_billing/4_SALES/controllers/RFQ_actions.dart';
-import 'package:ssipl_billing/4_SALES/services/CustomPDF_services/DC/CustomPDF_DC_services.dart';
-import 'package:ssipl_billing/4_SALES/services/CustomPDF_services/Invoice/CustomPDF_Invoice_services.dart';
-import 'package:ssipl_billing/4_SALES/services/CustomPDF_services/Quote/CustomPDF_Quote_services.dart';
+import 'package:ssipl_billing/4_SALES/controllers/Process/ClientReq_actions.dart';
+import 'package:ssipl_billing/4_SALES/controllers/Process/DC_actions.dart';
+import 'package:ssipl_billing/4_SALES/controllers/Process/Invoice_actions.dart';
+import 'package:ssipl_billing/4_SALES/controllers/Process/Quote_actions.dart';
+import 'package:ssipl_billing/4_SALES/controllers/Process/RFQ_actions.dart';
+import 'package:ssipl_billing/4_SALES/services/Process/CustomPDF_services/DC/CustomPDF_DC_services.dart';
+import 'package:ssipl_billing/4_SALES/services/Process/CustomPDF_services/Invoice/CustomPDF_Invoice_services.dart';
+import 'package:ssipl_billing/4_SALES/services/Process/CustomPDF_services/Quote/CustomPDF_Quote_services.dart';
 import 'package:ssipl_billing/4_SALES/services/sales_service.dart';
 import 'package:ssipl_billing/4_SALES/views/CustomPDF/DC/CustomPDF_DC_design.dart';
 import 'package:ssipl_billing/4_SALES/views/CustomPDF/Invoice/CustomPDF_invoice_design.dart';
@@ -34,6 +34,7 @@ import 'package:ssipl_billing/COMPONENTS-/PDF_methods/showPDF.dart';
 import 'package:ssipl_billing/NOTIFICATION-/NotificationServices.dart';
 import 'package:ssipl_billing/NOTIFICATION-/Notification_actions.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
+
 import '../controllers/Sales_actions.dart';
 
 class Sales_Client extends StatefulWidget with SalesServices, BellIconFunction {

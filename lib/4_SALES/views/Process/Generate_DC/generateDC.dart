@@ -2,13 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/4_SALES/controllers/DC_actions.dart';
+import 'package:ssipl_billing/4_SALES/controllers/Process/DC_actions.dart';
 import 'package:ssipl_billing/4_SALES/controllers/Sales_actions.dart';
-import 'package:ssipl_billing/4_SALES/services/DC_services/DC_Details_service.dart';
-import 'package:ssipl_billing/4_SALES/views/Generate_DC/DC_details.dart';
-import 'package:ssipl_billing/4_SALES/views/Generate_DC/DC_note.dart';
-import 'package:ssipl_billing/4_SALES/views/Generate_DC/DC_products.dart';
-import 'package:ssipl_billing/4_SALES/views/Generate_DC/post_DC.dart';
+import 'package:ssipl_billing/4_SALES/services/Process/DC_services/DC_Details_service.dart';
+import 'package:ssipl_billing/4_SALES/views/Process/Generate_DC/DC_details.dart';
+import 'package:ssipl_billing/4_SALES/views/Process/Generate_DC/DC_note.dart';
+import 'package:ssipl_billing/4_SALES/views/Process/Generate_DC/DC_products.dart';
+import 'package:ssipl_billing/4_SALES/views/Process/Generate_DC/post_DC.dart';
 import 'package:ssipl_billing/COMPONENTS-/PDF_methods/PDFviewonly.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 

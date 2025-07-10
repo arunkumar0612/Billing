@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:ssipl_billing/3_SUBSCRIPTION/controllers/SUBSCRIPTION_ClientReq_actions.dart';
-import 'package:ssipl_billing/3_SUBSCRIPTION/models/entities/SUBSCRIPTION_ClientReq_entities.dart';
+import 'package:ssipl_billing/3_SUBSCRIPTION/controllers/Process/SUBSCRIPTION_ClientReq_actions.dart';
+import 'package:ssipl_billing/3_SUBSCRIPTION/models/entities/Process/SUBSCRIPTION_ClientReq_entities.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 
 mixin SUBSCRIPTION_ClientreqSiteService {

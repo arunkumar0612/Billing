@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
-import 'package:ssipl_billing/3_SUBSCRIPTION/controllers/SUBSCRIPTION_Quote_actions.dart';
-import 'package:ssipl_billing/3_SUBSCRIPTION/services/Quotation_services/SUBSCRIPTION_QuoteNotes_service.dart';
+import 'package:ssipl_billing/3_SUBSCRIPTION/controllers/Process/SUBSCRIPTION_Quote_actions.dart';
+import 'package:ssipl_billing/3_SUBSCRIPTION/services/Process/Quotation_services/SUBSCRIPTION_QuoteNotes_service.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
 import 'package:ssipl_billing/THEMES/style.dart';

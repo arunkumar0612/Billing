@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
-import 'package:ssipl_billing/4_SALES/models/entities/ClientReq_entities.dart';
-import 'package:ssipl_billing/4_SALES/views/Generate_client_req/clientreq_template.dart';
+import 'package:ssipl_billing/4_SALES/models/entities/Process/ClientReq_entities.dart';
+import 'package:ssipl_billing/4_SALES/views/Process/Generate_client_req/clientreq_template.dart';
 import 'package:ssipl_billing/API/api.dart';
 import 'package:ssipl_billing/API/invoker.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
@@ -16,7 +16,7 @@ import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
 
-import '../../controllers/ClientReq_actions.dart';
+import '../../../controllers/Process/ClientReq_actions.dart';
 
 mixin ClientreqNoteService {
   final ClientreqController clientreqController = Get.find<ClientreqController>();

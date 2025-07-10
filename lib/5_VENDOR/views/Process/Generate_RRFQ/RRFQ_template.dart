@@ -3,8 +3,8 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:ssipl_billing/5_VENDOR/controllers/RRFQ_actions.dart';
-import 'package:ssipl_billing/5_VENDOR/models/entities/product_entities.dart';
+import 'package:ssipl_billing/5_VENDOR/controllers/Process/RRFQ_actions.dart';
+import 'package:ssipl_billing/5_VENDOR/models/entities/Process/product_entities.dart';
 import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
 
 Future<Uint8List> generate_RRFQ(

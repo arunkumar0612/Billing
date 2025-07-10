@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/3_SUBSCRIPTION/models/entities/SUBSCRIPTION_Quote_entities.dart';
+import 'package:ssipl_billing/3_SUBSCRIPTION/models/entities/Process/SUBSCRIPTION_Quote_entities.dart';
 
 class SUBSCRIPTION_QuoteModel extends GetxController with GetSingleTickerProviderStateMixin {
   final Rxn<TabController> tabController = Rxn<TabController>();

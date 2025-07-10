@@ -11,6 +11,7 @@ class VendorModel extends GetxController with GetSingleTickerProviderStateMixin 
   final vendorId = Rxn<int>();
   final pdfFile = Rxn<File>();
   final processID = Rxn<int>();
+  var vendorList = <VendorList>[].obs;
 
   final selectedIndices = <int>[].obs;
   final RxBool isAllSelected = false.obs;

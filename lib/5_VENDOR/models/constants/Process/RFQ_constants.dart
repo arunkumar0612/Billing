@@ -30,7 +30,6 @@ class RfqModel extends GetxController with GetSingleTickerProviderStateMixin {
   // final billingAddressNameController = TextEditingController().obs;
   // final billingAddressController = TextEditingController().obs;
   final detailsKey = GlobalKey<FormState>().obs;
-  var vendorList = <VendorList>[].obs;
 
   // PRODUCTS
   final productKey = GlobalKey<FormState>().obs;

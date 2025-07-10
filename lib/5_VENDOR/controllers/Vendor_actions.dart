@@ -90,6 +90,19 @@ class VendorController extends GetxController {
     vendorModel.isprofilepage.value = value;
   }
 
+  // void on_vendorSelected() {}
+  void update_vendorList(CMDlResponse value) {
+    try {
+      vendorModel.vendorList.clear();
+      for (int i = 0; i < value.data.length; i++) {
+        vendorModel.vendorList.add(VendorList.fromJson(value.data[i]));
+      }
+      print(vendorModel.vendorList);
+    } catch (e) {
+      print('$e');
+    }
+  }
+
   void clear_sharedata() {
     vendorModel.emailController.value.clear();
     vendorModel.phoneController.value.clear();
@@ -165,7 +178,7 @@ class VendorController extends GetxController {
     vendorModel.vendorId.value = null;
     vendorModel.pdfFile.value = null;
     vendorModel.type.value = 0;
-
+    vendorModel.vendorList.clear();
     vendorModel.selectedIndices.clear();
     vendorModel.isAllSelected.value = false;
     vendorModel.type.value = 0;

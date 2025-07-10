@@ -47,6 +47,7 @@ class _VendorDashboardState extends State<VendorDashboard> with TickerProviderSt
   @override
   void initState() {
     super.initState();
+    widget.get_VendorList();
     widget.Get_vendorProcessList(0);
     vendorController.updatevendorId(0);
     vendorController.update_showVendorProcess(null);
@@ -1226,9 +1227,73 @@ class _VendorDashboardState extends State<VendorDashboard> with TickerProviderSt
                                                                                             vendorController.vendorModel.processList[index].TimelineEvents[childIndex].Eventname,
                                                                                             style: const TextStyle(fontSize: Primary_font_size.Text7, color: Primary_colors.Color1),
                                                                                           ),
+                                                                                          // if (vendorController.vendorModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 1 &&
+                                                                                          //     (vendorController.vendorModel.processList[index].TimelineEvents[childIndex].Eventname == "QUOTATION"))
+                                                                                          //   Image.asset(
+                                                                                          //     'assets/images/verified.png',
+                                                                                          //     // fit: BoxFit.cover, // Ensures the image covers the container
+                                                                                          //     width: 20, // Makes the image fill the container's width
+                                                                                          //     height: 20, // Makes the image fill the container's height
+                                                                                          //   ),
+                                                                                          // if (vendorController.vendorModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 2 &&
+                                                                                          //     (vendorController.vendorModel.processList[index].TimelineEvents[childIndex].Eventname == "QUOTATION"))
+                                                                                          //   Padding(
+                                                                                          //     padding: const EdgeInsets.only(left: 5),
+                                                                                          //     child: Image.asset(
+                                                                                          //       color: Colors.amberAccent,
+                                                                                          //       'assets/images/exclamation.png',
+                                                                                          //       // fit: BoxFit.cover, // Ensures the image covers the container
+                                                                                          //       width: 15, // Makes the image fill the container's width
+                                                                                          //       height: 15, // Makes the image fill the container's height
+                                                                                          //     ),
+                                                                                          //   ),
+                                                                                          // if (vendorController.vendorModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 3 &&
+                                                                                          //     (vendorController.vendorModel.processList[index].TimelineEvents[childIndex].Eventname == "QUOTATION"))
+                                                                                          //   Padding(
+                                                                                          //     padding: const EdgeInsets.only(left: 2),
+                                                                                          //     child: Image.asset(
+                                                                                          //       // color: Colors.amberAccent,
+                                                                                          //       'assets/images/reject.png',
+                                                                                          //       // fit: BoxFit.cover, // Ensures the image covers the container
+                                                                                          //       width: 18, // Makes the image fill the container's width
+                                                                                          //       height: 18, // Makes the image fill the container's height
+                                                                                          //     ),
+                                                                                          //   ),
                                                                                         ],
                                                                                       ),
                                                                                     ),
+                                                                                    if (vendorController.vendorModel.processList[index].TimelineEvents[childIndex].Allowed_process.getApproval == true)
+                                                                                      Row(
+                                                                                        children: [
+                                                                                          const SizedBox(
+                                                                                            width: 10,
+                                                                                          ),
+                                                                                          const Text(
+                                                                                            "Approval status",
+                                                                                            style: TextStyle(color: Colors.grey, fontSize: 10),
+                                                                                          ),
+                                                                                          const SizedBox(
+                                                                                            width: 10,
+                                                                                          ),
+                                                                                          const Text(
+                                                                                            ":",
+                                                                                            style: TextStyle(color: Colors.grey, fontSize: 10),
+                                                                                          ),
+                                                                                          const SizedBox(
+                                                                                            width: 10,
+                                                                                          ),
+                                                                                          Text(
+                                                                                            vendorController.vendorModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 1
+                                                                                                ? "Approved"
+                                                                                                : vendorController.vendorModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 2
+                                                                                                    ? "Pending"
+                                                                                                    : vendorController.vendorModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 3
+                                                                                                        ? "Rejected"
+                                                                                                        : "Pending",
+                                                                                            style: const TextStyle(color: Colors.grey, fontSize: 10),
+                                                                                          ),
+                                                                                        ],
+                                                                                      ),
                                                                                     Row(
                                                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                                                       children: [
@@ -1257,7 +1322,12 @@ class _VendorDashboardState extends State<VendorDashboard> with TickerProviderSt
                                                                                                 true) &&
                                                                                             (vendorController.vendorModel.processList[index].TimelineEvents.length == childIndex + 1))
                                                                                           TextButton(
-                                                                                            onPressed: () async {},
+                                                                                            onPressed: () async {
+                                                                                              widget.Get_QuoteApproval(
+                                                                                                context,
+                                                                                                vendorController.vendorModel.processList[index].TimelineEvents[childIndex].Eventid,
+                                                                                              );
+                                                                                            },
                                                                                             child: const Text(
                                                                                               "Get Approval",
                                                                                               style: TextStyle(color: Colors.blue, fontSize: 12),

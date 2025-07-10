@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/5_VENDOR/models/constants/RFQ_constants.dart';
 import 'package:ssipl_billing/5_VENDOR/models/entities/RFQ_entities.dart';
+import 'package:ssipl_billing/5_VENDOR/models/entities/Vendor_entities.dart';
 import 'package:ssipl_billing/5_VENDOR/models/entities/product_entities.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
@@ -401,19 +402,6 @@ class vendor_RfqController extends GetxController {
     // // }
   }
 
-  // void on_vendorSelected() {}
-  void update_vendorList(CMDlResponse value) {
-    try {
-      rfqModel.vendorList.clear();
-      for (int i = 0; i < value.data.length; i++) {
-        rfqModel.vendorList.add(VendorList.fromJson(value.data[i]));
-      }
-      print(rfqModel.vendorList);
-    } catch (e) {
-      print('$e');
-    }
-  }
-
   void update_vendorCredentials_onSelect(VendorList selectedVendor) {
     rfqModel.GSTIN_Controller.value.text = selectedVendor.gstNumber;
     rfqModel.PAN_Controller.value.text = selectedVendor.panNumber;
@@ -504,7 +492,6 @@ class vendor_RfqController extends GetxController {
     rfqModel.vendorName.value = null;
     rfqModel.Rfq_no.value = null;
     // rfqModel.Rfq_table_heading.value = '';
-    rfqModel.vendorList.clear();
 
     // DETAILS
     rfqModel.TitleController.value.clear();

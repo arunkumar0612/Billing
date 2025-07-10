@@ -3,7 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/RFQ_actions.dart';
-import 'package:ssipl_billing/5_VENDOR/models/entities/RFQ_entities.dart';
+import 'package:ssipl_billing/5_VENDOR/controllers/Vendor_actions.dart';
+import 'package:ssipl_billing/5_VENDOR/models/entities/Vendor_entities.dart';
 import 'package:ssipl_billing/5_VENDOR/services/RFQ_services/RFQ_Details_service.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
@@ -19,6 +20,7 @@ class RfqDetails extends StatefulWidget with RfqdetailsService {
 
 class _RfqDetailsState extends State<RfqDetails> {
   final vendor_RfqController rfqController = Get.find<vendor_RfqController>();
+  final VendorController vendorController = Get.find<VendorController>();
 
   @override
   void initState() {
@@ -114,7 +116,7 @@ class _RfqDetailsState extends State<RfqDetails> {
                                       color: Colors.white,
                                     ),
                                   ),
-                                  items: rfqController.rfqModel.vendorList.map((vendor) {
+                                  items: vendorController.vendorModel.vendorList.map((vendor) {
                                     return DropdownMenuItem<VendorList>(
                                       value: vendor, // Store the full vendor object
                                       child: Text(

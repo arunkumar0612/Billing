@@ -208,7 +208,7 @@ class Quotation {
                         left: 15,
                       ),
                       child: pw.Text(
-                        'DELIVERY ADDRESS',
+                        'FROM ADDRESS',
                         style: pw.TextStyle(
                           font: Helvetica_bold,
                           fontSize: 10,
@@ -281,7 +281,7 @@ class Quotation {
                         left: 15,
                       ),
                       child: pw.Text(
-                        'BILLING ADDRESS',
+                        'DELIVERY ADDRESS',
                         style: pw.TextStyle(
                           font: Helvetica_bold,
                           fontSize: 10,

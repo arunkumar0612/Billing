@@ -32,6 +32,31 @@ mixin VendorServices {
   final vendor_RrfqController rrfqController = Get.find<vendor_RrfqController>();
   final vendor_PoController poController = Get.find<vendor_PoController>();
   final loader = LoadingOverlay();
+
+  void get_VendorList() async {
+    try {
+      Map<String, dynamic> body = {"vendorid": 0};
+      Map<String, dynamic>? response = await apiController.GetbyQueryString(body, API.fetch_vendorList);
+      if (response?['statusCode'] == 200) {
+        CMDlResponse value = CMDlResponse.fromJson(response ?? {});
+        if (value.code) {
+          vendorController.update_vendorList(value);
+          // await Basic_dialog(context: context,showCancel: false, title: 'Organization List', content: value.message!, onOk: () {});
+          // clientreqController.update_CompanyList(value);
+        } else {
+          // await Error_dialog(context: context, title: 'Fetching Vendor List Error', content: value.message ?? "", onOk: () {});
+          // Navigator.of(context).pop();
+        }
+      } else {
+        // Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+        // Navigator.of(context).pop();
+      }
+    } catch (e) {
+      // Error_dialog(context: context, title: "ERROR", content: "$e");
+      // Navigator.of(context).pop();
+    }
+  }
+
   Future<void> Get_vendorProcessList(int vendorid) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyQueryString({"vendorid": vendorid, "listtype": vendorController.vendorModel.type.value}, API.vendor_getprocesslist_API);
@@ -335,8 +360,6 @@ mixin VendorServices {
     );
   }
 
-// // ##################################################################################################################################################################################################################################################################################################################################################################
-
   String formatNumber(int number) {
     if (number >= 10000000) {
       return "₹ ${(number / 10000000).toStringAsFixed(1)}Cr";
@@ -346,6 +369,26 @@ mixin VendorServices {
       return "₹ ${(number / 1000).toStringAsFixed(1)}K";
     } else {
       return "₹ $number";
+    }
+  }
+
+  void Get_QuoteApproval(context, int eventid) async {
+    try {
+      Map<String, dynamic>? response = await apiController.GetbyQueryString({"eventid": eventid}, API.vendor_getQuoteApproval);
+      if (response?['statusCode'] == 200) {
+        CMResponse value = CMResponse.fromJson(response ?? {});
+        if (value.code) {
+          Success_SnackBar(context, "Mail sent to the admin for for approval");
+          // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
+        } else {
+          Error_SnackBar(context, value.message ?? "ERROR");
+          // await Error_dialog(context: context, title: 'Approval Error', content: value.message ?? "", onOk: () {});
+        }
+      } else {
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+      }
+    } catch (e) {
+      Error_dialog(context: context, title: "ERROR", content: "$e");
     }
   }
 
@@ -435,6 +478,7 @@ mixin VendorServices {
 
   Future<void> vendor_refresh() async {
     // vendorController.resetData();
+    get_VendorList();
     vendorController.update_showVendorProcess(null);
     vendorController.update_showVendorProcess(null);
     await Get_vendorProcesscustomerList();

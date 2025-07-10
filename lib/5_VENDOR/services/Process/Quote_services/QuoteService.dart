@@ -17,7 +17,8 @@ mixin Quoteservice {
   final Invoker apiController = Get.find<Invoker>();
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
   Future<void> Quote_action(context) async {
-    bool pickedStatus = await quoteController.pickFile(context);
+    // bool pickedStatus =
+    await quoteController.pickFile(context);
     // if (pickedStatus) {
     //   uploadQuote(context, quoteController.quoteModel.selectedPdf.value!);
     // } else {
@@ -36,7 +37,7 @@ mixin Quoteservice {
 
       // Map<String, dynamic>? response = await apiController.multiPart(file, API.vendor_uploadQuote);
       if (response['statusCode'] == 200) {
-        CMDmResponse value = CMDmResponse.fromJson(response ?? {});
+        CMDmResponse value = CMDmResponse.fromJson(response);
         if (value.code) {
           await Success_dialog(context: context, title: 'Upload Quote', content: "Quote uploaded Successfully", onOk: () {});
           Navigator.of(context).pop(true);

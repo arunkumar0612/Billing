@@ -5,13 +5,14 @@ import 'package:ssipl_billing/5_VENDOR/controllers/RFQ_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/Vendor_actions.dart';
 // import 'package:ssipl_billing/5_VENDOR/controllers/Sales_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/services/RFQ_services/RFQ_Details_service.dart';
+import 'package:ssipl_billing/5_VENDOR/services/vendor_service.dart';
 import 'package:ssipl_billing/5_VENDOR/views/Generate_RFQ/RFQ_details.dart';
 import 'package:ssipl_billing/5_VENDOR/views/Generate_RFQ/RFQ_note.dart';
 import 'package:ssipl_billing/5_VENDOR/views/Generate_RFQ/RFQ_products.dart';
 import 'package:ssipl_billing/5_VENDOR/views/Generate_RFQ/post_RFQ.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 
-class GenerateRfq extends StatefulWidget with RfqdetailsService {
+class GenerateRfq extends StatefulWidget with RfqdetailsService, VendorServices {
   GenerateRfq({
     super.key,
   });
@@ -28,7 +29,7 @@ class _GenerateRfqState extends State<GenerateRfq> with SingleTickerProviderStat
     super.initState();
     // GenerateRfq._tabController = ;
     rfqController.initializeTabController(TabController(length: 4, vsync: this));
-    widget.get_VendorList(context);
+    widget.get_VendorList();
     widget.get_requiredData(context);
     widget.get_noteSuggestionList(context);
   }

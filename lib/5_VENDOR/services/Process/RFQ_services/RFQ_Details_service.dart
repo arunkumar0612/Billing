@@ -78,29 +78,6 @@ mixin RfqdetailsService {
     }
   }
 
-  void get_VendorList(context) async {
-    try {
-      Map<String, dynamic> body = {"vendorid": 0};
-      Map<String, dynamic>? response = await apiController.GetbyQueryString(body, API.fetch_vendorList);
-      if (response?['statusCode'] == 200) {
-        CMDlResponse value = CMDlResponse.fromJson(response ?? {});
-        if (value.code) {
-          rfqController.update_vendorList(value);
-          // await Basic_dialog(context: context,showCancel: false, title: 'Organization List', content: value.message!, onOk: () {});
-          // clientreqController.update_CompanyList(value);
-        } else {
-          await Error_dialog(context: context, title: 'Fetching Vendor List Error', content: value.message ?? "", onOk: () {});
-          Navigator.of(context).pop();
-        }
-      } else {
-        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
-        Navigator.of(context).pop();
-      }
-    } catch (e) {
-      Error_dialog(context: context, title: "ERROR", content: "$e");
-      Navigator.of(context).pop();
-    }
-  }
   // void get_productSuggestionList(context) async {
   //   try {
   //     Map<String, dynamic>? response = await apiController.GetbyToken(API.sales_getProduct_SUGG_List);

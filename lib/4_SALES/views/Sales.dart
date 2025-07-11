@@ -1344,41 +1344,41 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                   //       style: TextStyle(fontSize: 10, color: Color.fromARGB(255, 141, 141, 141)),
                                                                                   //     ),
                                                                                   //   ),
-                                                                                  if (salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 1 &&
-                                                                                      (salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Quotation" ||
-                                                                                          salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Revised Quotation"))
-                                                                                    Image.asset(
-                                                                                      'assets/images/verified.png',
-                                                                                      // fit: BoxFit.cover, // Ensures the image covers the container
-                                                                                      width: 20, // Makes the image fill the container's width
-                                                                                      height: 20, // Makes the image fill the container's height
-                                                                                    ),
-                                                                                  if (salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 2 &&
-                                                                                      (salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Quotation" ||
-                                                                                          salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Revised Quotation"))
-                                                                                    Padding(
-                                                                                      padding: const EdgeInsets.only(left: 5),
-                                                                                      child: Image.asset(
-                                                                                        color: Colors.amberAccent,
-                                                                                        'assets/images/exclamation.png',
-                                                                                        // fit: BoxFit.cover, // Ensures the image covers the container
-                                                                                        width: 15, // Makes the image fill the container's width
-                                                                                        height: 15, // Makes the image fill the container's height
-                                                                                      ),
-                                                                                    ),
-                                                                                  if (salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 3 &&
-                                                                                      (salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Quotation" ||
-                                                                                          salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Revised Quotation"))
-                                                                                    Padding(
-                                                                                      padding: const EdgeInsets.only(left: 2),
-                                                                                      child: Image.asset(
-                                                                                        // color: Colors.amberAccent,
-                                                                                        'assets/images/reject.png',
-                                                                                        // fit: BoxFit.cover, // Ensures the image covers the container
-                                                                                        width: 18, // Makes the image fill the container's width
-                                                                                        height: 18, // Makes the image fill the container's height
-                                                                                      ),
-                                                                                    ),
+                                                                                  // if (salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 1 &&
+                                                                                  //     (salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Quotation" ||
+                                                                                  //         salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Revised Quotation"))
+                                                                                  //   Image.asset(
+                                                                                  //     'assets/images/verified.png',
+                                                                                  //     // fit: BoxFit.cover, // Ensures the image covers the container
+                                                                                  //     width: 20, // Makes the image fill the container's width
+                                                                                  //     height: 20, // Makes the image fill the container's height
+                                                                                  //   ),
+                                                                                  // if (salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 2 &&
+                                                                                  //     (salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Quotation" ||
+                                                                                  //         salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Revised Quotation"))
+                                                                                  //   Padding(
+                                                                                  //     padding: const EdgeInsets.only(left: 5),
+                                                                                  //     child: Image.asset(
+                                                                                  //       color: Colors.amberAccent,
+                                                                                  //       'assets/images/exclamation.png',
+                                                                                  //       // fit: BoxFit.cover, // Ensures the image covers the container
+                                                                                  //       width: 15, // Makes the image fill the container's width
+                                                                                  //       height: 15, // Makes the image fill the container's height
+                                                                                  //     ),
+                                                                                  //   ),
+                                                                                  // if (salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 3 &&
+                                                                                  //     (salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Quotation" ||
+                                                                                  //         salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Revised Quotation"))
+                                                                                  //   Padding(
+                                                                                  //     padding: const EdgeInsets.only(left: 2),
+                                                                                  //     child: Image.asset(
+                                                                                  //       // color: Colors.amberAccent,
+                                                                                  //       'assets/images/reject.png',
+                                                                                  //       // fit: BoxFit.cover, // Ensures the image covers the container
+                                                                                  //       width: 18, // Makes the image fill the container's width
+                                                                                  //       height: 18, // Makes the image fill the container's height
+                                                                                  //     ),
+                                                                                  //   ),
                                                                                 ],
                                                                               ),
                                                                             ),

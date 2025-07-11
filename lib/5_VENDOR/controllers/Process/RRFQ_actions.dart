@@ -405,24 +405,7 @@ class vendor_RrfqController extends GetxController {
     updatePhoneNumber(instance.vendorRfqDetails.phoneNo);
     updateEmail(instance.vendorRfqDetails.emailId);
     updateProducts(instance.vendorRfqDetails.products);
-
-    // updateRrfqnumber(instance.eventnumber);
-    // updateTitle(instance.title!);
-    // updateEmail(instance.emailId!);
-    // updateGSTnumber(instance.gst!);
-    // updatePhone(instance.phoneNo!);
-    // // updateClientAddressName(instance.name!);
-    // updateClientAddress(instance.address!);
-    // // updateBillingAddressName(instance.billingAddressName!);
-    // // updateBillingAddress(instance.billingAddress!);
-    // updateProducts(instance.product);
-    // // for(int i=0;i<instance.product.length;i++){
-    // //    vendor_RrfqController.addProduct(context: context, productName: vendor_RrfqController.rrfqModel.productNameController.value.text, hsn: vendor_RrfqController.rrfqModel.hsnController.value.text, price: double.parse(vendor_RrfqController.rrfqModel.priceController.value.text), quantity: int.parse(vendor_RrfqController.rrfqModel.quantityController.value.text), gst: double.parse(vendor_RrfqController.rrfqModel.gstController.value.text));
-
-    // // }
   }
-
-  // void on_vendorSelected() {}
 
   bool generate_Datavalidation() {
     return (rrfqModel.vendorID.value == null ||

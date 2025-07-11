@@ -50,7 +50,6 @@ mixin RrfqproductService {
           // ignore: unrelated_type_equality_checks
 
           );
-
       if (exists) {
         Get.snackbar("Product", "This product already exists.");
         return;

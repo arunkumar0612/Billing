@@ -14,7 +14,7 @@ class RrfqModel extends GetxController with GetSingleTickerProviderStateMixin {
   final type = 0.obs;
   // var gst_no = Rxn<String>();
   // var Rrfq_table_heading = "".obs;
-  // var rrfq_amount = Rxn<double>();
+  // var rrfq_amount = Rxn<double>();0
 
   // DETAILS
 

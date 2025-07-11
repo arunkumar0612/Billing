@@ -1350,7 +1350,17 @@ class _VendorDashboardState extends State<VendorDashboard> with TickerProviderSt
                                                                                             (vendorController.vendorModel.processList[index].TimelineEvents.length == childIndex + 1))
                                                                                           TextButton(
                                                                                             onPressed: () async {
+                                                                                              vendorController.setProcessID(vendorController.vendorModel.processList[index].processid);
+                                                                                              // bool success = await
+                                                                                              // widget.Get_vendorPDFfile(
+                                                                                              //     context: context,
+                                                                                              //     eventid: vendorController.vendorModel.processList[index].TimelineEvents[childIndex].Eventid,
+                                                                                              //     eventtype: "po");
+
+                                                                                              // if (success) {
                                                                                               widget.GeneratePo_dialougebox(context);
+
+                                                                                              // }
                                                                                             },
                                                                                             child: const Text(
                                                                                               "Generate PO",

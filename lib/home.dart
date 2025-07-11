@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -34,6 +36,9 @@ class _MyHomePageState extends State<MyHomePage> {
         pageController.jumpToPage(index);
       },
     );
+    Timer.periodic(Duration(seconds: 30), (timer) {
+      if (mounted) setState(() {});
+    });
     super.initState();
   }
 

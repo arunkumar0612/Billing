@@ -5,11 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/Process/DC_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/Process/Invoice_actions.dart';
-import 'package:ssipl_billing/5_VENDOR/controllers/Process/PO_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/Process/Quote_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/Process/RFQ_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/Process/RRFQ_actions.dart';
-import 'package:ssipl_billing/5_VENDOR/views/Process/Generate_PO/generatePO.dart';
 import 'package:ssipl_billing/5_VENDOR/views/Process/Generate_RFQ/generateRFQ.dart';
 import 'package:ssipl_billing/5_VENDOR/views/Process/Generate_RRFQ/generateRRFQ.dart';
 import 'package:ssipl_billing/5_VENDOR/views/Process/Upload_DC/uploadDC.dart';
@@ -34,7 +32,6 @@ mixin VendorServices {
   final VendorController vendorController = Get.find<VendorController>();
   final vendor_RfqController vendor_rfqController = Get.find<vendor_RfqController>();
   final vendor_RrfqController rrfqController = Get.find<vendor_RrfqController>();
-  final vendor_PoController poController = Get.find<vendor_PoController>();
   final loader = LoadingOverlay();
 
   void get_VendorList() async {
@@ -263,7 +260,7 @@ mixin VendorServices {
               SizedBox(
                 height: 650,
                 width: 1300,
-                child: GeneratePo(),
+                child: Container(),
               ),
               Positioned(
                 top: 3,
@@ -281,27 +278,28 @@ mixin VendorServices {
                   onPressed: () async {
                     // Check if the data has any value
                     // || ( rfqController.rfqModel.Invoice_gstTotals.isNotEmpty)
-                    if ((poController.poModel.Po_products.isNotEmpty) ||
-                        (poController.poModel.Po_noteList.isNotEmpty) ||
-                        (poController.poModel.Po_recommendationList.isNotEmpty) ||
-                        // (rfqController.rfqModel.clientAddressNameController.value.text != "") ||
-                        (poController.poModel.AddressController.value.text != "") ||
-                        // (rfqController.rfqModel.billingAddressNameController.value.text != "") ||
-                        // (rfqController.rfqModel.billingAddressController.value.text != "") ||
-                        (poController.poModel.Po_no.value != "") ||
-                        (poController.poModel.AddressController.value.text != "") ||
-                        (poController.poModel.GSTIN_Controller.value.text != "") ||
-                        (poController.poModel.PAN_Controller.value.text != "") ||
-                        (poController.poModel.recommendationHeadingController.value.text != "")) {
-                      // Show confirmation dialog
-                      bool? proceed = await Warning_dialog(context: context, title: 'Warning', content: "The data may be lost. Do you want to proceed?");
-                      if (proceed == true) {
-                        Navigator.of(context).pop();
-                        poController.resetData();
-                      }
-                    } else {
-                      Navigator.of(context).pop();
-                    }
+
+                    // if ((poController.poModel.Po_products.isNotEmpty) ||
+                    //     (poController.poModel.Po_noteList.isNotEmpty) ||
+                    //     (poController.poModel.Po_recommendationList.isNotEmpty) ||
+                    //     // (rfqController.rfqModel.clientAddressNameController.value.text != "") ||
+                    //     (poController.poModel.AddressController.value.text != "") ||
+                    //     // (rfqController.rfqModel.billingAddressNameController.value.text != "") ||
+                    //     // (rfqController.rfqModel.billingAddressController.value.text != "") ||
+                    //     (poController.poModel.Po_no.value != "") ||
+                    //     (poController.poModel.AddressController.value.text != "") ||
+                    //     (poController.poModel.GSTIN_Controller.value.text != "") ||
+                    //     (poController.poModel.PAN_Controller.value.text != "") ||
+                    //     (poController.poModel.recommendationHeadingController.value.text != "")) {
+                    //   // Show confirmation dialog
+                    //   bool? proceed = await Warning_dialog(context: context, title: 'Warning', content: "The data may be lost. Do you want to proceed?");
+                    //   if (proceed == true) {
+                    //     Navigator.of(context).pop();
+                    //     poController.resetData();
+                    //   }
+                    // } else {
+                    //   Navigator.of(context).pop();
+                    // }
                   },
                 ),
               ),

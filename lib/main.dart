@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:desktop_window/desktop_window.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/Initialize.dart';
 import 'package:ssipl_billing/ROUTES/app_routes.dart';
@@ -41,10 +44,31 @@ class _RestartWidgetState extends State<RestartWidget> {
   }
 }
 
+// Add this to your main.dart
+const _channel = MethodChannel('app.restart');
+
+Future<void> _restartApp() async {
+  try {
+    await _channel.invokeMethod('restartApp');
+  } on PlatformException catch (e) {
+    print("Failed to restart app: '${e.message}'.");
+  }
+}
+
 /// The main entry point of the application
 Future<void> main() async {
   // Initialize Flutter bindings
   WidgetsFlutterBinding.ensureInitialized();
+  FlutterError.onError = (details) async {
+    if (details.exception.toString().contains('Context Lost') || details.exception.toString().contains('Could not make the context current')) {
+      print('GPU context lost detected - attempting to restart');
+      await _restartApp();
+    }
+    FlutterError.presentError(details);
+  };
+  // if (Platform.isWindows) {
+  //   debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
+  // }
 
   ///  Ensures that all the Flutter widgets and plugins are initialized before runApp is called
   initialize_IAM();

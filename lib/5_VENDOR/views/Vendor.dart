@@ -1262,134 +1262,134 @@ class _VendorDashboardState extends State<VendorDashboard> with TickerProviderSt
                                                                                         ],
                                                                                       ),
                                                                                     ),
-                                                                                    if (vendorController.vendorModel.processList[index].TimelineEvents[childIndex].Allowed_process.getApproval == true)
-                                                                                      Row(
-                                                                                        children: [
-                                                                                          const SizedBox(
-                                                                                            width: 10,
-                                                                                          ),
-                                                                                          const Text(
-                                                                                            "Approval status",
-                                                                                            style: TextStyle(color: Colors.grey, fontSize: 10),
-                                                                                          ),
-                                                                                          const SizedBox(
-                                                                                            width: 10,
-                                                                                          ),
-                                                                                          const Text(
-                                                                                            ":",
-                                                                                            style: TextStyle(color: Colors.grey, fontSize: 10),
-                                                                                          ),
-                                                                                          const SizedBox(
-                                                                                            width: 10,
-                                                                                          ),
-                                                                                          Text(
-                                                                                            vendorController.vendorModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 1
-                                                                                                ? "Approved"
-                                                                                                : vendorController.vendorModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 2
-                                                                                                    ? "Pending"
-                                                                                                    : vendorController.vendorModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 3
-                                                                                                        ? "Rejected"
-                                                                                                        : "Pending",
-                                                                                            style: const TextStyle(color: Colors.grey, fontSize: 10),
-                                                                                          ),
-                                                                                        ],
-                                                                                      ),
+                                                                                    // if (vendorController.vendorModel.processList[index].TimelineEvents[childIndex].Allowed_process.getApproval == true)
+                                                                                    Row(
+                                                                                      children: [
+                                                                                        const SizedBox(
+                                                                                          width: 10,
+                                                                                        ),
+                                                                                        const Text(
+                                                                                          "Approval status",
+                                                                                          style: TextStyle(color: Colors.grey, fontSize: 10),
+                                                                                        ),
+                                                                                        const SizedBox(
+                                                                                          width: 10,
+                                                                                        ),
+                                                                                        const Text(
+                                                                                          ":",
+                                                                                          style: TextStyle(color: Colors.grey, fontSize: 10),
+                                                                                        ),
+                                                                                        const SizedBox(
+                                                                                          width: 10,
+                                                                                        ),
+                                                                                        Text(
+                                                                                          vendorController.vendorModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 1
+                                                                                              ? "Approved"
+                                                                                              : vendorController.vendorModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 2
+                                                                                                  ? "Pending"
+                                                                                                  : vendorController.vendorModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 3
+                                                                                                      ? "Rejected"
+                                                                                                      : "Pending",
+                                                                                          style: const TextStyle(color: Colors.grey, fontSize: 10),
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
                                                                                     Row(
                                                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                                                       children: [
-                                                                                        if ((vendorController.vendorModel.processList[index].TimelineEvents[childIndex].Allowed_process.rrfq == true) &&
-                                                                                            (vendorController.vendorModel.processList[index].TimelineEvents.length == childIndex + 1))
-                                                                                          TextButton(
-                                                                                            onPressed: () async {
-                                                                                              bool success = await widget.Get_vendorPDFfile(
-                                                                                                  context: context,
-                                                                                                  eventid: vendorController.vendorModel.processList[index].TimelineEvents[childIndex].Eventid,
-                                                                                                  eventtype: "rrfq");
+                                                                                        // if ((vendorController.vendorModel.processList[index].TimelineEvents[childIndex].Allowed_process.rrfq == true) &&
+                                                                                        //     (vendorController.vendorModel.processList[index].TimelineEvents.length == childIndex + 1))
+                                                                                        TextButton(
+                                                                                          onPressed: () async {
+                                                                                            bool success = await widget.Get_vendorPDFfile(
+                                                                                                context: context,
+                                                                                                eventid: vendorController.vendorModel.processList[index].TimelineEvents[childIndex].Eventid,
+                                                                                                eventtype: "rrfq");
 
-                                                                                              if (success) {
-                                                                                                widget.GenerateRrfq_dialougebox(context);
-                                                                                                vendorController.setProcessID(vendorController.vendorModel.processList[index].processid);
-                                                                                              }
-
-                                                                                              // widget.GenerateRrfq_dialougebox(context);
-                                                                                            },
-                                                                                            child: const Text(
-                                                                                              "Revised RFQ",
-                                                                                              style: TextStyle(color: Colors.blue, fontSize: 12),
-                                                                                            ),
-                                                                                          ),
-                                                                                        if ((vendorController.vendorModel.processList[index].TimelineEvents[childIndex].Allowed_process.getApproval ==
-                                                                                                true) &&
-                                                                                            (vendorController.vendorModel.processList[index].TimelineEvents.length == childIndex + 1))
-                                                                                          TextButton(
-                                                                                            onPressed: () async {
-                                                                                              widget.Get_QuoteApproval(
-                                                                                                context,
-                                                                                                vendorController.vendorModel.processList[index].TimelineEvents[childIndex].Eventid,
-                                                                                              );
-                                                                                            },
-                                                                                            child: const Text(
-                                                                                              "Get Approval",
-                                                                                              style: TextStyle(color: Colors.blue, fontSize: 12),
-                                                                                            ),
-                                                                                          ),
-                                                                                        if ((vendorController.vendorModel.processList[index].TimelineEvents[childIndex].Allowed_process.quotation ==
-                                                                                                true) &&
-                                                                                            (vendorController.vendorModel.processList[index].TimelineEvents.length == childIndex + 1))
-                                                                                          TextButton(
-                                                                                            onPressed: () async {
-                                                                                              widget.uploadQuote_dialougebox(context);
+                                                                                            if (success) {
+                                                                                              widget.GenerateRrfq_dialougebox(context);
                                                                                               vendorController.setProcessID(vendorController.vendorModel.processList[index].processid);
-                                                                                            },
-                                                                                            child: const Text(
-                                                                                              "Upload Quote",
-                                                                                              style: TextStyle(color: Colors.blue, fontSize: 12),
-                                                                                            ),
-                                                                                          ),
-                                                                                        if ((vendorController.vendorModel.processList[index].TimelineEvents[childIndex].Allowed_process.po == true) &&
-                                                                                            (vendorController.vendorModel.processList[index].TimelineEvents.length == childIndex + 1))
-                                                                                          TextButton(
-                                                                                            onPressed: () async {
-                                                                                              vendorController.setProcessID(vendorController.vendorModel.processList[index].processid);
-                                                                                              // bool success = await
-                                                                                              // widget.Get_vendorPDFfile(
-                                                                                              //     context: context,
-                                                                                              //     eventid: vendorController.vendorModel.processList[index].TimelineEvents[childIndex].Eventid,
-                                                                                              //     eventtype: "po");
+                                                                                            }
 
-                                                                                              // if (success) {
-                                                                                              widget.GeneratePo_dialougebox(context);
+                                                                                            // widget.GenerateRrfq_dialougebox(context);
+                                                                                          },
+                                                                                          child: const Text(
+                                                                                            "Revised RFQ",
+                                                                                            style: TextStyle(color: Colors.blue, fontSize: 12),
+                                                                                          ),
+                                                                                        ),
+                                                                                        // if ((vendorController.vendorModel.processList[index].TimelineEvents[childIndex].Allowed_process.getApproval ==
+                                                                                        //         true) &&
+                                                                                        //     (vendorController.vendorModel.processList[index].TimelineEvents.length == childIndex + 1))
+                                                                                        TextButton(
+                                                                                          onPressed: () async {
+                                                                                            widget.Get_QuoteApproval(
+                                                                                              context,
+                                                                                              vendorController.vendorModel.processList[index].TimelineEvents[childIndex].Eventid,
+                                                                                            );
+                                                                                          },
+                                                                                          child: const Text(
+                                                                                            "Get Approval",
+                                                                                            style: TextStyle(color: Colors.blue, fontSize: 12),
+                                                                                          ),
+                                                                                        ),
+                                                                                        // if ((vendorController.vendorModel.processList[index].TimelineEvents[childIndex].Allowed_process.quotation ==
+                                                                                        //         true) &&
+                                                                                        //     (vendorController.vendorModel.processList[index].TimelineEvents.length == childIndex + 1))
+                                                                                        TextButton(
+                                                                                          onPressed: () async {
+                                                                                            widget.uploadQuote_dialougebox(context);
+                                                                                            vendorController.setProcessID(vendorController.vendorModel.processList[index].processid);
+                                                                                          },
+                                                                                          child: const Text(
+                                                                                            "Upload Quote",
+                                                                                            style: TextStyle(color: Colors.blue, fontSize: 12),
+                                                                                          ),
+                                                                                        ),
+                                                                                        // if ((vendorController.vendorModel.processList[index].TimelineEvents[childIndex].Allowed_process.po == true) &&
+                                                                                        //     (vendorController.vendorModel.processList[index].TimelineEvents.length == childIndex + 1))
+                                                                                        TextButton(
+                                                                                          onPressed: () async {
+                                                                                            vendorController.setProcessID(vendorController.vendorModel.processList[index].processid);
+                                                                                            // bool success = await
+                                                                                            // widget.Get_vendorPDFfile(
+                                                                                            //     context: context,
+                                                                                            //     eventid: vendorController.vendorModel.processList[index].TimelineEvents[childIndex].Eventid,
+                                                                                            //     eventtype: "po");
 
-                                                                                              // }
-                                                                                            },
-                                                                                            child: const Text(
-                                                                                              "Generate PO",
-                                                                                              style: TextStyle(color: Colors.blue, fontSize: 12),
-                                                                                            ),
+                                                                                            // if (success) {
+                                                                                            widget.GeneratePo_dialougebox(context);
+
+                                                                                            // }
+                                                                                          },
+                                                                                          child: const Text(
+                                                                                            "Generate PO",
+                                                                                            style: TextStyle(color: Colors.blue, fontSize: 12),
                                                                                           ),
-                                                                                        if ((vendorController.vendorModel.processList[index].TimelineEvents[childIndex].Allowed_process.invoice ==
-                                                                                                true) &&
-                                                                                            (vendorController.vendorModel.processList[index].TimelineEvents.length == childIndex + 1))
-                                                                                          TextButton(
-                                                                                            onPressed: () async {
-                                                                                              widget.uploadInvoice_dialougebox(context);
-                                                                                            },
-                                                                                            child: const Text(
-                                                                                              "Upload Invoice",
-                                                                                              style: TextStyle(color: Colors.blue, fontSize: 12),
-                                                                                            ),
+                                                                                        ),
+                                                                                        // if ((vendorController.vendorModel.processList[index].TimelineEvents[childIndex].Allowed_process.invoice ==
+                                                                                        //         true) &&
+                                                                                        //     (vendorController.vendorModel.processList[index].TimelineEvents.length == childIndex + 1))
+                                                                                        TextButton(
+                                                                                          onPressed: () async {
+                                                                                            widget.uploadInvoice_dialougebox(context);
+                                                                                          },
+                                                                                          child: const Text(
+                                                                                            "Upload Invoice",
+                                                                                            style: TextStyle(color: Colors.blue, fontSize: 12),
                                                                                           ),
-                                                                                        if ((vendorController.vendorModel.processList[index].TimelineEvents[childIndex].Allowed_process.dc == true) &&
-                                                                                            (vendorController.vendorModel.processList[index].TimelineEvents.length == childIndex + 1))
-                                                                                          TextButton(
-                                                                                            onPressed: () async {
-                                                                                              widget.uploadDC_dialougebox(context);
-                                                                                            },
-                                                                                            child: const Text(
-                                                                                              "Upload DC",
-                                                                                              style: TextStyle(color: Colors.blue, fontSize: 12),
-                                                                                            ),
+                                                                                        ),
+                                                                                        // if ((vendorController.vendorModel.processList[index].TimelineEvents[childIndex].Allowed_process.dc == true) &&
+                                                                                        //     (vendorController.vendorModel.processList[index].TimelineEvents.length == childIndex + 1))
+                                                                                        TextButton(
+                                                                                          onPressed: () async {
+                                                                                            widget.uploadDC_dialougebox(context);
+                                                                                          },
+                                                                                          child: const Text(
+                                                                                            "Upload DC",
+                                                                                            style: TextStyle(color: Colors.blue, fontSize: 12),
                                                                                           ),
+                                                                                        ),
                                                                                       ],
                                                                                     )
                                                                                   ],

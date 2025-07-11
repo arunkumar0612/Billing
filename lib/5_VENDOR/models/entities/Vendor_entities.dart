@@ -555,13 +555,13 @@ class VendorPDF_List {
   }
 }
 
-class ProductSuggestion {
+class VendorProductSuggestion {
   final String productName;
   final String productHsn;
   final double productPrice;
   final double productGst;
 
-  ProductSuggestion({
+  VendorProductSuggestion({
     required this.productName,
     required this.productHsn,
     required this.productPrice,
@@ -569,8 +569,8 @@ class ProductSuggestion {
   });
 
   /// Factory method to convert JSON to Product object
-  factory ProductSuggestion.fromJson(Map<String, dynamic> json) {
-    return ProductSuggestion(
+  factory VendorProductSuggestion.fromJson(Map<String, dynamic> json) {
+    return VendorProductSuggestion(
       productName: json['product_name'] as String,
       productHsn: json['product_hsn'].toString(), // Ensure String type
       productPrice: (json['product_price'] as num).toDouble(),

@@ -8,6 +8,7 @@ import 'package:ssipl_billing/5_VENDOR/controllers/Process/Invoice_actions.dart'
 import 'package:ssipl_billing/5_VENDOR/controllers/Process/Quote_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/Process/RFQ_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/Process/RRFQ_actions.dart';
+import 'package:ssipl_billing/5_VENDOR/views/Process/Generate_PO/generatePO.dart';
 import 'package:ssipl_billing/5_VENDOR/views/Process/Generate_RFQ/generateRFQ.dart';
 import 'package:ssipl_billing/5_VENDOR/views/Process/Generate_RRFQ/generateRRFQ.dart';
 import 'package:ssipl_billing/5_VENDOR/views/Process/Upload_DC/uploadDC.dart';
@@ -257,11 +258,7 @@ mixin VendorServices {
           backgroundColor: Primary_colors.Dark,
           content: Stack(
             children: [
-              SizedBox(
-                height: 650,
-                width: 1300,
-                child: Container(),
-              ),
+              SizedBox(height: 650, width: 1300, child: GeneratePO(eventID: 1)),
               Positioned(
                 top: 3,
                 right: 0,
@@ -276,6 +273,7 @@ mixin VendorServices {
                     child: const Icon(Icons.close, color: Colors.red),
                   ),
                   onPressed: () async {
+                    Navigator.of(context).pop();
                     // Check if the data has any value
                     // || ( rfqController.rfqModel.Invoice_gstTotals.isNotEmpty)
 

@@ -12,8 +12,7 @@ class SUBSCRIPTION_ClientReqModel {
 
   var customer_id = 0.obs;
   final Rxn<TabController> tabController = Rxn<TabController>();
-  final Rx<File> selectedPdf = File('E://Client_requirement.pdf').obs;
-//######################################################################################################################################
+  final Rxn<File> selectedPdf = Rxn<File>(); //######################################################################################################################################
 //DETAILS
   final detailsformKey = GlobalKey<FormState>().obs;
   var clientNameController = TextEditingController().obs;

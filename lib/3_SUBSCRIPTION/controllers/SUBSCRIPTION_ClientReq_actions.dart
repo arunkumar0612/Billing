@@ -495,7 +495,7 @@ class SUBSCRIPTION_ClientreqController extends GetxController {
     clientReqModel.MOR_uploadedPath.value = null;
     clientReqModel.customer_id.value = 0;
     clientReqModel.tabController.value = null;
-    clientReqModel.selectedPdf.value = File('E://Client_requirement.pdf');
+    clientReqModel.selectedPdf.value = null;
 
     // DETAILS
     clientReqModel.detailsformKey.value = GlobalKey<FormState>();

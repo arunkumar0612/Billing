@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/5_VENDOR/models/constants/RFQ_constants.dart';
 import 'package:ssipl_billing/5_VENDOR/models/entities/RFQ_entities.dart';
+import 'package:ssipl_billing/5_VENDOR/models/entities/Vendor_entities.dart';
 import 'package:ssipl_billing/5_VENDOR/models/entities/product_entities.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
@@ -415,23 +416,18 @@ class vendor_RfqController extends GetxController {
   }
 
   void update_vendorCredentials_onSelect(VendorList selectedVendor) {
-    rfqModel.GSTIN_Controller.value.text = selectedVendor.gstNumber;
-    rfqModel.PAN_Controller.value.text = selectedVendor.panNumber;
-    rfqModel.contactPerson_Controller.value.text = selectedVendor.contactPersonName;
-    rfqModel.vendorName.value = selectedVendor.vendorName;
+    rfqModel.GSTIN_Controller.value.text = selectedVendor.gstNumber ?? '';
+    rfqModel.PAN_Controller.value.text = selectedVendor.panNumber ?? '';
+    rfqModel.contactPerson_Controller.value.text = selectedVendor.contactPersonName ?? '';
+    rfqModel.vendorName.value = selectedVendor.vendorName ?? '';
     rfqModel.vendorID.value = selectedVendor.vendorId;
-    rfqModel.AddressController.value.text = selectedVendor.address;
-    rfqModel.emailController.value.text = selectedVendor.email;
-    rfqModel.phoneController.value.text = selectedVendor.contactPersonPhone;
+    rfqModel.AddressController.value.text = selectedVendor.address ?? '';
+    rfqModel.emailController.value.text = selectedVendor.email ?? '';
+    rfqModel.phoneController.value.text = selectedVendor.contactPersonPhone ?? '';
   }
 
   bool generate_Datavalidation() {
-    return (rfqModel.TitleController.value.text.isEmpty ||
-        rfqModel.vendorID.value == null ||
-        rfqModel.vendorName.value == null ||
-        rfqModel.AddressController.value.text.isEmpty ||
-        rfqModel.Rfq_products.isEmpty ||
-        rfqModel.Rfq_noteList.isEmpty);
+    return (rfqModel.TitleController.value.text.isEmpty || rfqModel.vendorID.value == null || rfqModel.vendorName.value == null || rfqModel.AddressController.value.text.isEmpty || rfqModel.Rfq_products.isEmpty || rfqModel.Rfq_noteList.isEmpty);
   }
 
   bool postDatavalidation() {

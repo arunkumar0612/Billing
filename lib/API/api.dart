@@ -26,7 +26,6 @@ class API {
 
   static String add_invoice = "http://192.168.0.111:8081/sales/addinvoice";
   static String add_rfq = "http://192.168.0.111:8081/sales/addrfq";
-  static String addVendor = 'http://192.168.0.111:8081/vendor/addvendor';
 
   static String sales_detailsPreLoader_API = "http://192.168.0.111:8081/sales/detailspreloader";
   static String sales_getcustomerlist_API = "http://192.168.0.111:8081/sales/getcustomerlist";
@@ -122,4 +121,6 @@ class API {
   static String fetch_vendorList = "http://192.168.0.111:8081/vendor/getvendor";
   static String RRFQ_preloader = "http://192.168.0.111:8081/vendor/rrfqpreloader";
   static String vendor_createRrfq = "http://192.168.0.111:8081/vendor/postrrfq";
+  static String addVendor = 'http://192.168.0.111:8081/vendor/addvendor';
+  static String getVendorFiles = "http://192.168.0.111:8081/vendor/getvendorfile";
 }

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/5_VENDOR/controllers/manual_onboard_actions.dart';
-import 'package:ssipl_billing/5_VENDOR/services/manual_onboard_service.dart';
+import 'package:ssipl_billing/5_VENDOR/controllers/vendorList_actions.dart';
+import 'package:ssipl_billing/5_VENDOR/services/vendorList_services.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 import 'package:ssipl_billing/UTILS/validators/minimal_validators.dart';
 
-class VendorKYC extends StatefulWidget with ManualOnboardService {
+class VendorKYC extends StatefulWidget with VendorlistServices {
   VendorKYC({super.key});
 
   @override
@@ -15,7 +15,7 @@ class VendorKYC extends StatefulWidget with ManualOnboardService {
 }
 
 class VendorKYCState extends State<VendorKYC> {
-  final ManualOnboardController manualOnboardController = Get.find<ManualOnboardController>();
+  final VendorListController vendorListController = Get.find<VendorListController>();
 
   @override
   void initState() {
@@ -37,7 +37,7 @@ class VendorKYCState extends State<VendorKYC> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Form(
-                    key: manualOnboardController.manualOnboardModel.vendorKYCformKey.value,
+                    key: vendorListController.vendorListModel.vendorKYCformKey.value,
                     child: Wrap(
                       runSpacing: 25,
                       spacing: 35,
@@ -51,7 +51,7 @@ class VendorKYCState extends State<VendorKYC> {
                           width: 400,
                           readonly: false,
                           text: 'Name of the Vendor/Company',
-                          controller: manualOnboardController.manualOnboardModel.vendorNameController.value,
+                          controller: vendorListController.vendorListModel.vendorNameController.value,
                           icon: Icons.title,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -65,7 +65,7 @@ class VendorKYCState extends State<VendorKYC> {
                           width: 400,
                           readonly: false,
                           text: 'Address',
-                          controller: manualOnboardController.manualOnboardModel.vendorAddressController.value,
+                          controller: vendorListController.vendorListModel.vendorAddressController.value,
                           icon: Icons.location_on,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -79,7 +79,7 @@ class VendorKYCState extends State<VendorKYC> {
                           width: 400,
                           readonly: false,
                           text: 'State',
-                          controller: manualOnboardController.manualOnboardModel.vendorAddressStateController.value,
+                          controller: vendorListController.vendorListModel.vendorAddressStateController.value,
                           icon: Icons.location_city,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -93,7 +93,7 @@ class VendorKYCState extends State<VendorKYC> {
                           width: 400,
                           readonly: false,
                           text: 'Pincode',
-                          controller: manualOnboardController.manualOnboardModel.vendorAddressPincodeController.value,
+                          controller: vendorListController.vendorListModel.vendorAddressPincodeController.value,
                           icon: Icons.location_pin,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -107,7 +107,7 @@ class VendorKYCState extends State<VendorKYC> {
                           width: 400,
                           readonly: false,
                           text: 'Contact Person Name',
-                          controller: manualOnboardController.manualOnboardModel.contactpersonName.value,
+                          controller: vendorListController.vendorListModel.contactpersonName.value,
                           icon: Icons.person,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -121,7 +121,7 @@ class VendorKYCState extends State<VendorKYC> {
                           width: 400,
                           readonly: false,
                           text: 'Contact Person Designation',
-                          controller: manualOnboardController.manualOnboardModel.contactPersonDesignation.value,
+                          controller: vendorListController.vendorListModel.contactPersonDesignation.value,
                           icon: Icons.work,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -135,7 +135,7 @@ class VendorKYCState extends State<VendorKYC> {
                           width: 400,
                           readonly: false,
                           text: 'Contact Person Phone No',
-                          controller: manualOnboardController.manualOnboardModel.contactPersonPhoneNumber.value,
+                          controller: vendorListController.vendorListModel.contactPersonPhoneNumber.value,
                           icon: Icons.phone,
                           validator: (value) {
                             return Validators.phnNo_validator(value);
@@ -146,7 +146,7 @@ class VendorKYCState extends State<VendorKYC> {
                             width: 400,
                             readonly: false,
                             text: 'Email',
-                            controller: manualOnboardController.manualOnboardModel.contactPersonEmail.value,
+                            controller: vendorListController.vendorListModel.contactPersonEmail.value,
                             icon: Icons.email,
                             validator: (value) {
                               return Validators.email_validator(value);
@@ -161,7 +161,7 @@ class VendorKYCState extends State<VendorKYC> {
                                 colors: Colors.green,
                                 text: 'Add Details',
                                 onPressed: () async {
-                                  if (manualOnboardController.manualOnboardModel.vendorKYCformKey.value.currentState?.validate() ?? false) {
+                                  if (vendorListController.vendorListModel.vendorKYCformKey.value.currentState?.validate() ?? false) {
                                     widget.nextTab(context);
                                   }
                                   // }

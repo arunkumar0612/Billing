@@ -9,7 +9,6 @@ import 'package:ssipl_billing/5_VENDOR/views/Generate_PO/PO_details.dart';
 import 'package:ssipl_billing/5_VENDOR/views/Generate_PO/PO_note.dart';
 import 'package:ssipl_billing/5_VENDOR/views/Generate_PO/PO_products.dart';
 import 'package:ssipl_billing/5_VENDOR/views/Generate_PO/post_PO.dart';
-import 'package:ssipl_billing/COMPONENTS-/PDF_methods/PDFviewonly.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 
 class GeneratePo extends StatefulWidget with PodetailsService {

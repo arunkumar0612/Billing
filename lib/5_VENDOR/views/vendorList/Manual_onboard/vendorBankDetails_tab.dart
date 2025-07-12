@@ -1,14 +1,13 @@
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/5_VENDOR/controllers/manual_onboard_actions.dart';
-import 'package:ssipl_billing/5_VENDOR/services/manual_onboard_service.dart';
+import 'package:ssipl_billing/5_VENDOR/controllers/vendorList_actions.dart';
+import 'package:ssipl_billing/5_VENDOR/services/vendorList_services.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 import 'package:ssipl_billing/UTILS/validators/minimal_validators.dart';
 
-class Vendorbankdetails extends StatefulWidget with ManualOnboardService {
+class Vendorbankdetails extends StatefulWidget with VendorlistServices {
   Vendorbankdetails({super.key});
 
   @override
@@ -16,7 +15,7 @@ class Vendorbankdetails extends StatefulWidget with ManualOnboardService {
 }
 
 class VendorbankdetailsState extends State<Vendorbankdetails> {
-  final ManualOnboardController manualOnboardController = Get.find<ManualOnboardController>();
+  final VendorListController vendorListController = Get.find<VendorListController>();
 
   @override
   void initState() {
@@ -38,7 +37,7 @@ class VendorbankdetailsState extends State<Vendorbankdetails> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Form(
-                    key: manualOnboardController.manualOnboardModel.vendorBankDetailsFormKey.value,
+                    key: vendorListController.vendorListModel.vendorBankDetailsFormKey.value,
                     child: Wrap(
                       runSpacing: 25,
                       spacing: 35,
@@ -52,7 +51,7 @@ class VendorbankdetailsState extends State<Vendorbankdetails> {
                           width: 400,
                           readonly: false,
                           text: 'ISO Certification (If any)',
-                          controller: manualOnboardController.manualOnboardModel.isoCertification.value,
+                          controller: vendorListController.vendorListModel.isoCertification.value,
                           icon: Icons.verified_rounded,
                           // validator: (value) {
                           //   if (value == null || value.isEmpty) {
@@ -66,7 +65,7 @@ class VendorbankdetailsState extends State<Vendorbankdetails> {
                           width: 400,
                           readonly: false,
                           text: 'Other Certifications (If any)',
-                          controller: manualOnboardController.manualOnboardModel.otherCertification.value,
+                          controller: vendorListController.vendorListModel.otherCertification.value,
                           icon: Icons.verified_rounded,
                           // validator: (value) {
                           //   return Validators.GST_validator(value);
@@ -77,7 +76,7 @@ class VendorbankdetailsState extends State<Vendorbankdetails> {
                           width: 400,
                           readonly: false,
                           text: 'Bank Name',
-                          controller: manualOnboardController.manualOnboardModel.vendorBankName.value,
+                          controller: vendorListController.vendorListModel.vendorBankName.value,
                           icon: Icons.account_balance_outlined,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -91,7 +90,7 @@ class VendorbankdetailsState extends State<Vendorbankdetails> {
                           width: 400,
                           readonly: false,
                           text: 'Bank Branch',
-                          controller: manualOnboardController.manualOnboardModel.vendorBankBranch.value,
+                          controller: vendorListController.vendorListModel.vendorBankBranch.value,
                           icon: Icons.location_on_sharp,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -105,7 +104,7 @@ class VendorbankdetailsState extends State<Vendorbankdetails> {
                           width: 400,
                           readonly: false,
                           text: 'Account Number',
-                          controller: manualOnboardController.manualOnboardModel.vendorBankAccountNumber.value,
+                          controller: vendorListController.vendorListModel.vendorBankAccountNumber.value,
                           icon: Icons.pin,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -119,7 +118,7 @@ class VendorbankdetailsState extends State<Vendorbankdetails> {
                           width: 400,
                           readonly: false,
                           text: 'IFSC Code',
-                          controller: manualOnboardController.manualOnboardModel.vendorBankIfsc.value,
+                          controller: vendorListController.vendorListModel.vendorBankIfsc.value,
                           icon: Icons.confirmation_num,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -127,14 +126,10 @@ class VendorbankdetailsState extends State<Vendorbankdetails> {
                             }
                             return null;
                           },
-                          onChanged: (value) {
-                            // Update the list of products when the input changes
-                            manualOnboardController.updateHSNcodeList(value);
-                          },
                         ),
-                        FormField<FilePickerResult>(
-                          validator: (value) => Validators.fileValidator(manualOnboardController.manualOnboardModel.logoPickedFile.value),
-                          builder: (FormFieldState<FilePickerResult> field) {
+                        FormField<String>(
+                          validator: (value) => Validators.fileValidator(vendorListController.vendorListModel.uploadedLogo_path.value),
+                          builder: (FormFieldState<String> field) {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -163,12 +158,12 @@ class VendorbankdetailsState extends State<Vendorbankdetails> {
                                                 mainAxisAlignment: MainAxisAlignment.center,
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                  if (manualOnboardController.manualOnboardModel.logoPickedFile.value != null)
+                                                  if (vendorListController.vendorListModel.uploadedLogo_path.value != null)
                                                     Text(
-                                                      manualOnboardController.manualOnboardModel.logoPickedFile.value!.files.single.name,
+                                                      vendorListController.vendorListModel.uploadedLogo_path.value!,
                                                       style: const TextStyle(fontSize: 13, color: Colors.white),
                                                     ),
-                                                  if (manualOnboardController.manualOnboardModel.logoPickedFile.value == null)
+                                                  if (vendorListController.vendorListModel.uploadedLogo_path.value == null)
                                                     const Text(
                                                       'Please Upload Company Logo',
                                                       style: TextStyle(
@@ -184,9 +179,9 @@ class VendorbankdetailsState extends State<Vendorbankdetails> {
                                               onPressed: () async {
                                                 await widget.allFilesAction(
                                                   context: context,
-                                                  pickFunction: manualOnboardController.vendorLogoPickFile,
+                                                  pickFunction: vendorListController.vendorLogoPickFile,
                                                 );
-                                                field.didChange(manualOnboardController.manualOnboardModel.logoPickedFile.value);
+                                                field.didChange(vendorListController.vendorListModel.uploadedLogo_path.value);
                                                 // clientreqController.clientReqModel.pickedFile.refresh();
                                               },
                                               style: ButtonStyle(
@@ -221,9 +216,9 @@ class VendorbankdetailsState extends State<Vendorbankdetails> {
                             );
                           },
                         ),
-                        FormField<FilePickerResult>(
-                          validator: (value) => Validators.fileValidator(manualOnboardController.manualOnboardModel.GSTregCertiPickedFile.value),
-                          builder: (FormFieldState<FilePickerResult> field) {
+                        FormField<String>(
+                          validator: (value) => Validators.fileValidator(vendorListController.vendorListModel.GSTregCerti_uploadedPath.value),
+                          builder: (FormFieldState<String> field) {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -252,12 +247,12 @@ class VendorbankdetailsState extends State<Vendorbankdetails> {
                                                 mainAxisAlignment: MainAxisAlignment.center,
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                  if (manualOnboardController.manualOnboardModel.GSTregCertiPickedFile.value != null)
+                                                  if (vendorListController.vendorListModel.GSTregCerti_uploadedPath.value != null)
                                                     Text(
-                                                      manualOnboardController.manualOnboardModel.GSTregCertiPickedFile.value!.files.single.name,
+                                                      vendorListController.vendorListModel.GSTregCerti_uploadedPath.value!,
                                                       style: const TextStyle(fontSize: 13, color: Colors.white),
                                                     ),
-                                                  if (manualOnboardController.manualOnboardModel.GSTregCertiPickedFile.value == null)
+                                                  if (vendorListController.vendorListModel.GSTregCerti_uploadedPath.value == null)
                                                     const Text(
                                                       'Please Upload GST Reg Certificate',
                                                       style: TextStyle(
@@ -273,9 +268,9 @@ class VendorbankdetailsState extends State<Vendorbankdetails> {
                                               onPressed: () async {
                                                 await widget.allFilesAction(
                                                   context: context,
-                                                  pickFunction: manualOnboardController.regCertiPickFile,
+                                                  pickFunction: vendorListController.regCertiPickFile,
                                                 );
-                                                field.didChange(manualOnboardController.manualOnboardModel.GSTregCertiPickedFile.value);
+                                                field.didChange(vendorListController.vendorListModel.GSTregCerti_uploadedPath.value);
                                                 // clientreqController.clientReqModel.pickedFile.refresh();
                                               },
                                               style: ButtonStyle(
@@ -310,9 +305,9 @@ class VendorbankdetailsState extends State<Vendorbankdetails> {
                             );
                           },
                         ),
-                        FormField<FilePickerResult>(
-                          validator: (value) => Validators.fileValidator(manualOnboardController.manualOnboardModel.vendorPANPickedFile.value),
-                          builder: (FormFieldState<FilePickerResult> field) {
+                        FormField<String>(
+                          validator: (value) => Validators.fileValidator(vendorListController.vendorListModel.uploadedLogo_path.value),
+                          builder: (FormFieldState<String> field) {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -341,12 +336,12 @@ class VendorbankdetailsState extends State<Vendorbankdetails> {
                                                 mainAxisAlignment: MainAxisAlignment.center,
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                  if (manualOnboardController.manualOnboardModel.vendorPANPickedFile.value != null)
+                                                  if (vendorListController.vendorListModel.PAN_uploadedPath.value != null)
                                                     Text(
-                                                      manualOnboardController.manualOnboardModel.vendorPANPickedFile.value!.files.single.name,
+                                                      vendorListController.vendorListModel.PAN_uploadedPath.value!,
                                                       style: const TextStyle(fontSize: 13, color: Colors.white),
                                                     ),
-                                                  if (manualOnboardController.manualOnboardModel.vendorPANPickedFile.value == null)
+                                                  if (vendorListController.vendorListModel.PAN_uploadedPath.value == null)
                                                     const Text(
                                                       'Please Upload PAN',
                                                       style: TextStyle(
@@ -362,9 +357,9 @@ class VendorbankdetailsState extends State<Vendorbankdetails> {
                                               onPressed: () async {
                                                 await widget.allFilesAction(
                                                   context: context,
-                                                  pickFunction: manualOnboardController.vendorPANpickFile,
+                                                  pickFunction: vendorListController.vendorPANpickFile,
                                                 );
-                                                field.didChange(manualOnboardController.manualOnboardModel.vendorPANPickedFile.value);
+                                                field.didChange(vendorListController.vendorListModel.PAN_uploadedPath.value!);
                                                 // clientreqController.clientReqModel.pickedFile.refresh();
                                               },
                                               style: ButtonStyle(
@@ -399,9 +394,9 @@ class VendorbankdetailsState extends State<Vendorbankdetails> {
                             );
                           },
                         ),
-                        FormField<FilePickerResult>(
-                          validator: (value) => Validators.fileValidator(manualOnboardController.manualOnboardModel.cancelledChequePickedFile.value),
-                          builder: (FormFieldState<FilePickerResult> field) {
+                        FormField<String>(
+                          validator: (value) => Validators.fileValidator(vendorListController.vendorListModel.cheque_uploadedPath.value),
+                          builder: (FormFieldState<String> field) {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -430,12 +425,12 @@ class VendorbankdetailsState extends State<Vendorbankdetails> {
                                                 mainAxisAlignment: MainAxisAlignment.center,
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                  if (manualOnboardController.manualOnboardModel.cancelledChequePickedFile.value != null)
+                                                  if (vendorListController.vendorListModel.cheque_uploadedPath.value != null)
                                                     Text(
-                                                      manualOnboardController.manualOnboardModel.cancelledChequePickedFile.value!.files.single.name,
+                                                      vendorListController.vendorListModel.cheque_uploadedPath.value!,
                                                       style: const TextStyle(fontSize: 13, color: Colors.white),
                                                     ),
-                                                  if (manualOnboardController.manualOnboardModel.cancelledChequePickedFile.value == null)
+                                                  if (vendorListController.vendorListModel.cheque_uploadedPath.value == null)
                                                     const Text(
                                                       'Please Upload Cancelled Cheque',
                                                       style: TextStyle(
@@ -451,9 +446,9 @@ class VendorbankdetailsState extends State<Vendorbankdetails> {
                                               onPressed: () async {
                                                 await widget.allFilesAction(
                                                   context: context,
-                                                  pickFunction: manualOnboardController.cancelledChequePickFile,
+                                                  pickFunction: vendorListController.cancelledChequePickFile,
                                                 );
-                                                field.didChange(manualOnboardController.manualOnboardModel.cancelledChequePickedFile.value);
+                                                field.didChange(vendorListController.vendorListModel.cheque_uploadedPath.value);
                                                 // clientreqController.clientReqModel.pickedFile.refresh();
                                               },
                                               style: ButtonStyle(
@@ -508,8 +503,8 @@ class VendorbankdetailsState extends State<Vendorbankdetails> {
                                 colors: Colors.green,
                                 text: 'Submit',
                                 onPressed: () async {
-                                  if (manualOnboardController.manualOnboardModel.vendorBankDetailsFormKey.value.currentState?.validate() ?? false) {
-                                    widget.postData(context);
+                                  if (vendorListController.vendorListModel.vendorBankDetailsFormKey.value.currentState?.validate() ?? false) {
+                                    widget.postData(context, 'new');
                                   }
                                   // }
                                 },

@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/RFQ_actions.dart';
-import 'package:ssipl_billing/5_VENDOR/models/entities/RFQ_entities.dart';
+import 'package:ssipl_billing/5_VENDOR/models/entities/Vendor_entities.dart';
 import 'package:ssipl_billing/5_VENDOR/services/RFQ_services/RFQ_Details_service.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
@@ -118,7 +118,7 @@ class _RfqDetailsState extends State<RfqDetails> {
                                     return DropdownMenuItem<VendorList>(
                                       value: vendor, // Store the full vendor object
                                       child: Text(
-                                        vendor.vendorName, // Display vendor name
+                                        vendor.vendorName ?? '', // Display vendor name
                                         style: const TextStyle(fontSize: Primary_font_size.Text7, color: Primary_colors.Color1, overflow: TextOverflow.ellipsis),
                                       ),
                                     );

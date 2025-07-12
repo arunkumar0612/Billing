@@ -120,7 +120,7 @@ class _RfqDetailsState extends State<RfqDetails> {
                                     return DropdownMenuItem<VendorList>(
                                       value: vendor, // Store the full vendor object
                                       child: Text(
-                                        vendor.vendorName, // Display vendor name
+                                        vendor.vendorName ?? "", // Display vendor name
                                         style: const TextStyle(fontSize: Primary_font_size.Text7, color: Primary_colors.Color1, overflow: TextOverflow.ellipsis),
                                       ),
                                     );

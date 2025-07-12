@@ -234,8 +234,9 @@ class POProduct {
   double gst;
   double price;
   int quantity;
+  double? lastKnown_price;
 
-  POProduct({required this.sno, required this.productName, required this.hsn, required this.gst, required this.price, required this.quantity});
+  POProduct({required this.sno, required this.productName, required this.hsn, required this.gst, required this.price, required this.quantity, required this.lastKnown_price});
 
   /// Calculates the total price for the product
   double get total => price * quantity;
@@ -272,6 +273,7 @@ class POProduct {
       'productprice': price,
       'productquantity': quantity,
       'producttotal': total,
+      'lastKnown_price': lastKnown_price
     };
   }
 
@@ -284,6 +286,7 @@ class POProduct {
       gst: (json['productgst'] as num).toDouble(),
       price: (json['productprice'] as num).toDouble(),
       quantity: json['productquantity'] as int,
+      lastKnown_price: json['lastKnown_price'],
     );
   }
 }

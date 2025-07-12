@@ -20,12 +20,12 @@ import 'package:ssipl_billing/4_SALES/controllers/Process/RFQ_actions.dart';
 import 'package:ssipl_billing/4_SALES/controllers/Sales_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/Process/DC_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/Process/Invoice_actions.dart';
+import 'package:ssipl_billing/5_VENDOR/controllers/Process/PO_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/Process/Quote_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/Process/RFQ_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/Process/RRFQ_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/VendorList_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/Vendor_actions.dart';
-import 'package:ssipl_billing/5_VENDOR/controllers/manual_onboard_actions.dart';
 import 'package:ssipl_billing/7_HIERARCHY/controllers/Hierarchy_actions.dart';
 import 'package:ssipl_billing/API/invoker.dart';
 import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart';
@@ -71,15 +71,15 @@ void initialize_others() {
   Get.lazyPut<Account_LedgerController>(() => Account_LedgerController());
   Get.lazyPut<TDS_LedgerController>(() => TDS_LedgerController());
   Get.lazyPut<GST_LedgerController>(() => GST_LedgerController());
-  Get.lazyPut<ManualOnboardController>(() => ManualOnboardController());
 
   ////////////////////////////----VENDOR----////////////////////////////////////
   Get.lazyPut<VendorController>(() => VendorController());
   Get.lazyPut<vendor_RfqController>(() => vendor_RfqController());
   Get.lazyPut<vendor_RrfqController>(() => vendor_RrfqController());
-  // Get.lazyPut<vendor_PoController>(() => vendor_PoController());
+  Get.lazyPut<POController>(() => POController());
   Get.lazyPut<Vendor_QuoteController>(() => Vendor_QuoteController());
   Get.lazyPut<VendorListController>(() => VendorListController());
   Get.lazyPut<Vendor_InvoiceController>(() => Vendor_InvoiceController());
   Get.lazyPut<Vendor_DCController>(() => Vendor_DCController());
+  Get.lazyPut<VendorListController>(() => VendorListController());
 }

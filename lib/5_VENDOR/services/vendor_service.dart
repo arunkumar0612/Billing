@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/Process/DC_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/Process/Invoice_actions.dart';
+import 'package:ssipl_billing/5_VENDOR/controllers/Process/PO_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/Process/Quote_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/Process/RFQ_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/Process/RRFQ_actions.dart';
@@ -32,6 +33,7 @@ mixin VendorServices {
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
   final VendorController vendorController = Get.find<VendorController>();
   final vendor_RfqController vendor_rfqController = Get.find<vendor_RfqController>();
+  final POController poController = Get.find<POController>();
   final vendor_RrfqController rrfqController = Get.find<vendor_RrfqController>();
   final loader = LoadingOverlay();
 
@@ -273,31 +275,30 @@ mixin VendorServices {
                     child: const Icon(Icons.close, color: Colors.red),
                   ),
                   onPressed: () async {
-                    Navigator.of(context).pop();
                     // Check if the data has any value
                     // || ( rfqController.rfqModel.Invoice_gstTotals.isNotEmpty)
 
-                    // if ((poController.poModel.Po_products.isNotEmpty) ||
-                    //     (poController.poModel.Po_noteList.isNotEmpty) ||
-                    //     (poController.poModel.Po_recommendationList.isNotEmpty) ||
-                    //     // (rfqController.rfqModel.clientAddressNameController.value.text != "") ||
-                    //     (poController.poModel.AddressController.value.text != "") ||
-                    //     // (rfqController.rfqModel.billingAddressNameController.value.text != "") ||
-                    //     // (rfqController.rfqModel.billingAddressController.value.text != "") ||
-                    //     (poController.poModel.Po_no.value != "") ||
-                    //     (poController.poModel.AddressController.value.text != "") ||
-                    //     (poController.poModel.GSTIN_Controller.value.text != "") ||
-                    //     (poController.poModel.PAN_Controller.value.text != "") ||
-                    //     (poController.poModel.recommendationHeadingController.value.text != "")) {
-                    //   // Show confirmation dialog
-                    //   bool? proceed = await Warning_dialog(context: context, title: 'Warning', content: "The data may be lost. Do you want to proceed?");
-                    //   if (proceed == true) {
-                    //     Navigator.of(context).pop();
-                    //     poController.resetData();
-                    //   }
-                    // } else {
-                    //   Navigator.of(context).pop();
-                    // }
+                    if ((poController.poModel.PO_products.isNotEmpty) ||
+                        (poController.poModel.PO_noteList.isNotEmpty) ||
+                        (poController.poModel.PO_recommendationList.isNotEmpty) ||
+                        (poController.poModel.vendorID.value != null) ||
+                        (poController.poModel.contactPerson_Controller.value.text != "") ||
+                        (poController.poModel.gstController.value.text != "") ||
+                        (poController.poModel.vendorName.value != null) ||
+                        (poController.poModel.PO_no.value != "") ||
+                        // (poController.poModel.gst.value.text != "") ||
+                        // (poController.poModel.GSTIN_Controller.value.text != "") ||
+                        // (poController.poModel.PAN_Controller.value.text != "") ||
+                        (poController.poModel.recommendationHeadingController.value.text != "")) {
+                      // Show confirmation dialog
+                      bool? proceed = await Warning_dialog(context: context, title: 'Warning', content: "The data may be lost. Do you want to proceed?");
+                      if (proceed == true) {
+                        Navigator.of(context).pop();
+                        rrfqController.resetData();
+                      }
+                    } else {
+                      Navigator.of(context).pop();
+                    }
                   },
                 ),
               ),

@@ -403,14 +403,14 @@ class vendor_RfqController extends GetxController {
   }
 
   void update_vendorCredentials_onSelect(VendorList selectedVendor) {
-    rfqModel.GSTIN_Controller.value.text = selectedVendor.gstNumber;
-    rfqModel.PAN_Controller.value.text = selectedVendor.panNumber;
-    rfqModel.contactPerson_Controller.value.text = selectedVendor.contactPersonName;
+    rfqModel.GSTIN_Controller.value.text = selectedVendor.gstNumber ?? "";
+    rfqModel.PAN_Controller.value.text = selectedVendor.panNumber ?? "";
+    rfqModel.contactPerson_Controller.value.text = selectedVendor.contactPersonName ?? "";
     rfqModel.vendorName.value = selectedVendor.vendorName;
     rfqModel.vendorID.value = selectedVendor.vendorId;
-    rfqModel.AddressController.value.text = selectedVendor.address;
-    rfqModel.emailController.value.text = selectedVendor.email;
-    rfqModel.phoneController.value.text = selectedVendor.contactPersonPhone;
+    rfqModel.AddressController.value.text = selectedVendor.address ?? "";
+    rfqModel.emailController.value.text = selectedVendor.email ?? "";
+    rfqModel.phoneController.value.text = selectedVendor.contactPersonPhone ?? "";
   }
 
   bool generate_Datavalidation() {

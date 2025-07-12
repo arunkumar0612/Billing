@@ -2,13 +2,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/Process/PO_actions.dart';
-import 'package:ssipl_billing/5_VENDOR/controllers/VENDOR_actions.dart';
+import 'package:ssipl_billing/5_VENDOR/controllers/Vendor_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/services/Process/PO_services/PODetails_service.dart';
 import 'package:ssipl_billing/5_VENDOR/views/Process/Generate_PO/po_details.dart';
 import 'package:ssipl_billing/5_VENDOR/views/Process/Generate_PO/po_note.dart';
 import 'package:ssipl_billing/5_VENDOR/views/Process/Generate_PO/po_products.dart';
 import 'package:ssipl_billing/5_VENDOR/views/Process/Generate_PO/post_po.dart';
-
 import 'package:ssipl_billing/COMPONENTS-/PDF_methods/PDFviewonly.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 
@@ -27,8 +26,8 @@ class _GeneratePOState extends State<GeneratePO> with SingleTickerProviderStateM
     super.initState();
     // GeneratePO._tabController = ;
     poController.initializeTabController(TabController(length: 4, vsync: this));
-    widget.get_requiredData(context, widget.eventID, "po");
-    widget.get_productSuggestionList(context);
+    widget.get_requiredData(context);
+    // widget.get_productSuggestionList(context);
     widget.get_noteSuggestionList(context);
   }
 
@@ -133,10 +132,8 @@ class _GeneratePOState extends State<GeneratePO> with SingleTickerProviderStateM
                     child: TabBarView(
                       controller: poController.poModel.tabController.value,
                       children: [
-                        PODetails(
-                          eventID: widget.eventID,
-                        ),
-                        POProducts(),
+                        PODetails(),
+                        PoProducts(),
                         PONote(),
                         PostPO(type: 'E:/${(poController.poModel.PO_no.value ?? "default_filename").replaceAll("/", "-")}.pdf'
                             // Pass the expected file path

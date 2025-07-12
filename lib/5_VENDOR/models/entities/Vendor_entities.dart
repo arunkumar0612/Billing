@@ -6,102 +6,115 @@ import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 
-/// Represents a Vendor entity with details like contact, bank, and certification information.
 class VendorList {
-  int vendorId;
-  String vendorName;
-  String address;
-  String state;
-  String pincode;
-  String contactPersonName;
-  String contactPersonDesignation;
-  String contactPersonPhone;
-  String email;
-  String businessType;
-  String yearOfEstablishment;
-  String gstNumber;
-  String panNumber;
-  String annualTurnover;
-  String productsServices;
-  String hsnSacCode;
-  String description;
-  String bankName;
-  String branchName;
-  String accountNumber;
-  String ifscCode;
+  int? vendorId;
+  String? vendorName;
+  String? address;
+  String? state;
+  String? pincode;
+  String? contactPersonName;
+  String? contactPersonDesignation;
+  String? contactPersonPhone;
+  String? email;
+  String? businessType;
+  String? yearOfEstablishment;
+  String? gstNumber;
+  String? panNumber;
+  String? annualTurnover;
+  String? productsServices;
+  String? hsnSacCode;
+  String? description;
+  String? bankName;
+  String? branchName;
+  String? accountNumber;
+  String? ifscCode;
   String? isoCertification;
   String? otherCertifications;
-  String registrationCertificatePath;
-  String panUploadPath;
-  String cancelledChequePath;
-  String createdAt;
-  String updatedAt;
-  String logoPath;
+  String? registrationCertificatePath;
+  String? panUploadPath;
+  String? cancelledChequePath;
+  String? createdAt;
+  String? updatedAt;
+  String? logoPath;
+  Uint8List? vendorLogo;
+  // Uint8List? registrationCertificate;
+  // Uint8List? panUpload;
+  // Uint8List? cancelledCheque;
+  bool isSelected;
 
   VendorList({
-    required this.vendorId,
-    required this.vendorName,
-    required this.address,
-    required this.state,
-    required this.pincode,
-    required this.contactPersonName,
-    required this.contactPersonDesignation,
-    required this.contactPersonPhone,
-    required this.email,
-    required this.businessType,
-    required this.yearOfEstablishment,
-    required this.gstNumber,
-    required this.panNumber,
-    required this.annualTurnover,
-    required this.productsServices,
-    required this.hsnSacCode,
-    required this.description,
-    required this.bankName,
-    required this.branchName,
-    required this.accountNumber,
-    required this.ifscCode,
+    this.vendorId,
+    this.vendorName,
+    this.address,
+    this.state,
+    this.pincode,
+    this.contactPersonName,
+    this.contactPersonDesignation,
+    this.contactPersonPhone,
+    this.email,
+    this.businessType,
+    this.yearOfEstablishment,
+    this.gstNumber,
+    this.panNumber,
+    this.annualTurnover,
+    this.productsServices,
+    this.hsnSacCode,
+    this.description,
+    this.bankName,
+    this.branchName,
+    this.accountNumber,
+    this.ifscCode,
     this.isoCertification,
     this.otherCertifications,
-    required this.registrationCertificatePath,
-    required this.panUploadPath,
-    required this.cancelledChequePath,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.logoPath,
+    this.registrationCertificatePath,
+    this.panUploadPath,
+    this.cancelledChequePath,
+    this.createdAt,
+    this.updatedAt,
+    this.logoPath,
+    this.vendorLogo,
+    // this.registrationCertificate,
+    // this.panUpload,
+    // this.cancelledCheque,
+    this.isSelected = false,
   });
 
   /// Creates a Vendor object from a JSON map.
   factory VendorList.fromJson(Map<String, dynamic> json) {
     return VendorList(
-      vendorId: json['vendorid'],
-      vendorName: json['vendor_name'],
-      address: json['address'],
-      state: json['state'],
-      pincode: json['pincode'],
-      contactPersonName: json['contact_person_name'],
-      contactPersonDesignation: json['contact_person_designation'],
-      contactPersonPhone: json['contact_person_phone'],
-      email: json['email'],
-      businessType: json['business_type'],
-      yearOfEstablishment: json['year_of_establishment'],
-      gstNumber: json['gst_number'],
-      panNumber: json['pan_number'],
-      annualTurnover: json['annual_turnover'],
-      productsServices: json['products_services'],
-      hsnSacCode: json['hsn_sac_code'],
-      description: json['description'],
-      bankName: json['bank_name'],
-      branchName: json['branch_name'],
-      accountNumber: json['account_number'],
-      ifscCode: json['ifsc_code'],
-      isoCertification: json['iso_certification'],
-      otherCertifications: json['other_certifications'],
-      registrationCertificatePath: json['registration_certificate_path'],
-      panUploadPath: json['pan_upload_path'],
-      cancelledChequePath: json['cancelled_cheque_path'],
-      createdAt: json['created_at'],
-      updatedAt: json['updated_at'],
-      logoPath: json['logo_path'],
+      vendorId: json['vendorid'] ?? 0,
+      vendorName: json['vendor_name'] ?? 0,
+      address: json['address'] ?? '',
+      state: json['state'] ?? '',
+      pincode: json['pincode'] ?? '',
+      contactPersonName: json['contact_person_name'] ?? '',
+      contactPersonDesignation: json['contact_person_designation'] ?? '',
+      contactPersonPhone: json['contact_person_phone'] ?? '',
+      email: json['email'] ?? '',
+      businessType: json['business_type'] ?? '',
+      yearOfEstablishment: json['year_of_establishment'] ?? '',
+      gstNumber: json['gst_number'] ?? '',
+      panNumber: json['pan_number'] ?? '',
+      annualTurnover: json['annual_turnover'] ?? '',
+      productsServices: json['products_services'] ?? '',
+      hsnSacCode: json['hsn_sac_code'] ?? '',
+      description: json['description'] ?? '',
+      bankName: json['bank_name'] ?? '',
+      branchName: json['branch_name'] ?? '',
+      accountNumber: json['account_number'] ?? '',
+      ifscCode: json['ifsc_code'] ?? '',
+      isoCertification: json['iso_certification'] ?? '',
+      otherCertifications: json['other_certifications'] ?? '',
+      registrationCertificatePath: json['registration_certificate_path'] ?? '',
+      panUploadPath: json['pan_upload_path'] ?? '',
+      cancelledChequePath: json['cancelled_cheque_path'] ?? '',
+      createdAt: json['created_at'] ?? '',
+      updatedAt: json['updated_at'] ?? '',
+      logoPath: json['logo_path'] ?? '',
+      vendorLogo: json['logo_base64'] != null && json['logo_base64']['data'] != null ? Uint8List.fromList(List<int>.from(json['logo_base64']['data'])) : Uint8List(0),
+      // registrationCertificate: json['registration_certificate'] != null ? base64Decode(json['registration_certificate']) : null,
+      // panUpload: json['pan_upload'] != null ? base64Decode(json['pan_upload']) : null,
+      // cancelledCheque: json['cancelled_cheque'] != null ? base64Decode(json['cancelled_cheque']) : null,
     );
   }
 
@@ -137,6 +150,10 @@ class VendorList {
       'created_at': createdAt,
       'updated_at': updatedAt,
       'logo_path': logoPath,
+      'logo_base64': vendorLogo ?? Uint8List(0),
+      // 'registration_certificate': registrationCertificate != null ? base64Encode(registrationCertificate!) : null,
+      // 'pan_upload': panUpload != null ? base64Encode(panUpload!) : null,
+      // 'cancelled_cheque': cancelledCheque != null ? base64Encode(cancelledCheque!) : null,
     };
   }
 }

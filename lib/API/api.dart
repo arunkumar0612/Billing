@@ -26,7 +26,6 @@ class API {
 
   static String add_invoice = "http://192.168.0.111:8081/sales/addinvoice";
   static String add_rfq = "http://192.168.0.111:8081/sales/addrfq";
-  static String addVendor = 'http://192.168.0.111:8081/vendor/addvendor';
 
   static String sales_detailsPreLoader_API = "http://192.168.0.111:8081/sales/detailspreloader";
   static String sales_getcustomerlist_API = "http://192.168.0.111:8081/sales/getcustomerlist";
@@ -107,7 +106,8 @@ class API {
   static String update_transactionDetails = "http://192.168.0.111:8081/billing/updatepaymentdetails";
 
   /////////////////////-----------VENDOR-------------//////////////////////////////////
-
+  static String addVendor = 'http://192.168.0.111:8081/vendor/addvendor';
+  static String getVendorFiles = "http://192.168.0.111:8081/vendor/getvendorfile";
   static String RFQ_preloader = "http://192.168.0.111:8081/vendor/detailspreloader";
   static String vendor_productsSuggestion = "http://192.168.0.111:8081/vendor/getproducts";
   static String vendor_getNote_SUGG_List = "http://192.168.0.111:8081/vendor/getnotes";
@@ -124,4 +124,5 @@ class API {
   static String vendor_createRrfq = "http://192.168.0.111:8081/vendor/postrrfq";
   static String vendor_getQuoteApproval = "http://192.168.0.111:8081/vendor/getquotationapproval";
   static String PO_preloader = "http://192.168.0.111:8081/vendor/popreloader";
+  static String vendor_postPO = "http://192.168.0.111:8081/vendor/postpo";
 }

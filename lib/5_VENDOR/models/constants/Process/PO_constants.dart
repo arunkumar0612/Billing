@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/5_VENDOR/models/entities/Process/PO_entities.dart';
 import 'package:ssipl_billing/5_VENDOR/models/entities/Process/product_entities.dart';
+
 // import 'package:ssipl_billing/5_VENDOR/models/entities/Process/PO_entities.dart';
 // import 'package:ssipl_billing/5_VENDOR/models/entities/Process/product_entities.dart';
 
@@ -12,11 +13,13 @@ import '../../entities/Vendor_entities.dart';
 
 class POModel extends GetxController with GetSingleTickerProviderStateMixin {
   final Rxn<TabController> tabController = Rxn<TabController>();
-  var processID = Rxn<int>();
+  var vendorID = Rxn<int>();
+  var vendorName = Rxn<String>();
+  // var processID = Rxn<int>();
   var PO_no = Rxn<String>();
   // var gst_no = Rxn<String>();
   // var PO_table_heading = "".obs;
-  final gstNumController = TextEditingController().obs;
+
   var po_amount = Rxn<double>();
   var po_subTotal = Rxn<double>();
   var po_CGSTamount = Rxn<double>();
@@ -24,19 +27,20 @@ class POModel extends GetxController with GetSingleTickerProviderStateMixin {
   var po_IGSTamount = Rxn<double>();
 
   // DETAILS
-  final TitleController = TextEditingController().obs;
-  final clientAddressNameController = TextEditingController().obs;
-  final clientAddressController = TextEditingController().obs;
-  final billingAddressNameController = TextEditingController().obs;
-  final billingAddressController = TextEditingController().obs;
+  final AddressController = TextEditingController().obs;
+  final gstNumController = TextEditingController().obs;
+  final PAN_Controller = TextEditingController().obs;
+  final contactPerson_Controller = TextEditingController().obs;
   final detailsKey = GlobalKey<FormState>().obs;
 
   // PRODUCTS
+  var VendorProduct_sugestions = <ProductSuggestion>[].obs;
   final productKey = GlobalKey<FormState>().obs;
   final product_editIndex = Rxn<int>();
   final productNameController = TextEditingController().obs;
   final hsnController = TextEditingController().obs;
   final priceController = TextEditingController().obs;
+  final lastknown_price = Rxn<double>();
   final quantityController = TextEditingController().obs;
   final gstController = TextEditingController().obs;
   var PO_products = <POProduct>[].obs;

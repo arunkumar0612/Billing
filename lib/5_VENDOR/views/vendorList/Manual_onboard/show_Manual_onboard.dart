@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/5_VENDOR/controllers/manual_onboard_actions.dart';
-import 'package:ssipl_billing/5_VENDOR/views/Manual_onboard/vendorBankDetails_tab.dart';
-import 'package:ssipl_billing/5_VENDOR/views/Manual_onboard/vendorBusinessInfo_tab.dart';
-import 'package:ssipl_billing/5_VENDOR/views/Manual_onboard/vendorKYC_tab.dart';
+import 'package:ssipl_billing/5_VENDOR/controllers/VendorList_actions.dart';
+import 'package:ssipl_billing/5_VENDOR/views/vendorList/Manual_onboard/vendorBankDetails_tab.dart';
+import 'package:ssipl_billing/5_VENDOR/views/vendorList/Manual_onboard/vendorBusinessInfo_tab.dart';
+import 'package:ssipl_billing/5_VENDOR/views/vendorList/Manual_onboard/vendorKYC_tab.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 
 class ShowManualOnboard extends StatefulWidget {
@@ -13,17 +13,17 @@ class ShowManualOnboard extends StatefulWidget {
 }
 
 class _ShowManualOnboardState extends State<ShowManualOnboard> with SingleTickerProviderStateMixin {
-  final ManualOnboardController manualOnboardController = Get.find<ManualOnboardController>();
+  final VendorListController vendorListController = Get.find<VendorListController>();
   @override
   void initState() {
     super.initState();
     // Initialize any necessary data or controllers here
-    manualOnboardController.initializeTabController(TabController(length: 3, vsync: this));
+    vendorListController.initializeTabController(TabController(length: 3, vsync: this));
   }
 
   @override
   void dispose() {
-    manualOnboardController.manualOnboardModel.tabController.value?.dispose();
+    vendorListController.vendorListModel.tabController.value?.dispose();
     super.dispose();
   }
 
@@ -62,7 +62,7 @@ class _ShowManualOnboardState extends State<ShowManualOnboard> with SingleTicker
                             fontSize: Primary_font_size.Text10,
                             fontWeight: FontWeight.bold,
                           ),
-                          controller: manualOnboardController.manualOnboardModel.tabController.value,
+                          controller: vendorListController.vendorListModel.tabController.value,
                           indicator: const BoxDecoration(),
                           tabs: const [
                             Tab(text: "KYC"),
@@ -76,7 +76,7 @@ class _ShowManualOnboardState extends State<ShowManualOnboard> with SingleTicker
                   ),
                   Expanded(
                     child: TabBarView(
-                      controller: manualOnboardController.manualOnboardModel.tabController.value,
+                      controller: vendorListController.vendorListModel.tabController.value,
                       children: [
                         VendorKYC(),
                         VendorBusinessInfo(),

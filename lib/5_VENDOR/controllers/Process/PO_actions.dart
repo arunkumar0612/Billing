@@ -6,13 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/5_VENDOR/models/entities/Process/PO_entities.dart';
 import 'package:ssipl_billing/5_VENDOR/models/entities/Process/product_entities.dart';
-import 'package:ssipl_billing/5_VENDOR/models/entities/Vendor_entities.dart';
-
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 
 import '../../models/constants/Process/PO_constants.dart';
-import '../../models/entities/VENDOR_entities.dart' hide VendorProductSuggestion;
 
 class POController extends GetxController {
   var poModel = POModel();
@@ -45,6 +42,10 @@ class POController extends GetxController {
     poModel.priceController.value.text = price.toString();
   }
 
+  void update_lastKnownPrice(double? price) {
+    poModel.lastknown_price.value = price;
+  }
+
   void updateQuantity(int quantity) {
     poModel.quantityController.value.text = quantity.toString();
   }
@@ -69,10 +70,6 @@ class POController extends GetxController {
     poModel.tabController.value = tabController;
   }
 
-  void updateTitle(String text) {
-    poModel.TitleController.value.text = text;
-  }
-
   void updatePOnumber(String text) {
     poModel.PO_no.value = text;
   }
@@ -81,20 +78,16 @@ class POController extends GetxController {
     poModel.gstNumController.value.text = text;
   }
 
-  void updateClientAddressName(String text) {
-    poModel.clientAddressNameController.value.text = text;
+  void updatePAN(String text) {
+    poModel.PAN_Controller.value.text = text;
   }
 
-  void updateClientAddress(String text) {
-    poModel.clientAddressController.value.text = text;
+  void updatecontactPerson(String text) {
+    poModel.contactPerson_Controller.value.text = text;
   }
 
-  void updateBillingAddressName(String text) {
-    poModel.billingAddressNameController.value.text = text;
-  }
-
-  void updateBillingAddress(String text) {
-    poModel.billingAddressController.value.text = text;
+  void update_Address(String text) {
+    poModel.AddressController.value.text = text;
   }
 
   void updatePhone(String phone) {
@@ -141,9 +134,9 @@ class POController extends GetxController {
     poModel.product_editIndex.value = index;
   }
 
-  void setProcessID(int processid) {
-    poModel.processID.value = processid;
-  }
+  // void setProcessID(int processid) {
+  //   poModel.processID.value = processid;
+  // }
 
   void updateSelectedPdf(File file) {
     poModel.selectedPdf.value = file;
@@ -201,6 +194,21 @@ class POController extends GetxController {
 
   void update_poIGSTAmount(double amount) {
     poModel.po_IGSTamount.value = amount;
+  }
+
+  void add_vendorProduct_suggestions(CMDlResponse value) {
+    poModel.VendorProduct_sugestions.clear();
+    for (int i = 0; i < value.data.length; i++) {
+      poModel.VendorProduct_sugestions.add(ProductSuggestion.fromJson(value.data[i]));
+    }
+  }
+
+  void updateVendorID(int vendorID) {
+    poModel.vendorID.value = vendorID;
+  }
+
+  void updateVendorName(String vendorName) {
+    poModel.vendorName.value = vendorName;
   }
 
   Future<void> pickFile(BuildContext context) async {
@@ -304,6 +312,7 @@ class POController extends GetxController {
     required double price,
     required int quantity,
     required double gst,
+    required double? lastKnown_price,
   }) {
     try {
       if (productName.trim().isEmpty || hsn.trim().isEmpty || price <= 0 || quantity <= 0 || gst < 0) {
@@ -312,7 +321,8 @@ class POController extends GetxController {
         return;
       }
 
-      poModel.PO_products.add(POProduct(sno: (poModel.PO_products.length + 1), productName: productName, hsn: int.parse(hsn), gst: gst, price: price, quantity: quantity));
+      poModel.PO_products.add(
+          POProduct(sno: (poModel.PO_products.length + 1), productName: productName, hsn: int.parse(hsn), gst: gst, price: price, quantity: quantity, lastKnown_price: lastKnown_price));
     } catch (e) {
       Error_SnackBar(context, 'An error occurred while adding the product.');
     }
@@ -326,6 +336,7 @@ class POController extends GetxController {
     required double price,
     required int quantity,
     required double gst,
+    required double? lastKnown_price,
   }) {
     try {
       // Validate input fields
@@ -343,7 +354,7 @@ class POController extends GetxController {
       }
 
       // Update the product details at the specified index
-      poModel.PO_products[editIndex] = POProduct(sno: (editIndex + 1), productName: productName, hsn: int.parse(hsn), gst: gst, price: price, quantity: quantity);
+      poModel.PO_products[editIndex] = POProduct(sno: (editIndex + 1), productName: productName, hsn: int.parse(hsn), gst: gst, price: price, quantity: quantity, lastKnown_price: lastKnown_price);
 
       // ProductDetail(
       //   productName: productName.trim(),
@@ -369,14 +380,14 @@ class POController extends GetxController {
     }
   }
 
-  void add_productSuggestion(List<dynamic> suggestionList) {
-    for (var item in suggestionList) {
-      poModel.PO_productSuggestion.add(VendorProductSuggestion.fromJson(item));
-      if (kDebugMode) {
-        print(poModel.PO_productSuggestion[0].productName);
-      }
-    }
-  }
+  // void add_productSuggestion(List<dynamic> suggestionList) {
+  //   for (var item in suggestionList) {
+  //     poModel.PO_productSuggestion.add(VendorProductSuggestion.fromJson(item));
+  //     if (kDebugMode) {
+  //       print(poModel.PO_productSuggestion[0].productName);
+  //     }
+  //   }
+  // }
 
   void add_noteSuggestion(Map<String, dynamic> suggestionList) {
     for (var item in suggestionList['notes']) {
@@ -409,18 +420,20 @@ class POController extends GetxController {
   }
 
   void update_requiredData(CMDmResponse value) {
-    RequiredData instance = RequiredData.fromJson(value);
-    poModel.PO_no.value = instance.eventnumber;
-    updatePOnumber(instance.eventnumber);
-    updateTitle(instance.title!);
-    updateEmail(instance.emailId!);
-    updateGSTnumber(instance.gst!);
-    updatePhone(instance.phoneNo!);
-    updateClientAddressName(instance.name!);
-    updateClientAddress(instance.address!);
-    updateBillingAddressName(instance.billingAddressName!);
-    updateBillingAddress(instance.billingAddress!);
-    updateProducts(instance.product);
+    PurchaseOrderResponse instance = PurchaseOrderResponse.fromJson(value.data);
+    updateVendorID(instance.poDetails.vendorId);
+    updateVendorName(instance.poDetails.vendorName);
+    updatePOnumber(instance.poId);
+    updatePAN(instance.poDetails.pan);
+    updatecontactPerson(instance.poDetails.contactPerson);
+    updateEmail(instance.poDetails.emailId);
+    // updateTitle(instance.title!);
+    updateGSTnumber(instance.poDetails.gstin);
+    updatePhone(instance.poDetails.phoneNo);
+    updateVendorName(instance.poDetails.vendorName);
+    update_Address(instance.poDetails.vendorAddress);
+
+    // updateProducts(instance.product);
     // for(int i=0;i<instance.product.length;i++){
     //    poController.addProduct(context: context, productName: poController.poModel.productNameController.value.text, hsn: poController.poModel.hsnController.value.text, price: double.parse(poController.poModel.priceController.value.text), quantity: int.parse(poController.poModel.quantityController.value.text), gst: double.parse(poController.poModel.gstController.value.text));
 
@@ -428,33 +441,19 @@ class POController extends GetxController {
   }
 
   bool generate_Datavalidation() {
-    return (poModel.TitleController.value.text.isEmpty ||
-        poModel.processID.value == null ||
-        poModel.clientAddressNameController.value.text.isEmpty ||
-        poModel.clientAddressController.value.text.isEmpty ||
-        poModel.billingAddressNameController.value.text.isEmpty ||
-        poModel.billingAddressController.value.text.isEmpty ||
-        poModel.gstNumController.value.text.isEmpty ||
-        poModel.PO_gstTotals.isEmpty ||
-        poModel.PO_noteList.isEmpty ||
-        poModel.PO_no.value == null);
+    return (poModel.vendorID.value == null || poModel.vendorName.value == null || poModel.AddressController.value.text.isEmpty || poModel.PO_products.isEmpty || poModel.PO_noteList.isEmpty);
   }
 
   bool postDatavalidation() {
-    return (poModel.TitleController.value.text.isEmpty ||
-        poModel.processID.value == null ||
-        poModel.clientAddressNameController.value.text.isEmpty ||
-        poModel.clientAddressController.value.text.isEmpty ||
-        poModel.billingAddressNameController.value.text.isEmpty ||
-        poModel.billingAddressController.value.text.isEmpty ||
+    return (poModel.vendorID.value == null ||
+        poModel.vendorName.value == null ||
+        poModel.AddressController.value.text.isEmpty ||
         (poModel.gmail_selectionStatus.value && poModel.emailController.value.text.isEmpty) ||
         (poModel.whatsapp_selectionStatus.value && poModel.phoneController.value.text.isEmpty) ||
-        poModel.gstNumController.value.text.isEmpty ||
-        poModel.PO_gstTotals.isEmpty ||
-        poModel.PO_gstTotals.isEmpty ||
-        poModel.PO_noteList.isEmpty ||
-        poModel.PO_no.value == null);
+        poModel.PO_products.isEmpty ||
+        poModel.PO_noteList.isEmpty);
   }
+
   // If any one is empty or null, then it returns true
 
   // void resetData() {
@@ -501,7 +500,7 @@ class POController extends GetxController {
   void resetData() {
     // TAB, PROCESS & GENERAL
     poModel.tabController.value = null;
-    poModel.processID.value = null;
+    // poModel.processID.value = null;
     poModel.PO_no.value = null;
     // poModel.PO_table_heading.value = '';
     poModel.gstNumController.value.clear();
@@ -512,11 +511,11 @@ class POController extends GetxController {
     poModel.po_IGSTamount.value = null;
 
     // DETAILS
-    poModel.TitleController.value.clear();
-    poModel.clientAddressNameController.value.clear();
-    poModel.clientAddressController.value.clear();
-    poModel.billingAddressNameController.value.clear();
-    poModel.billingAddressController.value.clear();
+    poModel.PAN_Controller.value.clear();
+    poModel.contactPerson_Controller.value.clear();
+    poModel.AddressController.value.clear();
+    poModel.vendorID.value = null;
+    poModel.vendorName.value = null;
     poModel.detailsKey.value = GlobalKey<FormState>();
 
     // PRODUCTS

@@ -1,5 +1,4 @@
 import 'package:ssipl_billing/5_VENDOR/models/entities/Process/product_entities.dart';
-import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 
 class Recommendation {
   final String key;
@@ -64,62 +63,154 @@ class POGSTtotals {
   }
 }
 
-class RequiredData {
-  final String eventnumber;
-  final String? title;
-  final String? name;
-  final String? emailId;
-  final String? phoneNo;
-  final String? address;
-  final String? gst;
-  final String? billingAddressName;
-  final String? billingAddress;
-  final List<POProduct> product;
-  RequiredData(
-      {required this.eventnumber,
-      required this.title,
-      required this.name,
-      required this.emailId,
-      required this.phoneNo,
-      required this.address,
-      required this.gst,
-      required this.billingAddressName,
-      required this.billingAddress,
-      required this.product});
+class PurchaseOrderResponse {
+  final String poId;
+  final PurchaseOrderDetails poDetails;
 
-  factory RequiredData.fromJson(CMDmResponse json) {
-    return RequiredData(
-      eventnumber: json.data['eventnumber'] as String,
-      title: json.data['title'] as String,
-      name: json.data['client_addressname'] as String,
-      emailId: json.data['emailid'] as String,
-      phoneNo: json.data['contact_number'] as String,
-      address: json.data['client_address'] as String,
-      gst: json.data['gstnumber'] as String,
-      billingAddressName: json.data['billingaddress_name'] as String,
-      billingAddress: json.data['billing_address'] as String,
-      product: (json.data['product'] as List<dynamic>)
-          .map((e) => POProduct.fromJson(e)) // ✅ Convert each item to POProduct
-          .toList(),
+  PurchaseOrderResponse({
+    required this.poId,
+    required this.poDetails,
+  });
+
+  factory PurchaseOrderResponse.fromJson(Map<String, dynamic> data) {
+    // final data = json['data'] ?? {};
+    return PurchaseOrderResponse(
+      poId: data['po_id'],
+      poDetails: PurchaseOrderDetails.fromJson(data['po_details']),
     );
   }
+
   Map<String, dynamic> toJson() {
     return {
-      'ID': eventnumber,
+      'data': {
+        'po_id': poId,
+        'po_details': poDetails.toJson(),
+      }
+    };
+  }
+}
+
+class PurchaseOrderDetails {
+  // final int id;
+  final int vendorId;
+  final String vendorName;
+  final String gstin;
+  final String pan;
+  final String contactPerson;
+  final String vendorAddress;
+  final String title;
+  final String emailId;
+  final String phoneNo;
+  final String ccEmail;
+  final int messageType;
+  final String feedback;
+  final List<String> notes;
+  // final List<POProduct> products;
+
+  PurchaseOrderDetails({
+    // required this.id,
+    required this.vendorId,
+    required this.vendorName,
+    required this.gstin,
+    required this.pan,
+    required this.contactPerson,
+    required this.vendorAddress,
+    required this.title,
+    required this.emailId,
+    required this.phoneNo,
+    required this.ccEmail,
+    required this.messageType,
+    required this.feedback,
+    required this.notes,
+    // required this.products,
+  });
+
+  factory PurchaseOrderDetails.fromJson(Map<String, dynamic> json) {
+    return PurchaseOrderDetails(
+      // id: json['id'],
+      vendorId: json['vendor_id'],
+      vendorName: json['vendor_name'],
+      gstin: json['gstin'],
+      pan: json['pan'],
+      contactPerson: json['contact_person'],
+      vendorAddress: json['vendor_address'],
+      title: json['title'],
+      emailId: json['email_id'],
+      phoneNo: json['phone_no'],
+      ccEmail: json['cc_email'],
+      messageType: json['message_type'],
+      feedback: json['feedback'],
+      notes: List<String>.from(json['notes'] ?? []),
+      // products: (json['products'] as List).map((e) => POProduct.fromJson(e)).toList(),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      // 'id': id,
+      'vendor_id': vendorId,
+      'vendor_name': vendorName,
+      'gstin': gstin,
+      'pan': pan,
+      'contact_person': contactPerson,
+      'vendor_address': vendorAddress,
+      'title': title,
+      'email_id': emailId,
+      'phone_no': phoneNo,
+      'cc_email': ccEmail,
+      'message_type': messageType,
+      'feedback': feedback,
+      'notes': notes,
+      // 'products': products.map((e) => e.toJson()).toList(),
+    };
+  }
+}
+
+class ProductSuggestion {
+  final String productName;
+  final String productHsn;
+  final double productGst;
+  final double lastKnownPrice;
+
+  ProductSuggestion({
+    required this.productName,
+    required this.productHsn,
+    required this.productGst,
+    required this.lastKnownPrice,
+  });
+
+  /// Factory method to convert JSON to ProductSuggestion object
+  factory ProductSuggestion.fromJson(Map<String, dynamic> json) {
+    return ProductSuggestion(
+      productName: json['productname'] ?? '',
+      productHsn: json['hsn']?.toString() ?? '',
+      productGst: double.tryParse(json['gstpercent'].toString()) ?? 0.0,
+      lastKnownPrice: double.tryParse(json['lastknown_price'].toString()) ?? 0.0,
+    );
+  }
+
+  /// Method to convert ProductSuggestion object to JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'productname': productName,
+      'hsn': productHsn,
+      'gstpercent': productGst,
+      'lastknown_price': lastKnownPrice,
     };
   }
 }
 
 class Post_PO {
-  String? title;
   int? processid;
-  String? ClientAddressname;
-  String? ClientAddress;
+  int? vendorID;
+  String? contactPersonname;
+  String? PAN;
   String? emailId;
   String? phoneNo;
   String? gst;
-  String? billingAddressName;
-  String? billingAddress;
+  String? vendorAddress;
+  String? vendorName;
+  String? pan;
   List<POProduct>? product;
   List notes;
   String? date;
@@ -131,12 +222,12 @@ class Post_PO {
   Map<String, dynamic> billdetails;
 
   Post_PO({
-    required this.title,
     required this.processid,
-    required this.ClientAddressname,
-    required this.ClientAddress,
-    required this.billingAddressName,
-    required this.billingAddress,
+    required this.vendorID,
+    required this.contactPersonname,
+    required this.vendorAddress,
+    required this.vendorName,
+    required this.pan,
     required this.emailId,
     required this.phoneNo,
     required this.gst,
@@ -152,12 +243,12 @@ class Post_PO {
   });
 
   factory Post_PO.fromJson({
-    required String title,
     required int processid,
-    required String ClientAddressname,
-    required String ClientAddress,
-    required String billingAddressName,
-    required String billingAddress,
+    required int vendorID,
+    required String contactPersonname,
+    required String vendorAddress,
+    required String vendorName,
+    required String pan,
     required String emailId,
     required String phoneNo,
     required String gst,
@@ -172,12 +263,12 @@ class Post_PO {
     required Map<String, dynamic> billdetails,
   }) {
     return Post_PO(
-        title: title,
         processid: processid,
-        ClientAddressname: ClientAddressname,
-        ClientAddress: ClientAddress,
-        billingAddressName: billingAddressName,
-        billingAddress: billingAddress,
+        vendorID: vendorID,
+        contactPersonname: contactPersonname,
+        vendorAddress: vendorAddress,
+        vendorName: vendorName,
+        pan: pan,
         emailId: emailId,
         phoneNo: phoneNo,
         gst: gst,
@@ -194,12 +285,12 @@ class Post_PO {
 
   Map<String, dynamic> toJson() {
     return {
-      "title": title,
       "processid": processid,
-      "clientaddressname": ClientAddressname,
-      "clientaddress": ClientAddress,
-      "billingaddressname": billingAddressName,
-      "billingaddress": billingAddress,
+      "vendorID": vendorID,
+      "contactPerson": contactPersonname,
+      "vendorAddress": vendorAddress,
+      "vendorName": vendorName,
+      'pan': pan,
       "emailid": emailId,
       "phoneno": phoneNo,
       "gst_number": gst,

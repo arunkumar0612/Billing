@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/5_VENDOR/controllers/manual_onboard_actions.dart';
-import 'package:ssipl_billing/5_VENDOR/services/manual_onboard_service.dart';
+import 'package:ssipl_billing/5_VENDOR/controllers/VendorList_actions.dart';
+import 'package:ssipl_billing/5_VENDOR/services/VendorList_service.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 import 'package:ssipl_billing/UTILS/validators/minimal_validators.dart';
 
-class VendorBusinessInfo extends StatefulWidget with ManualOnboardService {
+class VendorBusinessInfo extends StatefulWidget with VendorlistServices {
   VendorBusinessInfo({super.key});
 
   @override
@@ -15,7 +15,7 @@ class VendorBusinessInfo extends StatefulWidget with ManualOnboardService {
 }
 
 class VendorBusinessInfoState extends State<VendorBusinessInfo> {
-  final ManualOnboardController manualOnboardController = Get.find<ManualOnboardController>();
+  final VendorListController vendorListController = Get.find<VendorListController>();
 
   @override
   void initState() {
@@ -37,7 +37,7 @@ class VendorBusinessInfoState extends State<VendorBusinessInfo> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Form(
-                    key: manualOnboardController.manualOnboardModel.vendorBusinessInfoFormKey.value,
+                    key: vendorListController.vendorListModel.vendorBusinessInfoFormKey.value,
                     child: Wrap(
                       runSpacing: 25,
                       spacing: 35,
@@ -54,7 +54,7 @@ class VendorBusinessInfoState extends State<VendorBusinessInfo> {
                               width: 400,
                               readonly: false,
                               text: 'Type of Business/ Service',
-                              controller: manualOnboardController.manualOnboardModel.typeOfBusiness.value,
+                              controller: vendorListController.vendorListModel.typeOfBusiness.value,
                               icon: Icons.business,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
@@ -78,7 +78,7 @@ class VendorBusinessInfoState extends State<VendorBusinessInfo> {
                           width: 400,
                           readonly: false,
                           text: 'Year of Establishment',
-                          controller: manualOnboardController.manualOnboardModel.yearOfEstablishment.value,
+                          controller: vendorListController.vendorListModel.yearOfEstablishment.value,
                           icon: Icons.date_range_sharp,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -92,7 +92,7 @@ class VendorBusinessInfoState extends State<VendorBusinessInfo> {
                           width: 400,
                           readonly: false,
                           text: 'GST Number',
-                          controller: manualOnboardController.manualOnboardModel.vendorGstNo.value,
+                          controller: vendorListController.vendorListModel.vendorGstNo.value,
                           icon: Icons.receipt,
                           validator: (value) {
                             return Validators.GST_validator(value);
@@ -103,7 +103,7 @@ class VendorBusinessInfoState extends State<VendorBusinessInfo> {
                           width: 400,
                           readonly: false,
                           text: 'PAN Number',
-                          controller: manualOnboardController.manualOnboardModel.vendorPanNo.value,
+                          controller: vendorListController.vendorListModel.vendorPanNo.value,
                           icon: Icons.recent_actors_sharp,
                           validator: (value) {
                             return Validators.PAN_validator(value);
@@ -114,7 +114,7 @@ class VendorBusinessInfoState extends State<VendorBusinessInfo> {
                           width: 400,
                           readonly: false,
                           text: 'Annual Turnover',
-                          controller: manualOnboardController.manualOnboardModel.vendorAnnualTurnover.value,
+                          controller: vendorListController.vendorListModel.vendorAnnualTurnover.value,
                           icon: Icons.currency_rupee,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -128,7 +128,7 @@ class VendorBusinessInfoState extends State<VendorBusinessInfo> {
                           width: 400,
                           readonly: false,
                           text: 'List of Products/Services',
-                          controller: manualOnboardController.manualOnboardModel.productInputController,
+                          controller: vendorListController.vendorListModel.productInputController,
                           icon: Icons.list_alt_sharp,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -142,7 +142,7 @@ class VendorBusinessInfoState extends State<VendorBusinessInfo> {
                           width: 400,
                           readonly: false,
                           text: 'HSN/SAC Code',
-                          controller: manualOnboardController.manualOnboardModel.HSNcodeController,
+                          controller: vendorListController.vendorListModel.HSNcodeController,
                           icon: Icons.list_alt_sharp,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -150,17 +150,13 @@ class VendorBusinessInfoState extends State<VendorBusinessInfo> {
                             }
                             return null;
                           },
-                          onChanged: (value) {
-                            // Update the list of products when the input changes
-                            manualOnboardController.updateHSNcodeList(value);
-                          },
                         ),
                         BasicTextfield(
                           digitsOnly: false,
                           width: 400,
                           readonly: false,
                           text: 'Description of Products/Services',
-                          controller: manualOnboardController.manualOnboardModel.descriptionOfProducts.value,
+                          controller: vendorListController.vendorListModel.descriptionOfProducts.value,
                           icon: Icons.description,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -189,7 +185,7 @@ class VendorBusinessInfoState extends State<VendorBusinessInfo> {
                                 colors: Colors.green,
                                 text: 'Add Details',
                                 onPressed: () async {
-                                  if (manualOnboardController.manualOnboardModel.vendorBusinessInfoFormKey.value.currentState?.validate() ?? false) {
+                                  if (vendorListController.vendorListModel.vendorBusinessInfoFormKey.value.currentState?.validate() ?? false) {
                                     widget.nextTab(context);
                                   }
                                   // }

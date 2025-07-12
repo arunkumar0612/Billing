@@ -1,40 +1,73 @@
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/Process/PO_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/models/entities/Process/PO_entities.dart';
 import 'package:ssipl_billing/5_VENDOR/models/entities/Process/product_entities.dart';
-import 'package:ssipl_billing/5_VENDOR/models/entities/VENDOR_entities.dart';
+import 'package:ssipl_billing/API/api.dart';
+import 'package:ssipl_billing/API/invoker.dart';
+import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
+import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
+import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart';
 
 mixin POproductService {
   final POController poController = Get.find<POController>();
+  final Invoker apiController = Get.find<Invoker>();
+  final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
   void clearFields() {
     poController.poModel.productNameController.value.clear();
     poController.poModel.hsnController.value.clear();
     poController.poModel.priceController.value.clear();
     poController.poModel.quantityController.value.clear();
+    poController.poModel.hsnController.value.clear();
     poController.poModel.gstController.value.clear();
+  }
+
+  void get_ProductsSuggestion(context) async {
+    try {
+      Map<String, dynamic> body = {"vendorid": poController.poModel.vendorID.value};
+      Map<String, dynamic>? response = await apiController.GetbyQueryString(body, API.vendor_productsSuggestion);
+      if (response?['statusCode'] == 200) {
+        CMDlResponse value = CMDlResponse.fromJson(response ?? {});
+        if (value.code) {
+          poController.add_vendorProduct_suggestions(value);
+          // poController.update_vendorList(value);
+          // await Basic_dialog(context: context,showCancel: false, title: 'Organization List', content: value.message!, onOk: () {});
+          // clientreqController.update_CompanyList(value);
+        } else {
+          await Error_dialog(context: context, title: 'Fetching Vendor Products Error', content: value.message ?? "", onOk: () {});
+          Navigator.of(context).pop();
+        }
+      } else {
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+        Navigator.of(context).pop();
+      }
+    } catch (e) {
+      Error_dialog(context: context, title: "ERROR", content: "$e");
+      Navigator.of(context).pop();
+    }
   }
 
   void addproduct(context) {
     if (poController.poModel.productKey.value.currentState?.validate() ?? false) {
       // ignore: unrelated_type_equality_checks
-      bool exists = poController.poModel.PO_products.any((product) =>
-          product.productName == poController.poModel.productNameController.value.text &&
+      bool exists = poController.poModel.PO_products.any((product) => product.productName == poController.poModel.productNameController.value.text
           // ignore: unrelated_type_equality_checks
-          product.hsn == poController.poModel.hsnController.value.text &&
-          product.quantity == int.parse(poController.poModel.quantityController.value.text));
 
+          );
       if (exists) {
         Get.snackbar("Product", "This product already exists.");
         return;
       }
       poController.addProduct(
-          context: context,
-          productName: poController.poModel.productNameController.value.text,
-          hsn: poController.poModel.hsnController.value.text,
-          price: double.parse(poController.poModel.priceController.value.text),
-          quantity: int.parse(poController.poModel.quantityController.value.text),
-          gst: double.parse(poController.poModel.gstController.value.text));
-
+        context: context,
+        productName: poController.poModel.productNameController.value.text,
+        hsn: poController.poModel.hsnController.value.text,
+        price: double.parse(poController.poModel.priceController.value.text),
+        quantity: int.parse(poController.poModel.quantityController.value.text),
+        gst: double.parse(poController.poModel.gstController.value.text),
+        lastKnown_price: poController.poModel.lastknown_price.value,
+      );
+      poController.update_lastKnownPrice(null);
       clearFields();
     }
   }
@@ -65,8 +98,9 @@ mixin POproductService {
         price: double.parse(poController.poModel.priceController.value.text),
         quantity: int.parse(poController.poModel.quantityController.value.text),
         gst: double.parse(poController.poModel.gstController.value.text),
+        lastKnown_price: poController.poModel.lastknown_price.value,
       );
-
+      poController.update_lastKnownPrice(null);
       clearFields();
       poController.addProductEditindex(null);
     }
@@ -81,6 +115,7 @@ mixin POproductService {
     poController.updateQuantity(product.quantity);
     poController.updateGST(product.gst);
     poController.addProductEditindex(index);
+    poController.update_lastKnownPrice(product.lastKnown_price);
   }
 
   void resetEditingState() {
@@ -88,9 +123,9 @@ mixin POproductService {
     poController.addProductEditindex(null);
   }
 
-  void set_ProductValues(VendorProductSuggestion value) {
+  void set_ProductValues(ProductSuggestion value) {
     poController.updateHSN(int.parse(value.productHsn));
     poController.updateGST(value.productGst);
-    poController.updatePrice(value.productPrice);
+    poController.update_lastKnownPrice(value.lastKnownPrice);
   }
 }
